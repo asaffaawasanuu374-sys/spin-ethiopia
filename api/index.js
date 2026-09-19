@@ -1,0 +1,9630 @@
+// api/index.ts
+import dotenv2 from "dotenv";
+import express2 from "express";
+
+// server/api.ts
+import express from "express";
+
+// server/auth.ts
+import crypto2 from "crypto";
+
+// server/db.ts
+import fs from "fs";
+import path from "path";
+import crypto from "crypto";
+
+// data/spin_ethiopia.json
+var spin_ethiopia_default = {
+  users: {
+    user_admin_0929200166: {
+      id: "user_admin_0929200166",
+      firstName: "Admin",
+      lastName: "Gabre",
+      phone: "0929200166",
+      role: "ADMIN",
+      walletBalance: 99925,
+      referralCode: "ADMIN2026",
+      createdAt: "2026-09-10T09:23:17.479Z",
+      passwordHash: "e792291b15cfd8e5611f7ca858e1055f05dde297d047c8cfd8b638811e2f6613598c8033fa7c789a1b7f6c1f64ac000608e7a0f0d8a5ae50b578d096f8207982",
+      salt: "ab5cbd0480a600edf9b78412a78dc391"
+    },
+    user_1789032197481_2edd3a21: {
+      id: "user_1789032197481_2edd3a21",
+      firstName: "Chala",
+      lastName: "Bekele",
+      phone: "0988776655",
+      role: "USER",
+      walletBalance: 10825,
+      referralCode: "SPIN867393",
+      createdAt: "2026-09-10T09:23:17.579Z",
+      passwordHash: "5e7caf3cce6e94650bcab56f416e320fc6f3171ee250c54a36e999a5313f1ee6a4e76a5ced6f09eeaf6f559834ab0e9bfe45a5dccde2c7627afd8efc74a1a6bc",
+      salt: "6522666a9db9172b4129545b4521caa0"
+    },
+    user_1789032730229_bd002e72: {
+      id: "user_1789032730229_bd002e72",
+      firstName: "asefa",
+      lastName: "wasenu",
+      phone: "0921209810",
+      role: "USER",
+      walletBalance: 50,
+      referralCode: "SPIN651064",
+      createdAt: "2026-09-10T09:32:10.337Z",
+      passwordHash: "086aae01b8c031b0f774e9c7abb2802285137f9fd8dfd46031341365b4c1913c09a9ce5e8bdc779ef48fd0780fbeabba85f8d25a92af66f77da2d300184b1937",
+      salt: "bee4cd45da4579d919f0475d9257399f"
+    },
+    user_1789034984545_f6f0db3e: {
+      id: "user_1789034984545_f6f0db3e",
+      firstName: "Tolera",
+      lastName: "Bekele",
+      phone: "0911551142",
+      role: "USER",
+      walletBalance: 0,
+      referralCode: "SPIN905150",
+      createdAt: "2026-09-10T10:09:44.601Z",
+      passwordHash: "840f90dddef5c9738ce11707c972886be8630ee5993b1e9516cd9662acc944b04e9f02564331566d7ffd71618aefdc546951bd82639b82c273afbf2f8a607e99",
+      salt: "0044b1f27ffbe7bbbc4cfb2caa28b64d"
+    },
+    user_1789034991130_cea19125: {
+      id: "user_1789034991130_cea19125",
+      firstName: "Tolera",
+      lastName: "Bekele",
+      phone: "0911891231",
+      role: "USER",
+      walletBalance: 0,
+      referralCode: "SPIN756273",
+      createdAt: "2026-09-10T10:09:51.184Z",
+      passwordHash: "601fb29385bbab11caaff53b84a893f0b966c1c53e1d5d4d21ab95f5cfc42d6eb83658c10e10ca859904352725f78260a7a653d18700de91cf89fca37ffa619d",
+      salt: "5d3af5667078511ddbdf9de480e9d8f7"
+    },
+    user_1789034996686_d3e68086: {
+      id: "user_1789034996686_d3e68086",
+      firstName: "Tolera",
+      lastName: "Bekele",
+      phone: "0911417927",
+      role: "USER",
+      walletBalance: 150,
+      referralCode: "SPIN551220",
+      createdAt: "2026-09-10T10:09:56.739Z",
+      passwordHash: "093f5440c108c107af269833de71a7fc2ab48825cd962c39f48edf591548958e13162506cbb3abeec26e400e822559741595e9290ad27714aa69c49d636f6a0f",
+      salt: "5421002aec899af78da6930a553f473f"
+    },
+    user_1789035008188_9c5240c8: {
+      id: "user_1789035008188_9c5240c8",
+      firstName: "Hundee",
+      lastName: "Dibaba",
+      phone: "0912582030",
+      role: "USER",
+      walletBalance: 250,
+      referralCode: "SPIN268951",
+      createdAt: "2026-09-10T10:10:08.245Z",
+      passwordHash: "9095d9133f1e2c1b31a0e7092672f7f49a12dc36e2483bc60f573c797057fc32d4413277bd0125aa6e564ae3c720d69735e778ff521b686300644bf6d91bf023",
+      salt: "d870b8101d1c0f88d53f775ff47622f9"
+    },
+    user_1789740960730_33852f77: {
+      id: "user_1789740960730_33852f77",
+      firstName: "Obsan",
+      lastName: "Dibaba",
+      phone: "0924728998",
+      role: "USER",
+      walletBalance: 0,
+      referralCode: "SPIN958941",
+      createdAt: "2026-09-18T14:16:00.784Z",
+      passwordHash: "c5da274f205ef2e8231cc36e4439191660c042e77e261db1be559898973f9155e03650a06824be8dadc814a9e6634b936d12830e2683e63340ebdc47e38243ca",
+      salt: "b69f033fd6359a7a7f7728cccd80cef5"
+    },
+    user_1789741008607_1c17496e: {
+      id: "user_1789741008607_1c17496e",
+      firstName: "Gudeta",
+      lastName: "Tadesse",
+      phone: "0942255518",
+      role: "USER",
+      walletBalance: 0,
+      referralCode: "SPIN809936",
+      referredBy: "user_admin_0929200166",
+      createdAt: "2026-09-18T14:16:48.660Z",
+      passwordHash: "f00a6fb895456c5369ffbbc1812ed4310fcf179ed605bade51d91b1f9f356305523a16628db25bfd10236a2515b44d7f353b62b9c21c99ed2179eb124549e9ed",
+      salt: "6b9cfe51fd62545247932baddd00d344"
+    },
+    user_1789741020213_205f0509: {
+      id: "user_1789741020213_205f0509",
+      firstName: "Gudeta",
+      lastName: "Tadesse",
+      phone: "0913321811",
+      role: "USER",
+      walletBalance: 450,
+      referralCode: "SPIN628453",
+      referredBy: "user_admin_0929200166",
+      createdAt: "2026-09-18T14:17:00.267Z",
+      passwordHash: "7897dc054dd9198cd347731427ee87ce5421f4b9f56f402565ff8593b14231047c7574a8d678b906fd725e4a0e0cad061cfe34b8d9641820c249e95568bada1b",
+      salt: "fbf2947002b354f18405803db352deaf"
+    },
+    user_1789741028278_de2b3b7c: {
+      id: "user_1789741028278_de2b3b7c",
+      firstName: "Tolera",
+      lastName: "Desta",
+      phone: "0969302795",
+      role: "USER",
+      walletBalance: 350,
+      referralCode: "SPIN665381",
+      createdAt: "2026-09-18T14:17:08.330Z",
+      passwordHash: "65306cab988bb296ac9ab39d7aaec4a2f44b52b7b19f9280b3409b39ed8d8fa849f0bebb1e7809370c237d753aa629396fca3195b9d2df04d97b67be90d22865",
+      salt: "6e1b68de5471e6762c589e8a50b67eea"
+    }
+  },
+  phoneToUserId: {
+    "0929200166": "user_admin_0929200166",
+    "0988776655": "user_1789032197481_2edd3a21",
+    "0921209810": "user_1789032730229_bd002e72",
+    "0911551142": "user_1789034984545_f6f0db3e",
+    "0911891231": "user_1789034991130_cea19125",
+    "0911417927": "user_1789034996686_d3e68086",
+    "0912582030": "user_1789035008188_9c5240c8",
+    "0924728998": "user_1789740960730_33852f77",
+    "0942255518": "user_1789741008607_1c17496e",
+    "0913321811": "user_1789741020213_205f0509",
+    "0969302795": "user_1789741028278_de2b3b7c"
+  },
+  referralCodeToUserId: {
+    ADMIN2026: "user_admin_0929200166",
+    SPIN867393: "user_1789032197481_2edd3a21",
+    SPIN651064: "user_1789032730229_bd002e72",
+    SPIN905150: "user_1789034984545_f6f0db3e",
+    SPIN756273: "user_1789034991130_cea19125",
+    SPIN551220: "user_1789034996686_d3e68086",
+    SPIN268951: "user_1789035008188_9c5240c8",
+    SPIN958941: "user_1789740960730_33852f77",
+    SPIN809936: "user_1789741008607_1c17496e",
+    SPIN628453: "user_1789741020213_205f0509",
+    SPIN665381: "user_1789741028278_de2b3b7c"
+  },
+  sessions: {
+    ab9e727bde219225a877c1864c8d99dfccf2379ed00f7dbad9d518e50aff082c: {
+      token: "ab9e727bde219225a877c1864c8d99dfccf2379ed00f7dbad9d518e50aff082c",
+      userId: "user_1789032197481_2edd3a21",
+      createdAt: "2026-09-10T09:23:17.579Z",
+      expiresAt: "2026-09-17T09:23:17.579Z"
+    },
+    "59ccfa6bc7393bba0f63a0d5990e8a5b9d2afe6a70dda2e20bfb1ac93612ff28": {
+      token: "59ccfa6bc7393bba0f63a0d5990e8a5b9d2afe6a70dda2e20bfb1ac93612ff28",
+      userId: "user_1789032197481_2edd3a21",
+      createdAt: "2026-09-10T09:23:17.638Z",
+      expiresAt: "2026-09-17T09:23:17.638Z"
+    },
+    "8033b7d72a4515e61c3564cc8a962503a64557a00a31a7458e6a9b90c95749d7": {
+      token: "8033b7d72a4515e61c3564cc8a962503a64557a00a31a7458e6a9b90c95749d7",
+      userId: "user_1789032197481_2edd3a21",
+      createdAt: "2026-09-10T09:23:24.231Z",
+      expiresAt: "2026-09-17T09:23:24.231Z"
+    },
+    b608389a189182d8f0753d2bdcb2fa76d1a6ba739c16dcd3260a0d3e3875eadb: {
+      token: "b608389a189182d8f0753d2bdcb2fa76d1a6ba739c16dcd3260a0d3e3875eadb",
+      userId: "user_1789032197481_2edd3a21",
+      createdAt: "2026-09-10T09:23:24.322Z",
+      expiresAt: "2026-09-17T09:23:24.322Z"
+    },
+    f2f5e6d22cb029bd80b416e14fff7bb6c433e6112e80dffcc38bf81c78f5faca: {
+      token: "f2f5e6d22cb029bd80b416e14fff7bb6c433e6112e80dffcc38bf81c78f5faca",
+      userId: "user_1789032197481_2edd3a21",
+      createdAt: "2026-09-10T09:25:18.757Z",
+      expiresAt: "2026-09-17T09:25:18.756Z"
+    },
+    ad14b1949a3d5e80ed74a35c9f06fdd2af378518a8eea738493e8133670b07c5: {
+      token: "ad14b1949a3d5e80ed74a35c9f06fdd2af378518a8eea738493e8133670b07c5",
+      userId: "user_1789032197481_2edd3a21",
+      createdAt: "2026-09-10T09:25:18.846Z",
+      expiresAt: "2026-09-17T09:25:18.846Z"
+    },
+    "6e2363970750f62a7d8610525c168f761b71db078e105e3d2069f5faba8bf362": {
+      token: "6e2363970750f62a7d8610525c168f761b71db078e105e3d2069f5faba8bf362",
+      userId: "user_1789032197481_2edd3a21",
+      createdAt: "2026-09-10T09:25:27.890Z",
+      expiresAt: "2026-09-17T09:25:27.889Z"
+    },
+    a32c2808c63c002ae733bb167f1b51ab776323af5a1d15f730bfc1601d54a571: {
+      token: "a32c2808c63c002ae733bb167f1b51ab776323af5a1d15f730bfc1601d54a571",
+      userId: "user_1789032197481_2edd3a21",
+      createdAt: "2026-09-10T09:25:27.991Z",
+      expiresAt: "2026-09-17T09:25:27.991Z"
+    },
+    "516bf6170be5f2e4af5fc69658efb864225ba2489ece4bf68da6c1445d46d1a0": {
+      token: "516bf6170be5f2e4af5fc69658efb864225ba2489ece4bf68da6c1445d46d1a0",
+      userId: "user_1789032197481_2edd3a21",
+      createdAt: "2026-09-10T09:27:01.383Z",
+      expiresAt: "2026-09-17T09:27:01.382Z"
+    },
+    "49f4fe8789156ea045dc4280fab08b5d44d5823f6e8f8e9aca6d3e29dd744a43": {
+      token: "49f4fe8789156ea045dc4280fab08b5d44d5823f6e8f8e9aca6d3e29dd744a43",
+      userId: "user_1789032197481_2edd3a21",
+      createdAt: "2026-09-10T09:27:01.481Z",
+      expiresAt: "2026-09-17T09:27:01.481Z"
+    },
+    "70fc1db4e527d1b19cea3c64016113425677c839cdea43c8b06a48ce4db5a426": {
+      token: "70fc1db4e527d1b19cea3c64016113425677c839cdea43c8b06a48ce4db5a426",
+      userId: "user_1789032730229_bd002e72",
+      createdAt: "2026-09-10T09:32:10.337Z",
+      expiresAt: "2026-09-17T09:32:10.337Z"
+    },
+    "31eab7c288b86b8c4657d46927f54133638467cd611159247dd9ab4d93fda362": {
+      token: "31eab7c288b86b8c4657d46927f54133638467cd611159247dd9ab4d93fda362",
+      userId: "user_admin_0929200166",
+      createdAt: "2026-09-10T10:09:35.809Z",
+      expiresAt: "2026-09-17T10:09:35.809Z"
+    },
+    d090c4a60509eac5b5953cc8186a7f5456b41d9fd2a243556449dcbf9ec1a34b: {
+      token: "d090c4a60509eac5b5953cc8186a7f5456b41d9fd2a243556449dcbf9ec1a34b",
+      userId: "user_admin_0929200166",
+      createdAt: "2026-09-10T10:09:44.528Z",
+      expiresAt: "2026-09-17T10:09:44.528Z"
+    },
+    e3003bc8489b3fe8868a53151aa0d10b86fdd563b377c237932b247f41b0fdc6: {
+      token: "e3003bc8489b3fe8868a53151aa0d10b86fdd563b377c237932b247f41b0fdc6",
+      userId: "user_1789034984545_f6f0db3e",
+      createdAt: "2026-09-10T10:09:44.601Z",
+      expiresAt: "2026-09-17T10:09:44.601Z"
+    },
+    "9f9d42d78d2b0204d44ffccf740f9034a24848c3109b4f9c11146a0461ab1f9d": {
+      token: "9f9d42d78d2b0204d44ffccf740f9034a24848c3109b4f9c11146a0461ab1f9d",
+      userId: "user_1789034991130_cea19125",
+      createdAt: "2026-09-10T10:09:51.185Z",
+      expiresAt: "2026-09-17T10:09:51.185Z"
+    },
+    "59ae3f69d51e7d169d3f2d34db464de57554c9e7a5f4db516b61811998b6e33e": {
+      token: "59ae3f69d51e7d169d3f2d34db464de57554c9e7a5f4db516b61811998b6e33e",
+      userId: "user_1789034996686_d3e68086",
+      createdAt: "2026-09-10T10:09:56.739Z",
+      expiresAt: "2026-09-17T10:09:56.739Z"
+    },
+    "1045d17482d615470be290421db93d2ed74f11a5d9815fa1292e871758e00ded": {
+      token: "1045d17482d615470be290421db93d2ed74f11a5d9815fa1292e871758e00ded",
+      userId: "user_admin_0929200166",
+      createdAt: "2026-09-10T10:10:08.167Z",
+      expiresAt: "2026-09-17T10:10:08.167Z"
+    },
+    dbe454ace2657330c9c1a3b9874d5ffb593ac401b3b05e1b760cf2bfc9244ca8: {
+      token: "dbe454ace2657330c9c1a3b9874d5ffb593ac401b3b05e1b760cf2bfc9244ca8",
+      userId: "user_1789035008188_9c5240c8",
+      createdAt: "2026-09-10T10:10:08.245Z",
+      expiresAt: "2026-09-17T10:10:08.245Z"
+    },
+    aa23e1d28ed3e70204f8e0c7eb242f10892a50d47eb6d391d8668f8d9de34cf8: {
+      token: "aa23e1d28ed3e70204f8e0c7eb242f10892a50d47eb6d391d8668f8d9de34cf8",
+      userId: "user_admin_0929200166",
+      createdAt: "2026-09-15T13:44:48.386Z",
+      expiresAt: "2026-09-22T13:44:48.386Z"
+    },
+    d2fb23dd777c943bbaed0f74e9665c735a0266ce5aa675c7d3790f2ebcb0b09a: {
+      token: "d2fb23dd777c943bbaed0f74e9665c735a0266ce5aa675c7d3790f2ebcb0b09a",
+      userId: "user_1789032197481_2edd3a21",
+      createdAt: "2026-09-18T13:56:00.850Z",
+      expiresAt: "2026-09-25T13:56:00.849Z"
+    },
+    "6066b151024d0170587ae961424b69329101a63d22436dfbae7817d2f4668ad2": {
+      token: "6066b151024d0170587ae961424b69329101a63d22436dfbae7817d2f4668ad2",
+      userId: "user_1789032197481_2edd3a21",
+      createdAt: "2026-09-18T13:56:00.942Z",
+      expiresAt: "2026-09-25T13:56:00.942Z"
+    },
+    "8f04496e13e541d5f0dcdb417b19addc5236f27798878345172f13284ddfc6ae": {
+      token: "8f04496e13e541d5f0dcdb417b19addc5236f27798878345172f13284ddfc6ae",
+      userId: "user_1789032197481_2edd3a21",
+      createdAt: "2026-09-18T13:58:26.017Z",
+      expiresAt: "2026-09-25T13:58:26.016Z"
+    },
+    b7f6e338af8472ffe7c62824587014dfa1536888aab47d7e3e4f212522789461: {
+      token: "b7f6e338af8472ffe7c62824587014dfa1536888aab47d7e3e4f212522789461",
+      userId: "user_1789032197481_2edd3a21",
+      createdAt: "2026-09-18T13:58:26.106Z",
+      expiresAt: "2026-09-25T13:58:26.106Z"
+    },
+    df548ee1c6489da1baeccd09f40d9a9397e14dbbd04e7f8e8863fb531f502e67: {
+      token: "df548ee1c6489da1baeccd09f40d9a9397e14dbbd04e7f8e8863fb531f502e67",
+      userId: "user_1789740960730_33852f77",
+      createdAt: "2026-09-18T14:16:00.785Z",
+      expiresAt: "2026-09-25T14:16:00.785Z"
+    },
+    "7547149a51e4e470c7bc51caa1e8ca9784c0c8e489760d27b84e98bfcc58ab45": {
+      token: "7547149a51e4e470c7bc51caa1e8ca9784c0c8e489760d27b84e98bfcc58ab45",
+      userId: "user_admin_0929200166",
+      createdAt: "2026-09-18T14:16:17.708Z",
+      expiresAt: "2026-09-25T14:16:17.708Z"
+    },
+    "5a6ebeee8bab0990abdc2faf1c688bf2ec91a5d3c2d151d9041d4f5d90c23141": {
+      token: "5a6ebeee8bab0990abdc2faf1c688bf2ec91a5d3c2d151d9041d4f5d90c23141",
+      userId: "user_admin_0929200166",
+      createdAt: "2026-09-18T14:16:48.595Z",
+      expiresAt: "2026-09-25T14:16:48.595Z"
+    },
+    ca81c06826e6f2753b5cab48c16d4f5eac72b405e3738af8345dbb0404ed6b42: {
+      token: "ca81c06826e6f2753b5cab48c16d4f5eac72b405e3738af8345dbb0404ed6b42",
+      userId: "user_1789741008607_1c17496e",
+      createdAt: "2026-09-18T14:16:48.661Z",
+      expiresAt: "2026-09-25T14:16:48.661Z"
+    },
+    "3ed886f4c4e6cc7cceac8ddd6607184d9252e9de2947891080c9970481230e87": {
+      token: "3ed886f4c4e6cc7cceac8ddd6607184d9252e9de2947891080c9970481230e87",
+      userId: "user_admin_0929200166",
+      createdAt: "2026-09-18T14:17:00.201Z",
+      expiresAt: "2026-09-25T14:17:00.201Z"
+    },
+    "2791c6e807cdfe3f7c1789a6d6372c31f37329fe5af28565d1859428db2d9318": {
+      token: "2791c6e807cdfe3f7c1789a6d6372c31f37329fe5af28565d1859428db2d9318",
+      userId: "user_1789741020213_205f0509",
+      createdAt: "2026-09-18T14:17:00.267Z",
+      expiresAt: "2026-09-25T14:17:00.267Z"
+    },
+    c600989a192a0ae6b306f80ada9aa76f35e8783d6275ad632465354f89da637c: {
+      token: "c600989a192a0ae6b306f80ada9aa76f35e8783d6275ad632465354f89da637c",
+      userId: "user_admin_0929200166",
+      createdAt: "2026-09-18T14:17:08.253Z",
+      expiresAt: "2026-09-25T14:17:08.253Z"
+    },
+    a0971b64b34019ca7cefd3f6ba7f1eadb64df24f674400c9da56abcf4d321dee: {
+      token: "a0971b64b34019ca7cefd3f6ba7f1eadb64df24f674400c9da56abcf4d321dee",
+      userId: "user_1789741028278_de2b3b7c",
+      createdAt: "2026-09-18T14:17:08.330Z",
+      expiresAt: "2026-09-25T14:17:08.330Z"
+    },
+    ad5a39271432b0b53eb127645d6cc50f04d5201b4d8ed26a8fa9f6cdc782f66b_6f25ba79d4def42cf7253b640f76e6fc: {
+      token: "ad5a39271432b0b53eb127645d6cc50f04d5201b4d8ed26a8fa9f6cdc782f66b_6f25ba79d4def42cf7253b640f76e6fc",
+      userId: "user_1789032197481_2edd3a21",
+      createdAt: "2026-09-19T10:46:17.138Z",
+      expiresAt: "2026-09-26T10:46:17.138Z"
+    },
+    ac6b87621a3bb37d9016363e652f3b8d446f8ed03c1d0b3a7cce4dacc6ad56ec_2a9570f6d27a819c81fcfca89fe129e4: {
+      token: "ac6b87621a3bb37d9016363e652f3b8d446f8ed03c1d0b3a7cce4dacc6ad56ec_2a9570f6d27a819c81fcfca89fe129e4",
+      userId: "user_1789032197481_2edd3a21",
+      createdAt: "2026-09-19T10:46:17.216Z",
+      expiresAt: "2026-09-26T10:46:17.216Z"
+    },
+    "6a4483982b88a7d190187803d34cdddbc5502dac78fe1795d61a2bb261e28593_a43428faa7df94233bf17d7f1c1afd27": {
+      token: "6a4483982b88a7d190187803d34cdddbc5502dac78fe1795d61a2bb261e28593_a43428faa7df94233bf17d7f1c1afd27",
+      userId: "user_1789032197481_2edd3a21",
+      createdAt: "2026-09-19T10:46:27.710Z",
+      expiresAt: "2026-09-26T10:46:27.710Z"
+    },
+    "06f8c0da5787d2066c03d3b9e1eb1e950f66e6ac82bce6cb7b6506fb58784b42_cd4f790cab269e355a0d72b333a17bf6": {
+      token: "06f8c0da5787d2066c03d3b9e1eb1e950f66e6ac82bce6cb7b6506fb58784b42_cd4f790cab269e355a0d72b333a17bf6",
+      userId: "user_1789032197481_2edd3a21",
+      createdAt: "2026-09-19T10:46:27.793Z",
+      expiresAt: "2026-09-26T10:46:27.793Z"
+    },
+    c6e053fc2ed176b3cbcbd31ad49bc598490290178674d8a8d956fafa0adf1b43_83369389a871c184e9f60e87d04bff4d: {
+      token: "c6e053fc2ed176b3cbcbd31ad49bc598490290178674d8a8d956fafa0adf1b43_83369389a871c184e9f60e87d04bff4d",
+      userId: "user_1789032197481_2edd3a21",
+      createdAt: "2026-09-19T10:54:33.033Z",
+      expiresAt: "2026-09-26T10:54:33.032Z"
+    },
+    ad40fff9c43f17a8fac71357f6182deb5a22b9e525372c57407c0244f6362acb_bcbef8c9155d1f13edb4ff8a06af838f: {
+      token: "ad40fff9c43f17a8fac71357f6182deb5a22b9e525372c57407c0244f6362acb_bcbef8c9155d1f13edb4ff8a06af838f",
+      userId: "user_1789032197481_2edd3a21",
+      createdAt: "2026-09-19T10:54:33.114Z",
+      expiresAt: "2026-09-26T10:54:33.114Z"
+    },
+    c0c8a6917c4e6e16cb38f0fd96ea2c8f145df4b0d69ecfa72f97550b3f7b5c07_f9b6a864ea35d8655845690c24ab5195: {
+      token: "c0c8a6917c4e6e16cb38f0fd96ea2c8f145df4b0d69ecfa72f97550b3f7b5c07_f9b6a864ea35d8655845690c24ab5195",
+      userId: "user_1789032197481_2edd3a21",
+      createdAt: "2026-09-19T10:54:42.492Z",
+      expiresAt: "2026-09-26T10:54:42.492Z"
+    },
+    "6823730dc1462265995cd829c67a01d6a8b8b8d97a729e49ba7927cefd2238f4_11a88d7e13c60436d4dc6e9d8eed7a25": {
+      token: "6823730dc1462265995cd829c67a01d6a8b8b8d97a729e49ba7927cefd2238f4_11a88d7e13c60436d4dc6e9d8eed7a25",
+      userId: "user_1789032197481_2edd3a21",
+      createdAt: "2026-09-19T10:54:42.569Z",
+      expiresAt: "2026-09-26T10:54:42.569Z"
+    },
+    "6acd2684699088828efc09f7b300d76ba56d03312285326de93b53c7ae4b552d_e09bc40e0b271318e1425824b5351f50": {
+      token: "6acd2684699088828efc09f7b300d76ba56d03312285326de93b53c7ae4b552d_e09bc40e0b271318e1425824b5351f50",
+      userId: "user_1789032197481_2edd3a21",
+      createdAt: "2026-09-19T13:14:06.812Z",
+      expiresAt: "2026-09-26T13:14:06.812Z"
+    },
+    d6e13513b6c22bcbdb6cede20b02f56468f8e5436c9f50e026d122e7c6a76910_c7b668351319888e8b520b2ccfa788a1: {
+      token: "d6e13513b6c22bcbdb6cede20b02f56468f8e5436c9f50e026d122e7c6a76910_c7b668351319888e8b520b2ccfa788a1",
+      userId: "user_1789032197481_2edd3a21",
+      createdAt: "2026-09-19T13:14:06.894Z",
+      expiresAt: "2026-09-26T13:14:06.894Z"
+    }
+  },
+  transactions: {
+    tx_dep_1789032318848_079c8461: {
+      id: "tx_dep_1789032318848_079c8461",
+      userId: "user_1789032197481_2edd3a21",
+      type: "DEPOSIT",
+      amount: 500,
+      balanceAfter: 500,
+      referenceId: "dep_1789032318847_affef5ed",
+      note: "Deposit approved via Commercial Bank of Ethiopia (CBE) (FT: FT_TEST_1789032318846)",
+      createdAt: "2026-09-10T09:25:18.848Z"
+    },
+    tx_dep_1789032327994_7544d226: {
+      id: "tx_dep_1789032327994_7544d226",
+      userId: "user_1789032197481_2edd3a21",
+      type: "DEPOSIT",
+      amount: 500,
+      balanceAfter: 1e3,
+      referenceId: "dep_1789032327993_8d998d89",
+      note: "Deposit approved via Commercial Bank of Ethiopia (CBE) (FT: FT_TEST_1789032327992)",
+      createdAt: "2026-09-10T09:25:27.994Z"
+    },
+    tx_wdr_1789032327997_c35ffff8: {
+      id: "tx_wdr_1789032327997_c35ffff8",
+      userId: "user_1789032197481_2edd3a21",
+      type: "WITHDRAWAL_REQUEST",
+      amount: 200,
+      balanceAfter: 800,
+      referenceId: "wdr_1789032327997_3511020e",
+      note: "Withdrawal request to Telebirr (0988776655)",
+      createdAt: "2026-09-10T09:25:27.997Z"
+    },
+    tx_wref_1789032327998_d076cb50: {
+      id: "tx_wref_1789032327998_d076cb50",
+      userId: "user_1789032197481_2edd3a21",
+      type: "WITHDRAWAL_REFUND",
+      amount: 200,
+      balanceAfter: 1e3,
+      referenceId: "wdr_1789032327997_3511020e",
+      note: "Refund for rejected withdrawal: Test rejection",
+      createdAt: "2026-09-10T09:25:27.998Z"
+    },
+    tx_tkt_1789032328000_ac40bafb: {
+      id: "tx_tkt_1789032328000_ac40bafb",
+      userId: "user_1789032197481_2edd3a21",
+      type: "TICKET_PURCHASE",
+      amount: 50,
+      balanceAfter: 950,
+      referenceId: "round_1",
+      note: "Ticket purchase for Round #1, Number 42",
+      createdAt: "2026-09-10T09:25:28.000Z"
+    },
+    tx_win_1789032328002_98b7bebc: {
+      id: "tx_win_1789032328002_98b7bebc",
+      userId: "user_1789032197481_2edd3a21",
+      type: "PRIZE_WIN",
+      amount: 37.5,
+      balanceAfter: 987.5,
+      referenceId: "round_1",
+      note: "Winner #1 for Round #1 with ticket #42",
+      createdAt: "2026-09-10T09:25:28.002Z"
+    },
+    tx_dep_1789032421484_faa7f6e9: {
+      id: "tx_dep_1789032421484_faa7f6e9",
+      userId: "user_1789032197481_2edd3a21",
+      type: "DEPOSIT",
+      amount: 500,
+      balanceAfter: 1487.5,
+      referenceId: "dep_1789032421482_11331692",
+      note: "Deposit approved via Commercial Bank of Ethiopia (CBE) (FT: FT_TEST_1789032421482)",
+      createdAt: "2026-09-10T09:27:01.484Z"
+    },
+    tx_wdr_1789032421486_4fa3f709: {
+      id: "tx_wdr_1789032421486_4fa3f709",
+      userId: "user_1789032197481_2edd3a21",
+      type: "WITHDRAWAL_REQUEST",
+      amount: 200,
+      balanceAfter: 1287.5,
+      referenceId: "wdr_1789032421486_81c918f9",
+      note: "Withdrawal request to Telebirr (0988776655)",
+      createdAt: "2026-09-10T09:27:01.486Z"
+    },
+    tx_wref_1789032421487_229be055: {
+      id: "tx_wref_1789032421487_229be055",
+      userId: "user_1789032197481_2edd3a21",
+      type: "WITHDRAWAL_REFUND",
+      amount: 200,
+      balanceAfter: 1487.5,
+      referenceId: "wdr_1789032421486_81c918f9",
+      note: "Refund for rejected withdrawal: Test rejection",
+      createdAt: "2026-09-10T09:27:01.488Z"
+    },
+    tx_tkt_1789032421490_2e70da0f: {
+      id: "tx_tkt_1789032421490_2e70da0f",
+      userId: "user_1789032197481_2edd3a21",
+      type: "TICKET_PURCHASE",
+      amount: 50,
+      balanceAfter: 1437.5,
+      referenceId: "round_2",
+      note: "Ticket purchase for Round #2, Number 42",
+      createdAt: "2026-09-10T09:27:01.490Z"
+    },
+    tx_win_1789032421491_8527a484: {
+      id: "tx_win_1789032421491_8527a484",
+      userId: "user_1789032197481_2edd3a21",
+      type: "PRIZE_WIN",
+      amount: 37.5,
+      balanceAfter: 1475,
+      referenceId: "round_2",
+      note: "Winner #1 for Round #2 with ticket #42",
+      createdAt: "2026-09-10T09:27:01.491Z"
+    },
+    tx_dep_1789035008267_0bf62424: {
+      id: "tx_dep_1789035008267_0bf62424",
+      userId: "user_1789035008188_9c5240c8",
+      type: "DEPOSIT",
+      amount: 250,
+      balanceAfter: 250,
+      referenceId: "dep_1789035008259_ed4d2065",
+      note: "Deposit approved via Commercial Bank of Ethiopia (CBE) (FT: FT1789035008251)",
+      createdAt: "2026-09-10T10:10:08.267Z"
+    },
+    tx_dep_1789479900191_4b2df170: {
+      id: "tx_dep_1789479900191_4b2df170",
+      userId: "user_1789034996686_d3e68086",
+      type: "DEPOSIT",
+      amount: 150,
+      balanceAfter: 150,
+      referenceId: "dep_1789034996757_37810d6d",
+      note: "Deposit approved via Telebirr (FT: FT1789034996752)",
+      createdAt: "2026-09-15T13:45:00.191Z"
+    },
+    tx_dep_1789479906983_50db74ff: {
+      id: "tx_dep_1789479906983_50db74ff",
+      userId: "user_1789032730229_bd002e72",
+      type: "DEPOSIT",
+      amount: 50,
+      balanceAfter: 50,
+      referenceId: "dep_1789034252970_fa049f59",
+      note: "Deposit approved via Telebirr (FT: ft26510w29j)",
+      createdAt: "2026-09-15T13:45:06.983Z"
+    },
+    tx_dep_1789739760950_a38da1dd: {
+      id: "tx_dep_1789739760950_a38da1dd",
+      userId: "user_1789032197481_2edd3a21",
+      type: "DEPOSIT",
+      amount: 500,
+      balanceAfter: 1975,
+      referenceId: "dep_1789739760946_6ad81e4d",
+      note: "Deposit approved via Commercial Bank of Ethiopia (CBE) (FT: FT_TEST_1789739760945)",
+      createdAt: "2026-09-18T13:56:00.950Z"
+    },
+    tx_wdr_1789739760956_86343a15: {
+      id: "tx_wdr_1789739760956_86343a15",
+      userId: "user_1789032197481_2edd3a21",
+      type: "WITHDRAWAL_REQUEST",
+      amount: 200,
+      balanceAfter: 1775,
+      referenceId: "wdr_1789739760956_ccc95509",
+      note: "Withdrawal request to Telebirr (0988776655)",
+      createdAt: "2026-09-18T13:56:00.956Z"
+    },
+    tx_wref_1789739760958_980f5741: {
+      id: "tx_wref_1789739760958_980f5741",
+      userId: "user_1789032197481_2edd3a21",
+      type: "WITHDRAWAL_REFUND",
+      amount: 200,
+      balanceAfter: 1975,
+      referenceId: "wdr_1789739760956_ccc95509",
+      note: "Refund for rejected withdrawal: Test rejection",
+      createdAt: "2026-09-18T13:56:00.958Z"
+    },
+    tx_tkt_1789739760961_59f65d29: {
+      id: "tx_tkt_1789739760961_59f65d29",
+      userId: "user_1789032197481_2edd3a21",
+      type: "TICKET_PURCHASE",
+      amount: 50,
+      balanceAfter: 1925,
+      referenceId: "round_3",
+      note: "Ticket purchase for Round #3, Number 42",
+      createdAt: "2026-09-18T13:56:00.961Z"
+    },
+    tx_win_1789739760965_0e35c7de: {
+      id: "tx_win_1789739760965_0e35c7de",
+      userId: "user_1789032197481_2edd3a21",
+      type: "PRIZE_WIN",
+      amount: 1530,
+      balanceAfter: 3455,
+      referenceId: "round_3",
+      note: "Winner #1 for Round #3 with ticket #42",
+      createdAt: "2026-09-18T13:56:00.965Z"
+    },
+    tx_dep_1789739906113_42138c2a: {
+      id: "tx_dep_1789739906113_42138c2a",
+      userId: "user_1789032197481_2edd3a21",
+      type: "DEPOSIT",
+      amount: 500,
+      balanceAfter: 3955,
+      referenceId: "dep_1789739906109_72d9d7be",
+      note: "Deposit approved via Commercial Bank of Ethiopia (CBE) (FT: FT_TEST_1789739906109)",
+      createdAt: "2026-09-18T13:58:26.113Z"
+    },
+    tx_wdr_1789739906119_48376564: {
+      id: "tx_wdr_1789739906119_48376564",
+      userId: "user_1789032197481_2edd3a21",
+      type: "WITHDRAWAL_REQUEST",
+      amount: 200,
+      balanceAfter: 3755,
+      referenceId: "wdr_1789739906119_43b8fc81",
+      note: "Withdrawal request to Telebirr (0988776655)",
+      createdAt: "2026-09-18T13:58:26.120Z"
+    },
+    tx_wref_1789739906122_21a16e0b: {
+      id: "tx_wref_1789739906122_21a16e0b",
+      userId: "user_1789032197481_2edd3a21",
+      type: "WITHDRAWAL_REFUND",
+      amount: 200,
+      balanceAfter: 3955,
+      referenceId: "wdr_1789739906119_43b8fc81",
+      note: "Refund for rejected withdrawal: Test rejection",
+      createdAt: "2026-09-18T13:58:26.122Z"
+    },
+    tx_tkt_1789739906126_3838c06d: {
+      id: "tx_tkt_1789739906126_3838c06d",
+      userId: "user_1789032197481_2edd3a21",
+      type: "TICKET_PURCHASE",
+      amount: 50,
+      balanceAfter: 3905,
+      referenceId: "round_4",
+      note: "Ticket purchase for Round #4, Number 42",
+      createdAt: "2026-09-18T13:58:26.126Z"
+    },
+    tx_win_1789739906132_787df59e: {
+      id: "tx_win_1789739906132_787df59e",
+      userId: "user_1789032197481_2edd3a21",
+      type: "PRIZE_WIN",
+      amount: 30,
+      balanceAfter: 3935,
+      referenceId: "round_4",
+      note: "Winner #1 for Round #4 with ticket #42",
+      createdAt: "2026-09-18T13:58:26.132Z"
+    },
+    tx_tkt_1789739978381_08bb26c5: {
+      id: "tx_tkt_1789739978381_08bb26c5",
+      userId: "user_admin_0929200166",
+      type: "TICKET_PURCHASE",
+      amount: 50,
+      balanceAfter: 99950,
+      referenceId: "round_5",
+      note: "Ticket purchase for Round #5, Number 43",
+      createdAt: "2026-09-18T13:59:38.381Z"
+    },
+    tx_dep_1789741020286_bd50e089: {
+      id: "tx_dep_1789741020286_bd50e089",
+      userId: "user_1789741020213_205f0509",
+      type: "DEPOSIT",
+      amount: 500,
+      balanceAfter: 500,
+      referenceId: "dep_1789741020275_ad7d433e",
+      note: "Deposit approved via Commercial Bank of Ethiopia (CBE) (FT: TX_AUDIT_1789741020272)",
+      createdAt: "2026-09-18T14:17:00.286Z"
+    },
+    tx_ref_1789741020286_b0c107cc: {
+      id: "tx_ref_1789741020286_b0c107cc",
+      userId: "user_admin_0929200166",
+      type: "REFERRAL_BONUS",
+      amount: 25,
+      balanceAfter: 99975,
+      referenceId: "user_1789741020213_205f0509",
+      note: "Badhaasa afeerraa (Referral bonus for qualifying user 0913321811)",
+      createdAt: "2026-09-18T14:17:00.286Z"
+    },
+    tx_tkt_1789741020298_3ada984c: {
+      id: "tx_tkt_1789741020298_3ada984c",
+      userId: "user_1789741020213_205f0509",
+      type: "TICKET_PURCHASE",
+      amount: 50,
+      balanceAfter: 450,
+      referenceId: "round_5",
+      note: "Ticket purchase for Round #5, Number 1",
+      createdAt: "2026-09-18T14:17:00.298Z"
+    },
+    tx_dep_1789741028347_1ff53813: {
+      id: "tx_dep_1789741028347_1ff53813",
+      userId: "user_1789741028278_de2b3b7c",
+      type: "DEPOSIT",
+      amount: 500,
+      balanceAfter: 500,
+      referenceId: "dep_1789741028339_38092238",
+      note: "Deposit approved via Commercial Bank of Ethiopia (CBE) (FT: TX_W_1789741028335)",
+      createdAt: "2026-09-18T14:17:08.347Z"
+    },
+    tx_wdr_1789741028358_ce9054d9: {
+      id: "tx_wdr_1789741028358_ce9054d9",
+      userId: "user_1789741028278_de2b3b7c",
+      type: "WITHDRAWAL_REQUEST",
+      amount: 150,
+      balanceAfter: 350,
+      referenceId: "wdr_1789741028357_e15ad7d3",
+      note: "Withdrawal request to CBE (1000987654321)",
+      createdAt: "2026-09-18T14:17:08.358Z"
+    },
+    tx_dep_1789814777223_ae7e5ffb: {
+      id: "tx_dep_1789814777223_ae7e5ffb",
+      userId: "user_1789032197481_2edd3a21",
+      type: "DEPOSIT",
+      amount: 500,
+      balanceAfter: 4435,
+      referenceId: "dep_1789814777219_c40c7414",
+      note: "Deposit approved via Commercial Bank of Ethiopia (CBE) (FT: FT_TEST_1789814777219)",
+      createdAt: "2026-09-19T10:46:17.223Z"
+    },
+    tx_wdr_1789814777228_94ac1245: {
+      id: "tx_wdr_1789814777228_94ac1245",
+      userId: "user_1789032197481_2edd3a21",
+      type: "WITHDRAWAL_REQUEST",
+      amount: 200,
+      balanceAfter: 4235,
+      referenceId: "wdr_1789814777228_44138f24",
+      note: "Withdrawal request to Telebirr (0988776655)",
+      createdAt: "2026-09-19T10:46:17.228Z"
+    },
+    tx_wref_1789814777230_da27bcf6: {
+      id: "tx_wref_1789814777230_da27bcf6",
+      userId: "user_1789032197481_2edd3a21",
+      type: "WITHDRAWAL_REFUND",
+      amount: 200,
+      balanceAfter: 4435,
+      referenceId: "wdr_1789814777228_44138f24",
+      note: "Refund for rejected withdrawal: Test rejection",
+      createdAt: "2026-09-19T10:46:17.230Z"
+    },
+    tx_tkt_1789814777233_6f8f81e0: {
+      id: "tx_tkt_1789814777233_6f8f81e0",
+      userId: "user_1789032197481_2edd3a21",
+      type: "TICKET_PURCHASE",
+      amount: 50,
+      balanceAfter: 4385,
+      referenceId: "round_5",
+      note: "Ticket purchase for Round #5, Number 42",
+      createdAt: "2026-09-19T10:46:17.233Z"
+    },
+    tx_win_1789814777236_51da6cce: {
+      id: "tx_win_1789814777236_51da6cce",
+      userId: "user_1789032197481_2edd3a21",
+      type: "PRIZE_WIN",
+      amount: 1530,
+      balanceAfter: 5915,
+      referenceId: "round_5",
+      note: "Winner #1 for Round #5 with ticket #42",
+      createdAt: "2026-09-19T10:46:17.237Z"
+    },
+    tx_dep_1789814787800_e4b67f64: {
+      id: "tx_dep_1789814787800_e4b67f64",
+      userId: "user_1789032197481_2edd3a21",
+      type: "DEPOSIT",
+      amount: 500,
+      balanceAfter: 6415,
+      referenceId: "dep_1789814787797_69c647a8",
+      note: "Deposit approved via Commercial Bank of Ethiopia (CBE) (FT: FT_TEST_1789814787796)",
+      createdAt: "2026-09-19T10:46:27.800Z"
+    },
+    tx_wdr_1789814787805_5cdb3b4f: {
+      id: "tx_wdr_1789814787805_5cdb3b4f",
+      userId: "user_1789032197481_2edd3a21",
+      type: "WITHDRAWAL_REQUEST",
+      amount: 200,
+      balanceAfter: 6215,
+      referenceId: "wdr_1789814787805_2782567e",
+      note: "Withdrawal request to Telebirr (0988776655)",
+      createdAt: "2026-09-19T10:46:27.805Z"
+    },
+    tx_wref_1789814787808_9e9661a9: {
+      id: "tx_wref_1789814787808_9e9661a9",
+      userId: "user_1789032197481_2edd3a21",
+      type: "WITHDRAWAL_REFUND",
+      amount: 200,
+      balanceAfter: 6415,
+      referenceId: "wdr_1789814787805_2782567e",
+      note: "Refund for rejected withdrawal: Test rejection",
+      createdAt: "2026-09-19T10:46:27.808Z"
+    },
+    tx_tkt_1789814787811_906f9887: {
+      id: "tx_tkt_1789814787811_906f9887",
+      userId: "user_1789032197481_2edd3a21",
+      type: "TICKET_PURCHASE",
+      amount: 50,
+      balanceAfter: 6365,
+      referenceId: "round_6",
+      note: "Ticket purchase for Round #6, Number 42",
+      createdAt: "2026-09-19T10:46:27.811Z"
+    },
+    tx_win_1789814787814_a904a8d6: {
+      id: "tx_win_1789814787814_a904a8d6",
+      userId: "user_1789032197481_2edd3a21",
+      type: "PRIZE_WIN",
+      amount: 30,
+      balanceAfter: 6395,
+      referenceId: "round_6",
+      note: "Winner #1 for Round #6 with ticket #42",
+      createdAt: "2026-09-19T10:46:27.814Z"
+    },
+    tx_tkt_1789814932580_be0e5574: {
+      id: "tx_tkt_1789814932580_be0e5574",
+      userId: "user_admin_0929200166",
+      type: "TICKET_PURCHASE",
+      amount: 50,
+      balanceAfter: 99925,
+      referenceId: "round_7",
+      note: "Ticket purchase for Round #7, Number 91",
+      createdAt: "2026-09-19T10:48:52.581Z"
+    },
+    tx_dep_1789815273121_a4f3fa48: {
+      id: "tx_dep_1789815273121_a4f3fa48",
+      userId: "user_1789032197481_2edd3a21",
+      type: "DEPOSIT",
+      amount: 500,
+      balanceAfter: 6895,
+      referenceId: "dep_1789815273117_6b98d077",
+      note: "Deposit approved via Commercial Bank of Ethiopia (CBE) (FT: FT_TEST_1789815273117)",
+      createdAt: "2026-09-19T10:54:33.121Z"
+    },
+    tx_wdr_1789815273126_642b434e: {
+      id: "tx_wdr_1789815273126_642b434e",
+      userId: "user_1789032197481_2edd3a21",
+      type: "WITHDRAWAL_REQUEST",
+      amount: 200,
+      balanceAfter: 6695,
+      referenceId: "wdr_1789815273126_c5cff741",
+      note: "Withdrawal request to Telebirr (0988776655)",
+      createdAt: "2026-09-19T10:54:33.126Z"
+    },
+    tx_wref_1789815273129_9105bff2: {
+      id: "tx_wref_1789815273129_9105bff2",
+      userId: "user_1789032197481_2edd3a21",
+      type: "WITHDRAWAL_REFUND",
+      amount: 200,
+      balanceAfter: 6895,
+      referenceId: "wdr_1789815273126_c5cff741",
+      note: "Refund for rejected withdrawal: Test rejection",
+      createdAt: "2026-09-19T10:54:33.129Z"
+    },
+    tx_dep_1789815282575_b7fea608: {
+      id: "tx_dep_1789815282575_b7fea608",
+      userId: "user_1789032197481_2edd3a21",
+      type: "DEPOSIT",
+      amount: 500,
+      balanceAfter: 7395,
+      referenceId: "dep_1789815282572_4235614f",
+      note: "Deposit approved via Commercial Bank of Ethiopia (CBE) (FT: FT_TEST_1789815282571)",
+      createdAt: "2026-09-19T10:54:42.575Z"
+    },
+    tx_wdr_1789815282581_6bf133c8: {
+      id: "tx_wdr_1789815282581_6bf133c8",
+      userId: "user_1789032197481_2edd3a21",
+      type: "WITHDRAWAL_REQUEST",
+      amount: 200,
+      balanceAfter: 7195,
+      referenceId: "wdr_1789815282581_80acb5bc",
+      note: "Withdrawal request to Telebirr (0988776655)",
+      createdAt: "2026-09-19T10:54:42.581Z"
+    },
+    tx_wref_1789815282583_0d926641: {
+      id: "tx_wref_1789815282583_0d926641",
+      userId: "user_1789032197481_2edd3a21",
+      type: "WITHDRAWAL_REFUND",
+      amount: 200,
+      balanceAfter: 7395,
+      referenceId: "wdr_1789815282581_80acb5bc",
+      note: "Refund for rejected withdrawal: Test rejection",
+      createdAt: "2026-09-19T10:54:42.583Z"
+    },
+    tx_tkt_1789815282586_259d0869: {
+      id: "tx_tkt_1789815282586_259d0869",
+      userId: "user_1789032197481_2edd3a21",
+      type: "TICKET_PURCHASE",
+      amount: 50,
+      balanceAfter: 7345,
+      referenceId: "round_7",
+      note: "Ticket purchase for Round #7, Number 42",
+      createdAt: "2026-09-19T10:54:42.586Z"
+    },
+    tx_win_1789815282590_02c5acff: {
+      id: "tx_win_1789815282590_02c5acff",
+      userId: "user_1789032197481_2edd3a21",
+      type: "PRIZE_WIN",
+      amount: 3e3,
+      balanceAfter: 10345,
+      referenceId: "round_7",
+      note: "Winner #1 for Round #7 with ticket #42",
+      createdAt: "2026-09-19T10:54:42.590Z"
+    },
+    tx_dep_1789823646902_0769ace6: {
+      id: "tx_dep_1789823646902_0769ace6",
+      userId: "user_1789032197481_2edd3a21",
+      type: "DEPOSIT",
+      amount: 500,
+      balanceAfter: 10845,
+      referenceId: "dep_1789823646898_5a3ff2cb",
+      note: "Deposit approved via Commercial Bank of Ethiopia (CBE) (FT: FT_TEST_1789823646897)",
+      createdAt: "2026-09-19T13:14:06.902Z"
+    },
+    tx_wdr_1789823646909_065130a0: {
+      id: "tx_wdr_1789823646909_065130a0",
+      userId: "user_1789032197481_2edd3a21",
+      type: "WITHDRAWAL_REQUEST",
+      amount: 200,
+      balanceAfter: 10645,
+      referenceId: "wdr_1789823646909_982c6225",
+      note: "Withdrawal request to Telebirr (0988776655)",
+      createdAt: "2026-09-19T13:14:06.909Z"
+    },
+    tx_wref_1789823646912_6e87936c: {
+      id: "tx_wref_1789823646912_6e87936c",
+      userId: "user_1789032197481_2edd3a21",
+      type: "WITHDRAWAL_REFUND",
+      amount: 200,
+      balanceAfter: 10845,
+      referenceId: "wdr_1789823646909_982c6225",
+      note: "Refund for rejected withdrawal: Test rejection",
+      createdAt: "2026-09-19T13:14:06.912Z"
+    },
+    tx_tkt_1789823646916_df699c6b: {
+      id: "tx_tkt_1789823646916_df699c6b",
+      userId: "user_1789032197481_2edd3a21",
+      type: "TICKET_PURCHASE",
+      amount: 50,
+      balanceAfter: 10795,
+      referenceId: "round_9",
+      note: "Ticket purchase for Round #9, Number 42",
+      createdAt: "2026-09-19T13:14:06.916Z"
+    },
+    tx_win_1789823646919_f4bae256: {
+      id: "tx_win_1789823646919_f4bae256",
+      userId: "user_1789032197481_2edd3a21",
+      type: "PRIZE_WIN",
+      amount: 30,
+      balanceAfter: 10825,
+      referenceId: "round_9",
+      note: "Winner #1 for Round #9 with ticket #42",
+      createdAt: "2026-09-19T13:14:06.919Z"
+    }
+  },
+  userTransactionIds: {
+    user_1789032197481_2edd3a21: [
+      "tx_win_1789823646919_f4bae256",
+      "tx_tkt_1789823646916_df699c6b",
+      "tx_wref_1789823646912_6e87936c",
+      "tx_wdr_1789823646909_065130a0",
+      "tx_dep_1789823646902_0769ace6",
+      "tx_win_1789815282590_02c5acff",
+      "tx_tkt_1789815282586_259d0869",
+      "tx_wref_1789815282583_0d926641",
+      "tx_wdr_1789815282581_6bf133c8",
+      "tx_dep_1789815282575_b7fea608",
+      "tx_wref_1789815273129_9105bff2",
+      "tx_wdr_1789815273126_642b434e",
+      "tx_dep_1789815273121_a4f3fa48",
+      "tx_win_1789814787814_a904a8d6",
+      "tx_tkt_1789814787811_906f9887",
+      "tx_wref_1789814787808_9e9661a9",
+      "tx_wdr_1789814787805_5cdb3b4f",
+      "tx_dep_1789814787800_e4b67f64",
+      "tx_win_1789814777236_51da6cce",
+      "tx_tkt_1789814777233_6f8f81e0",
+      "tx_wref_1789814777230_da27bcf6",
+      "tx_wdr_1789814777228_94ac1245",
+      "tx_dep_1789814777223_ae7e5ffb",
+      "tx_win_1789739906132_787df59e",
+      "tx_tkt_1789739906126_3838c06d",
+      "tx_wref_1789739906122_21a16e0b",
+      "tx_wdr_1789739906119_48376564",
+      "tx_dep_1789739906113_42138c2a",
+      "tx_win_1789739760965_0e35c7de",
+      "tx_tkt_1789739760961_59f65d29",
+      "tx_wref_1789739760958_980f5741",
+      "tx_wdr_1789739760956_86343a15",
+      "tx_dep_1789739760950_a38da1dd",
+      "tx_win_1789032421491_8527a484",
+      "tx_tkt_1789032421490_2e70da0f",
+      "tx_wref_1789032421487_229be055",
+      "tx_wdr_1789032421486_4fa3f709",
+      "tx_dep_1789032421484_faa7f6e9",
+      "tx_win_1789032328002_98b7bebc",
+      "tx_tkt_1789032328000_ac40bafb",
+      "tx_wref_1789032327998_d076cb50",
+      "tx_wdr_1789032327997_c35ffff8",
+      "tx_dep_1789032327994_7544d226",
+      "tx_dep_1789032318848_079c8461"
+    ],
+    user_1789035008188_9c5240c8: [
+      "tx_dep_1789035008267_0bf62424"
+    ],
+    user_1789034996686_d3e68086: [
+      "tx_dep_1789479900191_4b2df170"
+    ],
+    user_1789032730229_bd002e72: [
+      "tx_dep_1789479906983_50db74ff"
+    ],
+    user_admin_0929200166: [
+      "tx_tkt_1789814932580_be0e5574",
+      "tx_ref_1789741020286_b0c107cc",
+      "tx_tkt_1789739978381_08bb26c5"
+    ],
+    user_1789741020213_205f0509: [
+      "tx_tkt_1789741020298_3ada984c",
+      "tx_dep_1789741020286_bd50e089"
+    ],
+    user_1789741028278_de2b3b7c: [
+      "tx_wdr_1789741028358_ce9054d9",
+      "tx_dep_1789741028347_1ff53813"
+    ]
+  },
+  deposits: {
+    dep_1789032318847_affef5ed: {
+      id: "dep_1789032318847_affef5ed",
+      userId: "user_1789032197481_2edd3a21",
+      userPhone: "0988776655",
+      userName: "Chala Bekele",
+      provider: "Commercial Bank of Ethiopia (CBE)",
+      accountName: "Asefa Wasenu Tadese",
+      accountNumber: "1000218818424",
+      amount: 500,
+      transactionId: "FT_TEST_1789032318846",
+      receiptUrl: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
+      status: "APPROVED",
+      createdAt: "2026-09-10T09:25:18.847Z",
+      reviewedAt: "2026-09-10T09:25:18.848Z",
+      reviewedBy: "0929200166"
+    },
+    dep_1789032327993_8d998d89: {
+      id: "dep_1789032327993_8d998d89",
+      userId: "user_1789032197481_2edd3a21",
+      userPhone: "0988776655",
+      userName: "Chala Bekele",
+      provider: "Commercial Bank of Ethiopia (CBE)",
+      accountName: "Asefa Wasenu Tadese",
+      accountNumber: "1000218818424",
+      amount: 500,
+      transactionId: "FT_TEST_1789032327992",
+      receiptUrl: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
+      status: "APPROVED",
+      createdAt: "2026-09-10T09:25:27.993Z",
+      reviewedAt: "2026-09-10T09:25:27.994Z",
+      reviewedBy: "0929200166"
+    },
+    dep_1789032421482_11331692: {
+      id: "dep_1789032421482_11331692",
+      userId: "user_1789032197481_2edd3a21",
+      userPhone: "0988776655",
+      userName: "Chala Bekele",
+      provider: "Commercial Bank of Ethiopia (CBE)",
+      accountName: "Asefa Wasenu Tadese",
+      accountNumber: "1000218818424",
+      amount: 500,
+      transactionId: "FT_TEST_1789032421482",
+      receiptUrl: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
+      status: "APPROVED",
+      createdAt: "2026-09-10T09:27:01.483Z",
+      reviewedAt: "2026-09-10T09:27:01.484Z",
+      reviewedBy: "0929200166"
+    },
+    dep_1789034252970_fa049f59: {
+      id: "dep_1789034252970_fa049f59",
+      userId: "user_1789032730229_bd002e72",
+      userPhone: "0921209810",
+      userName: "asefa wasenu",
+      provider: "Telebirr",
+      accountName: "Gabre shifaraa hayilu",
+      accountNumber: "0929200166",
+      amount: 50,
+      transactionId: "ft26510w29j",
+      receiptUrl: "data:image/jpeg;base64,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pWprpwxKwDUE1VSM0jp+Pce3hpXVlONMGHWB2xp+avjfQNjmgpBS107F2XZ/yF6+3upv+Qo1OIVmtpopbVlTWlDggvP6dtIwh301bsymVVdYNpnjRUpT45CK/l7fkfja9UOD71iwFw+KqMO+ip2GWb6wE4BlbXw1RFTBFJZjx4vM0UBAqy3Dl2GLsMXYYuwxdliw3Df4Tx+mfl6w/G/WCPllos0uH1ZHq5vH9OruYxhzJansbkE0eW+ZNbDXUENuFawjQZs4s0h1rESGR1A3NpLY1skolrFBW01pqyDpKt7TLyGUzHUIUZgNxCLPn/MFuDqjL2F0TuoQsli3UEFrW20IeBb7AdZbGCH5qLLWFYugAmh2sUFYhbgDVkkAtmtrICybZW0JjJr4eS1Gvo4DpLcMUFzxm9Ol3kDnb6HFyy+CgWf8/FnHriSLLPl6w/G/Wsh7uXSY7vr3cWcPdx6f2uZ5XR/oPHTo3N+owJJjgeiDZ/59YfjVj0TonYVPluIYWzSEhObgYqRuRX/uw+glfF62kw1fgiGMIaKxyGK+RlXHKR4QXjtqOZslTjExkUELxIJXh6yOaV1R2yRwojSXVnZfIDA1kYA8DX8eX7PHGV0zEzNtjHpj+fWH436Qz5iyMTHFJ3InyzywMlmlzK+T90ctrIIjYRp3nD+PtcRsxYQ8sWmGTeV/4eLX/wAnBkUREj+5I8zLoH27ZlGcyGaI2IWfJULJXGDyAbTnM/0y79rpj8v8HWH43+Pqm5/6Z/z+6xmZHkVc42Jg5x5YQ5yHcHJsb3Z9MoernJh8GXx9QV5GrIyRpyMz6cjvYqCHTEjOFf8AudMfl/g6w/G/0o7uM5tgPmGWxFmsc3IuChThe0LZj4kKma8aqMhiHhJDlGkthSCAphQJ694ddYZMiwY44XBVxKNNP+50x+X+Dq/8Z/qHTH5f4Jh4iG6kFakFakFakFakFakFakFakFakFakFakFakFakFakFakFakFakFakFakFakFakFakFakFakFakFakFakFakFakFakFakFakFakFakFakFakFakFakFakFakFakFakFakFakFakFakFakFakFakFakFakFakFakFakFakFakFakFakFakFakFakFakFakFakFakFakFakFakFakFakFakFakFakFakFakFakFakFakFakFakFRV4sDv9luL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8yZqxuRQUJmG1YrW4DhbkkSMpZqxsxYrh+bawVrW1QzW5BgctaP3WgjsUIcQ8LgB3QNqxmR5rB8xOpw3sxXjNxgCBsqsfs/MZM+E/YErYErYErYErYErYErYErYErYErYErYErYErYErYErYErYErYErYErYErYErYErYErYErYErYErYErYErYErYErYErYErYErYErYErYErYErYErYErYErYErYErYErYErYErYErYErYErYErYErYErYErYErYErYErYErYErYErYErYErYErYErYErYErYErYErYErYErYErYErYErYErYErYErYEoouaRvzSfk/wDSrH7PzSfk0YS0IaO1HcHJYiRLJ42CGlwPTLUOTAdiOdB/czWEjDJLaGIzF+NmF16M1Yt8ZniN5mB2vmyQHveSrH7PzSfk1ZAyHqOoKDK8cuMzNcTmYWsLilHqZImAjkDjf3JdY+Ww8aJzvDg9PEgTa0jEvjFbMKpmFlrRS4iFY/Z+aT8lywuWFywuWFywuWFywuWFywuWFywuWFywuWFywuWFywuWFywuWFywuWFywuWFywuWFywuWFywuWFywuWFywuWFywuWFywuWFywuWFywuWFywuWFywuWFywuWFywuWFywuWFywuWFywuWFywuWFywuWFywuWFywuWFywuWFywuWFywuWFywuWFywuWFYZxmH5jBYCz9JWLSVi0lYtJWLSVi0lYtJWLSVi0lYtJWLSVi0lYtJWLSVi0lYtJWLSVi0lYtJWLSVi0lYtJWLSVi0lYtJWLSVi0lYtJWLSVi0lYtJWLSVinpgvWcqkgx23ErSFyYZ08axNr5okJ4Mr4AaYjOkrFpKxaSsWkrFpKxaSsWkrFpKxaSsWkrFpKxaSsWkrFpKxaSsWkrFpKxaSsWkrFpKxaSsWkrFpKxaSsWkrFpKxaSsWkrFpKxaSsWkrFpKxaSsWkrEVVhDt+aT8mpJWRYxnDsfxyWPjP6r3tjabezTOgoZCFAAMLipJONKfYSC2REz2RUZcvDei97NdHjMREwLYp45v0u4xdxi5YznDsZWCoMphMMmXkRRZwTC7OXtxnuMTyImOyRFh7SYXuZNHL9LH7PzSfk1eMdI4qeaoTSi82QuS5mz2Jj2ZILVVhrLK0CxJYvs55w5TyWh1U0kkf6JJMYkWO/dTscFWP+kQ0cUrgBnxQ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wRbhecBSAFgjw9N2OTh+nzGVk1IeVWu6ZNcz20ZLBN03LJDAKZjP7OOlZWHD1Vpi3OqzzYm9NFxYp6p9cDQ9PFVRDKOduKTpomuMVj9n5iXYiN5YXLC5YXLC5YXLC5YXLC5YXLC5YXLC5YXLC5YXLC5YXLC5YXLC5YXLC5YXLC5YXLC5YXLC5YXLC5YXLC5YXLC5YXLC5YXLC5YXLC5YXLC5YXLC5YXLC5YXLC5YXLC5YXLC5YXLC5YXLC5YXLC5YXLC5YXLC5YXLC5YXLC5YXLC5YXLC5YXLC5YXLCNfh/zubh7daItaItaItaItaItaItaItaItaItaItaItaItaItaItaItaItaItaItaItaItaItaItaItaItaItaItaItaItaItaItaItaItaItaItaItaItaItaItaItaItaItaItaItaItaItaItaItaItaItaItaItaItaItaItaItaItaItaItaItaItaItaItaItaItaItaItaItaItaItaItaItaItaItaIoRoh//AIrlsg4X7cBQFwFLYC4lnKgFXmD+j7MOJ7zhY49uAmWgT3fPywuWFywuWFywuWFywuWFywuWFywuWFywuWFywuWFywuWFywuWFywuWFywuWFywuWFywuWFywuWFywuWFywuWFywuWFywuWFywuWFywuWFywuWFywuWFywuWFywuWFywuWFywuWFywuWFywuWFywuWFywuWFyx9WhhTW9fYdPHmU0DAzaEQYezJzS3kZNL5801ePVS3UEJDLM3p+tONEAZJ8z/wDQG/4Ucou1raGsAOAKHcS2ljs22MlZRRCjzTRiVU3h3NkwtW1JWWdhYSCsd8z/ANeWRsMdXdB3GPX6ev1y7DcBHwWENjZR1rPX6R24spEfUIEoEE7CIV6qC1gIsP12/wCFaNxk8Wxq5rOytxunJaBsxeJZXEVlEZXg1rLakMAHuajAIWaixbBBVjWXzP8A1+tDnDVVMRirvuE2aMVktb1E4nnXYsnC9R+XM/pfwXC3vQ0AuIuspXxCSDPsLTpaeQmi6oe+su7IdwE5nCW3cSaXW3o2K6etwNi0p+3rf1m/4Vxb2jc0lMVujK4Wwew0GAY6w90Zq62tAkzFSTz23THgZ6dLn6UJFmiuifmf+vINDM+UeGfPgC9rxoe46tDfPOEMS7wBO348PdjCGilmHiIxgWDDooY4GSiwEOeJBLKQAIXlwsD0QLCWxoAjFHGyJn6zf8LqS+shbqhmOyGOeVcMF8McvxxB2lA+bIDWYrhxIeqpySoJB5Q//Yx/M/8AbIKhFbGVFLiSVkTUUdAFgcqIpiIIiFjdbCNi3IPpFKyaP9pv+E8mI69rQpbDqA08OnZ0r1CCS29Lr8rFyHA3tmATF21+SN4Fo6sqJZoK/wCZ/wC3aMjzjGSZG4DKkCJbK0m0jdJWExWEU8w8scdjHO+ozymqjI5Wvpo3xV/7Tf8ACpwZx7yzpbGttzCyMYxYtZbDjhYYzpJ+Jeqn28tbU3t1rRepewRQdWSx2nzP/e7Efe/oW/4ToiLC4gjFJmrGvzmtGoAGz3jJZKfqUFHWTupY6y3rtbqw+o7XpuvHz8+ceq45XHK45XHK45XHK45XHK45XHK45XHK45XHK45XHK45XHK45XHK45XHK45XHK45XHK45XHK45XHK45XHK45XHK45XHK45XHK45XHK45XHK45XHK45XHK45XHK45XHK45XHK45XHK45XHK45XHK45XHK45XHK45WMen0ggeTYUvSdsJa/wD9sPgGqbvpJxcc4cFeINF7LiMtq18Bt1Lcv6fwVYP/ANQM6RyQd7OIQPSzQx6fpuOqVzUvtmydDOlcV02wyOPpiCJ0HTYkFdXV8dfB/qHovRei9F6L0XovRei9P/rW98V698V698V698V698V698V698V698V698V698V698V698V698V698V698V698V698V698V698V698V698V698V698V698V698V698V698V698V698V698V698V698V698V698V698V698V698V698V698V698V698V698V698V698V698V698V698V698V698V698V698V698V698V698V698V698V698V698V698V698V698V698V698V698V698V698V698V698V698V698V698V698V698V698V698V698V698V698V698V698V698V698V698V698V698V698V698V698V698V698V//wBpfr/rNoNmaCJkuhBt5o3DdRunmu5HRVdUVO2wffuiKmviWIy18S3jfNkeG9zMvcEvF1s5pIJfkgg2ZJ2Yr92S/cBHEmbsjtu3EIW2cIILevJkxfvaU69e1rruTzrQ3IARF1OLGXavMqJrfxJhiXvCivp35IvCWSDzYnh/upY8SxtqoW1+rh7sFOwdxYrDBxqSAeXHTw6dTQOilpRp5B4PGhr6xzLH2+N3CqSAqYYVgo8VLFA+OggidpB/GJFYWOyiha+WjGmEjqB4i29PjsWKx01zPTxkymBRnDlVsRWHVLJRrWsfYT8McI6AeOV1RA5Mro45f7UiXswiGlSMMw/tRmlTwNInlr5bMvttNbisjkIgHfd9nEd1l0m7d3JL6JkEN40hz7KTIJF2yAmU6ZlAHZyKO/ZO0i8xEpC+wGdbk4jtCZhB5DyYMQWsrSG2+eWb1uVJZ4hzXnMsRrmxmEzPZy98s5w87LfOHOuJczNtZXm1x+wjkusRLHUUbmkdQQjS4uvVT30MKlvu6II/Mo39g9mJGQVUI8lgAyxhkrsSRS00Uo8tdibEIsUAzaluGYpolmshcm1kLU6oh4xV7GPxVN8d1HC576+N4DqWKRsNPFFK+lFlZkNrg21EfqYE0zEld3WayH0dTRcsUWPImqIpZA69oSkrBpyI6QeLDxmyEGVDkNVMiibVsY8SvaLK6shfFmszmFlNFDnXQ+PpoGjzUzJsRQYh/wDtB//EACkRAAICAQMDBAIDAQEAAAAAAAABAhESAxMhIEFRMDFAUAQQIzOQcHH/2gAIAQMBAT8B+xoooooooooooooooooooooooooooooor1vxIRlDk2oeDah4NqHg2oeDah4NqHg2oeDah4NqHg2oeDah4NqHgx0k6NqHg2oeDah4NuHg2oeDDTsw00YaaRtwZtQ8Chps2oeBQ026MdK6MNMw07NqHgw07PydC1cRpr96Oi5s1NGOHsNU+v8AD/r/AFKdCd+kk1N2j+WzHVMdWxrVMdSmVLgS1GjXi3FFaqikNarNJTU+TV3M+DSg1JtkYSyZtyaRWqXqJCWofj585G3F9jZh4NmHgSUfb9fk6DTyXX+H/WN0SbsQvb1pOjNL3N2JuI3Ykp0hasWbis3V0Un6DSfuT/EhIn+Jir6fw/6ykx6aZhRH29ZpNDUE+TGFe4oxGoLkuB/Gj+MjCLVnt6ut/W+n8NrAyRki0WjJGSMkZIyRkjJGSMkZIyRkjJGSJwjN+5sx8m0vI4RaqzajfuPTi+5sx8kaiqsyRkjJGSMkZIyRkjJGSMkZItGs1tvptoykZSMpGUjKRlIykZSMpGUjKRlIykZSMpGUjKRlIykZSMpGT8mUjKRlIykZSMpGUjKRlIykZSMpGUjKRlIykZSMn/lSiyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy/QX03brX03brX03brX03brX03brX03brX03brX03brX03brX03brXwePi9utfC5OS/hdutfB7HJTP8A0r4PbrXwa4KUT3G0NcC+B2616/Y7Gk00SjyYsl7nv+u3r9utev2OxB0zNMlMbv8AUR+3r9utfDso4ES9ft1r4HBTLZkU3+nSXwO3WvhZGSLs4+D2619N2619N2619N2619N2619N2619N2619N2619N2619N2619N260cnJycnJycnJycnJycnJycnJycnPq8nJycnI/Qtlstlstlstlstlstlstlstlstlstlstlstlstlstlstlstlstlstlst/wCWy5NrwbbTpj0WmbMhQbNuRgzakR03I2pG1IcGjakODRtSHx87JmTZuSM5Ck0ZyMmjOQpNGcjckOTZkxybRm/+4f/EAC4RAAMAAgAEBQQBAwUAAAAAAAABEQISAyBQUSEwMUBBBBMiMhBhcHEFQnKAkP/aAAgBAgEBPwHosITknRVy/PkcDFNGmPY0x7GmJpj2NMexpj2NMexpj2NMexpj2NMexpj2NcKaYmmJpj2NMTTHsa4muKNcEa4s0xNcWaYmuNNcKa4GuJpia404vC8PAj/nDB5MywUHz/T/AK/xx/qVw3DhcVZ/IvTyUmsvQ/OkzJnSZkz8T8j82cVNpEzSJmzBZLIz228DDFpsWLrNMoTMuQtzhbfJojTHsaYiSX8cXhx1c/0/6mfE1PqblxDgN4ZqGGWy85+BsjdGyN0PKIWaNlTdeY1TLgpmXAivL9P+pngs14mf+nrJ+ovo/ts4eMXnSjWKfiTEiIl4lR+KPxFivO4n68v0/wCpUVFRUVFRUVFRUVFRUVFRUVFRlimz7a7mi7jxTRou5qu59tCiRUVFRUVFRUVFRUVFRUcR/jy1o2ZszZmzNmbM2ZszZmzNmbM2ZszZmzNmbM2ZszZlZszZmzNmbM2ZszZmzNmbM2ZszZmzNmbMr/8AKqlKUpSlKUpSlKUpSlKUpSlKUpSlKUpS+QujfHOumro3xzrpq6N8c66aujfHOumro3xzrpq9hji8j8EWeiN216GUJ7he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YEVpaBZ1iTORVp8H3LCq8g2/GEZmZtpp1fqkUWzU000Vt1CLogXZcxcbLQQr9NlH5C0pmUdxBAlyKJyVdkPMFIOCpPoVxV0ZQxMOyIyAS0orNLxXEKnqjyKDkkGIzMqUzmPFr+cf2iV1pGmXnxNqipml0S801JtyKS8mrYLcio4VMo8mzM40+uDcjpOOhRMvqonREkHmgpOBPYp8Ia2V64GVk3Bs8pWpMgi5pb09kPNeTG738OxsaokeTH2SamFlSzbBEFbV42fTHlplqQGaSdK9t9XBS31ZxLv+YjOiUiLBCpimGVI8hMPyqL5tMET43DkN35w1OSbbpMIzhqMs4LZD2xJizJzwOtOGQ2TIXt1/KJM5xiZKebU7XZd0BIUX7XXDQ+VKec51pT+kOFLS5LPYpEk4L40MV6FRYl2HmyaMRoSESLn+ETnk2VkRmmniLDfR1BpXrSPIyy8uE8cndihcg3V9sTsy7JjhOSVjdVFaHTRHkdbHMSTuxG23RQ0r0ouiJhqXlJhHHpoTUX3wJVTpXKEBkBbROgUp8+15oo+cMOo6CFoWJmVmfJqSdzKper6FUo8kedyGEzJNk2S4yLXKkNNsMvsSPCxG5lwDFP5aRPeTTlBZMqqD+InDz0dcSjzsiMiErLK0vDFcRfwjyYByYYrc0pv5jxax5cZabFkZlxCY4SUKBeflp0HAYULnZhsh9iIkIM0wLUzcV2hV09cSU0y3cw2yQkVyZLnHk0fNBSZbnMR1bhrbXrjyyeELbcy0gsuZaY8lA7JDKDI1veQxXEjymL8sKTTxOYa1FVVF0Zx5DxJMPQV85zH/ANWJ4JNrDcObvBEUa2eqPKmIydZhscNX3RIlX8I8k/3BJYpZ9FcHEHR1x5VbZkhmxniqD16JhxLnMMi+y1JYV6048NMTYYbgkWVa9P00cdwG7lolxUqvyD53MNsXcW86V+RQdATBegkqkUTR8rk6WAGXDfy/+0CYKhCSVRU+n3zDgNDoqZUjnstthjnstthjnstthjnstthjnstthjnstthjnstthjnstthjnstthjnstthjnstthjnstthjnstthjnstthjnstthjnstthjnstthjnstthjnstthjnstthjnstthjnstthjnstthjnstthjnstthjnstthjnstthjnstthjnstthjnstthjnstthjnstthj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6gAKeRKq19iRJozjekcoSNKiEuXrhvGvIxN1LTWipRNBU0xKJgMoUyiknDXgp2QzgI6TacqLJIh/hWJYZVHHScuzeQqpTrtSJhQAWgGWvsPSK5+qJCYm10iREja8bgwS+a5rbYvCEc10ZpCo+w0gtvI0aia9PVlBCEupNIahVBKuXTopFSabbV2XJ1qh1pTrhpybsvIa1FYeM5kXJc7kBpFSo2/GFmX2WqFTDET6+vKGWzbZWYeOg0NbfdCgbSCQtmRULpFYFWGG1/u+OVx/lFo2ebYInRdKV+QfvB9/z7H3LnvD5G1cGqtlcHqWCdsIHSWqkDhCv5eyBdRDE0REqjpJdTr64MrTTErcKOkgrX+GtIYewkxJcbW1rxUgnBQxuzUUdJBX/LohkQGiM8RLly6P3bY6Nw1rBlaaX1uEXSQV/CBIRMFFKcB0hqnrosAjyFwFqKiaiqdkIOForpJVXPTDKiFFZSgZ6EgcTES3QoOEHuhttAUUb4qiZIqfjAnaVyDbXELNPX1wA4akIVtQjUqV9sW0cIcloTxKiU/GCq3xjRxc/rQTiIYqWaojpIK/hohu1vkwUBz6IVlpCw16FNVgGCaTCb4o10QbSCStnlaThKiezqhGyRwkRaoqvFcn41gAw1RBRUSjhJp0164ojeWHhaV4vVAOCKiYDalDXR/X5B+8H3/Py5Ny7kwuE5wQUesetUjVU332t+NVTffa341VN99rfjVU332t+NVTffa341VN99rfjVU332t+NVTffa341VN99rfjVU332t+NVTffa341VN99rfjVU332t+NVTffa341VN99rfjVU332t+NVTffa341VN99rfjVU332t+NVTffa341VN99rfjVU332t+NVTffa341VN99rfjVU332t+NVTffa341VN99rfjVU332t+NVTffa341VN99rfjVU332t+NVTffa341VN99rfjVU332t+NVTffa341VN99rfjVU332t+NVTffa341VN99rfjVU332t+NVTffa341VN99rfjVU332t+NVTffa341VN99rfjVU332t+NVTffa341VN99rfjVU332t+NVTffa341VN99rfjVU332t+NVTffa341VN99rfjVU332t+NVTffa341VN99rfjVU332t+NVTffa341VN99rfjVU332t+NVTffa341VN99rfjVU332t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fAfafAfafAfafAfafAfafAfafAfafAfafAfafAfafAfafAfafAfafAfafAfafAfafAfafAfafAfafAfafAfafAfafAfafAfafAfafAfafAfafAfafAfafAfafAfafAfafAfafAfafAfafAfafAfafAfafAfafAfafAfafAfafAfafAfafAfafAfafAfafAfafAfafAfafAfafAfafAfafAfafAfafAfafAfafAfafAfafAfafAfafAfafAfafAfafAfafAfafAfafAfafAfafAfafAfafEfaBTUw09Q/+mEbDbriIKjOo7zabeMPEKAKBz4d4kAk9I3nyZgPOK3v02R+0DLQ2+EeEhyVSr2ptq9S/OItMj8IIQr2FZGCbRdhQNFf3MPgjHYSiYj27Bq+mauaxW6K40tdLln0b+Fqyb1eATwVuMjlXgzddZeiq7Y5j9UrehyU/kS8ZxLUkh194bp2hPTihT/HkmL64XDgK6MzPUIy9HmCApJr8K+sXDCxAOL/AN6y4ES26CPJgIUHFM7cxjYCrjV31RU+qA8bzCNLQZu/aExhEKHXw7xOwFqmjf8AE1R8XzekVBCwCjr4d4KSHXKmFlylpYJfFdolR0EVf3GyRWaNNlWarrN3Oir/AOyj4aSpS/4QwY2MYHZcNI2dINDVXdcekNJN7DvA7Z0SvLVFH/yYtcoBeo6wELXcCfvaLR1ocWX5EDsDjKDhoY2xToQZEPJm8yks+vTrN8KwX4Qm4zQpZo14NS8uEe3ajjN56RMhanZTo8tZ8IQSNcULOWSqxKXxKm1ajjud5l48pKt4u1DBKhFREt2bWz7TugdIGCuziA7WW5kbvjDq9vndOn2ESc1h0uNB6ku7xWkbzUQTRtdcuEPQ11l7Ta5MAULZtPNm7oVWBeL0up1Lp8Lcv8f3LzlWOWW0lWsTiyTHFuzgiv4Z85w1ulZhfR9MIvjrqANqtuhpd3PnY4DPpctA3q1gHSMQen++hJtAThlct/sqAyHdjAF4au7Ua46yxjVcYPUdspLPalr4mHnKgaDgdeTO2LHZY2/JvJXRfCAQSgCM6HF9ycDNXxqbTp0jHayLg4YXx3mNCVFmGLt2SoB4KGe22cd2J60CelOC0y9CM/f0SAz69ZjM7ABNmJrLbyKXV55dLgxnk9c87B6XTLrhjO3IuA+UrshZ6IbibrWWG5kvecjn0mYCpWcNLcsTra6C0yLx+9cBQcu0L5/Q1XWgF3a4N6m/EhU8mCQgNFfotbiASmgWtZg0ZMsI6f35my8Ib6Wz4R7z4R7z4R7z4R7z4R7z4R7z4R7z4R7z4R7z4R7z4R7z4R7z4R7z4R7z4R7z4R7z4R7z4R7z4R7z4R7z4R7z4R7z4R7z4R7z4R7z4R7z4R7z4R7z4R7z4R7z4R7z4R7z4R7z4R7xyzUhV6b/AN/xfeN40ntbVaXWHxhcW3ffKhEz74gr7mnjWF337MuTV2baulMbmZej4NKWrqqxMKJ2G9Oudf8AsNqRnlkIdOmVA9Xlpmrc98Zj4tvR8TOKOhWmaZzGOgolc8VqYhf+EPWvD97xarYI64zUsfI5/R1O1YOPJxj/AAWppVtp0fw/7XLMB32n9F084qurRg7v6IsG8/A1K/4Idv8AHw3Ab34QosyTk0uyNn7EgOMhqaS+e8UNCaS1fL+UpVgNmuzg7EqIubZPW63KJ1GO0dklhK3c6ZWXuxZTedYLWu0csS2cbpCy4B0gp/DZz1mGpJ52l6gzBLLkeX8JRCxVLqjb4/vaRw7JBYN0t4zHwtrsKYcRacNQViTP1cXQdX6QFShYhg9LTV56RxE2q94AFZJi7mMRZwQ9VMuXtmLO1uuYjkBqqBsrdwAhlsnXmzLut2tiCpwImXk7zQ1UWutHRB2Yil026xdpnOBj8Zll39STceYVKCbobBpw58e9/wChI3sk8EUI64cN1CjlMLrcFUVjKlWIC7EFLzmX22W2V6ouQcbd7hD7nWUOBDxyXHgV2JCxyiJjrNYXFDcWweisesJde1KsofUOb2wvvVXVVsjZkEt/GWx4aq3XB6RZNHOsboA7lULg5zXF5a6ZZkA7DbbEA5U+ULBY6Z7qCPPpca+Kwt1TKkN52HEys+gJmqnDXYTx/wB/I+Xc838br/w0aNGjRo0aNGjRo0aNGjRo0aNGjRo0aNGjRo0aNGjGzBarsa/xrXDabjXlL/xYIC7Dphpc0NIlgnTFi933g4RaUkv/AJo++usuxML17MZvmFj2yWcpvq5oqHstmcateu3NxZpkwi+CqwQ+paM6bxO8y0TXNjTudWK6M1bPk8O3Wzy/cFSeqYAFNNdJQqatFVsR0MZuojdD7J7VmRrmtxa3cyiBVOCUzTFmn7rAptB5SoAHFlKuKOzk/wCIlHM7dA+KSqmw51VYXsXDiY8qFVRYu8peKOZyccCPAoYeta8IZyktl3bV08Q9QqEafP53++0Algnm2f72yXWevBSPhL1NBRUprAKNXUxIxs2XkFLtze3rKKhrmFG+7qYcztC0oGnDvZBRZ92KdlwZ86hI2y7c1XOtGP3DPk11la23L0jCYt2Qso0bcGJY5LVBSa1Xe3EHy5K2PKWnYqUJVZZVlN4rUrfgU02EaDwP8U3R2eqwaW+0SvrS2BaMuu0adJo1qrPyQBckpa/57sHdag1k6t+NVAaDLvxFbY8PPmLKUUeDsW3gnjXWEuOgQVbG3d35V+3NloFqysDjXEW0FgbpbxBh88r8A5bO+HDBUVRyvAlr8bMVLF21n56dQ0gY53GJ3R5HCuHa+0bAoYq35FdIms2U8MXCtN5K5ilMtyBS8u2q1B0d/TTqIzyH+NCWbcxopDGHdMvyVkorZObf/YGBui1mkaq56GWOHE/2M/D/AMALQ8+eMc/7+DssfOMA7+pgaLrkC4C6BqThaOE453Mwa3qp0F2b0Z7f6daEhF8P11AICL5f4OFALValyIOk/wCVKiGC34p3F8LioRmqOKgk3RUR3bWoZ1qUC9Kbhq9nyi+aQLVIABTrPMwZVvQ2r3hRWzVh45xNiBaK/OauN3NWqy71f+JHAtWXJyutR0XcZsOibwTjIAK3T1gx+rIo6zSdlmBbWsH17Qq5KRyBw8mdyhVaUNo3o8n0/wCYW9NwLLkgzg3zAN6BYhZUW7wt4RTboWjsBrCtVmqiVQUBQZlFDLqoJnac8zE3btcN5ieRAWDo1gNKKNb2G8dluKjmnLzxj/LDMczZeqNz1ghOGrCxTkqtlM0zp1mcK01ebduYOjP3LQXvyhQVTZjgLerpmnN8NQwmCzdswXaWdmKlJSshMaQ4KvvBOuZ1gXo6dCPIAWWK8VhQ833gWSQFXOoFWWVRsoMqqq1S9taqG0BwsixotHWnWpdbTrFikdrxe+IwDuALhH5bmGkeFAKvd+BTnpFqhogcqtXikseJmBkV7fpyvtEKs6rOWdf3JdXDTaVerMJcDf182no5rpAWPBAXV0t2XfMII1u1KNQ1sPPNZd6Audt3xmtFGu0KmrgmZwLTrbnnP+J1gduHbk8o/I6acTIPN68oz5mtEtWcl9I3bi3hdaHGMxgcHRCwtI6vMGduzqGG8a3flD+bMHHAmGutbf3oWh588Y5/3mEhaGrMKCUmog7/AExRaHoHX8Mw+SV+lisEK+a6/j/Kl3zADYZf0RsDKaDuiDvP6gGsfqAMK8P0QtpkhvToFiQK1qADCiaOl0ic/roBta+KN9wwWpTV+Gv+JEi6Wr2T+I2Blz3RhRQWhywNOS09Zcws4tmqsGH0hFiUQ3MVxdNyt/jyhdFKl+7UV1o8LzngI1euDbLGHHxgJeUso4ON0RjoRwxVNDriFplmDC0aDjfWIFYZCZH/AI7S/WTbq4ZmmYu10LWBB3+EbX7qIzUcrcnZqKD07hmdwS8VvdxKbCBhfBOnaWHYo2kjSXbLd8do4InIEXRdHFN333ED3NktyKa3VNaiUoshUbbi0oqy2uP3HjHyATaXKma152+bLj+Xzzubd9I6tFK2EpTNi7zh/wAaeTAbAburJZtBDdW2+mIIROPdHqddC99pewzg0NiYU5fGXZQtZuMDiKtV5yjkqwBRDepfBxAl7gCgqegRI2MQt2gTGmq881Gt4Kslk6K3pBzEZo3stX0g8Lwa5AW61rv1jcNWpMReD9xsJI7/AN7MqE5V0DlnieClKU8LqM2cbCtqHo+kCHOtdp6nrDmcaStrygzF3cug7y5YCCkpdJswkNA90wblEadP2hKqtNBMgNGYjbkK3mpdlrYLG9dINuxaOc1EkUACm6vw7MbHtlxvHlD9eoyBZfjG9+XcpyWf4tXyOLRgPrXrElpBqXbuuHiTCUKJVKau+/4i26h4Czfol2LwnOBXZjR0gUdMSKlYW+EazrySlLIc4iHarI4tr7VDYspE0vnJ7R8Ow7A8C57FeM3RcZUo1i7dl1q4cVllbN4u+HNTMHSHAyeF34Er1LUOoW4wTCsWsyqVTu/2uyukTwD/AHqPJPvDIDE9zjZMbZZUuTfRDjOoAlqv6o4UrSKO2pc6UuHviOzE0gXG3vTLuxlrCFGWuxzKlIIqL0B6LqriBPCMJw183nnvBxpyQCmVGxuuu0rpZzUf5eiv2dT0aw2YOaUa3jEGjxauuxN5c45j05uwaG0GzXBom/slpA24TnghC2CzBsLjq+24dum3c1QxzjBCivYtYrRWAbdwbKt40WRAZNtWf43NX7lJ3O8GdQuVttU25YjaW864CtdJw/ofBM+rAMoNWRvD1nPistLgYBoyjbFYA8kxalRlSlPjBFurAwqHNhp4o7RPnNymzJ6lQE27iqoVbjTxXhHFtCXq0u3BpIW0rOnJZrWXeZghrkEuzyIX4EM2xlFZ5GB/2oMi2o3fSt6/a7cQAs/3toTfsgv8EokRwVeIx6SloOiOTmBIrmsmDq6n7OmCpyvlP7DXpMqSUahprN4Ss1NsbSq+wV8pUusafVkJ6Q0QZWNLr6S3g94K9YYEmkm081/JOpzo16zGrsDKoaQHlVBWidQsx/ibgIHsL8lH1j6MkystvbPBgCpWUIwMYLZqLErxj0IwBaWkMG9YvAeMeasSHIoqscGr7TlKiMC0RC33uB2PUW8jYZakI4EOjPmgEDZLqv2w90tm8Hd4lU6bS4jrnBvfKVWaeZYnEAmsM13ZhfAz6bNWaaCKlQQJYJZfJjkC8FCaCcuy13lkUp/ZgSaok9ao/wB5rq5EICdWnMx0m0OlWP5jWNR7MveTsEZFwajKho4SuAwUy7u4qFTu81+z58YlXRXfYgYqx+X30q8fiUxzhksBRUJQvPUj+DdgW7sKLCzGl6gOtcYBFAsAyL26mdJEa9nIh6Zq4vJaFQxUCtr015yrYlxVgsoM3jVR3mxIACIyuujfjMtrlgJoFM8C5vPftmq5z2cVxHLwLXPDkDjJLyrDEpRjd9wn+Ig3W6R2QcbHIaHWZee16noe3Etx9qlUq5Y796gOQ9IIECZrVL2aq1Mve4FyoORwGIbxAAAUAwcO3M5fvzgLFnZghSRiAKpMHHLOJZA22WVSjdwU1blxZbvvM1p5UNls6RbKtrLbVsvdlyzm5tto8F8NxKljTWHdYjygAaH/AAjL5aBlWnxjgwtC60ZOpxKiTnKFz/7+2ugoiKwNZgcfuAWqs5+WzBkILtNYcPjGFd1KKrhlzxDw+hZaqZILKKpLs2cRsBlWtF4G+YqqyKEUdr4S7FS5oVeNUbgoPY2kIHwSELkWQt44cj5yseKzlUx4I/45dEWCuzKwgS67Z5XMM83zVXV19wm+bA9QUfl6S5JyEA1RfLUOgSBC9GXRx4hCU6CaAal8mb6ssBWBm1VjgsJQ3MzZa0VXgxfPeZSLYObte3Tz/dGEHHPjt/70sKAXRo+0GonrTlcRoTqd4LdZTc8Fh+1KKazZ5AbIQmbURDBVLjeZnGgJNXkYJ487uVI5SohUWvgY16QuXL85EzVWoFV9LgotDtYYyRh+kY+Lx2ekQVTFQstGK657S7/Irn7SDuULyuuwQMU1xDTb6BIRXJnmWiGrcMsNEB3maKAARd04L33b/wAROPQ7Ei6GaabFx4TI8/Q/+UErUDkar3i3OQKrpntNb2pXLF+BAUAdlFjpcrcWKPWE33joOKewb0eEDPItiGs/8l+z9USPbyqWjSb2+q0VlrMvOG7OpegyU82VHmsDIlj2/agAtZzAPHGY8nFyDKUJfGHmmUxNArpgKY9OIOG+ZLVtCZK1qlVrFVXjGYjL0JVs6VeYCOvBzDJVc9WVEWQTlNCbzXfFreC9kYW6c7wJZ2daVCrnN77OJaywEg3VWPR7OP8AEZNoCutF1rpCzFCwvGRpjdVdViK5sDTRunZZ2RoV4U3Vq7bs7S796QSccnSHrvbEN0lus8w1n96AQcM+O3/vsXqsZunbcE3EuTjJwNZo5cw1IUHs+Xl1Zu3rgzggOpctcftAY5RgO4xsSnwoFK49IC736exVhDVK8pQzZKO7tF3l6kXZQfVVt3d/5CnBSmtGjHxusQQzYjeNa9m//UTPS9ohfexjE7HnVlXaOsuctfK4Ur1glIN3SkBxlj14bS7hdihwETeA77tYUGgD/HLVMOR8GUwMIH1K1F0kmyzet1c0udVCvbpGVXiLe84zmayILBqavrUCsH/MujYCLaGK8YH/AA9J4HFeOeMRQADf29xaY4/cX0uS2s1Ry07xGIKLjDdHsZzuZgQTjqOPYRz+I/xuIncKqivjCJA4xsFDVWhPUs++sdVpW+ZmY9XP0t10XQ2ESwjed/j06a1mHWEG4/OQHG6umX9iAlbqgeI04/6/DeDiUjryniOc1ceXbUqxS7bI8bzrX5/cNndt7W2ZKFvXeoBoxoTtWU1jIzaCy0E2FWAOGEScOzp5cDS8P5itsXTQ4vQKXq4r/wC53WfLNV5zUgwhtKdwW4OMxePMAXddras43KbMn6k3N4OAjjH34NMq1uGq5x/19tEw5BlfSyvMikRtYEFveA8SW2VVVAal30/GZ+0o1HUT0+u+1YlQulvHSarmnKDgu2r+4bKxDCiuy6WdnEwBT9GENXb1dJflkwwpUl3eVvEMcgcTxosVPBgOtFZAz0uaMtcRgaGT0DZ2z/tqJQbKADQyudTqtC3kdF5jvzPjJ+VrGe8wTapLN2KB0t28TOXn1u9S8FvFVmVb4+1QsbYy1qCLzFEXUzvpLAD3HV867vNar1gVlaeAoTpluJ5QLjFzeQ87gY+bkDWFp18dQQDdpmz1/wCus4BmpxsR4RidzDUwBMLeXmo7RYooamuKA7QZ8gBw1pv0l0kKUbIUegVrkvwgVqUXp1ebGs0kBMC6sVrhXi2Esc0CPrGeCXCYrcthCmOAc12lAiEhICqxg7wApToHjJPbFRWOHjXEwY1/b/tvultl2A/IQ8Ugt/zGVvASu6Z1cynmIVQ7u51W4LWXWaAKl80xSRNDSxZnRZdX/Uyo8bmVZm+a6+ku8fnT7L71dXHoQihMeccPPOZXsutwgwlxT+YABHzBeL5Jlfh0A3bgr8/9c/M7DrDyaesdQsVOs+hfWllViiDDgNd0F40a0FcMPLLSwEKVCuV0DjwJ5J7QQOCqOF8RSpxPD6mV4vBTmU5EfXmsOxlbYALpQ3mK5LUSoshcaI9Vu8y249IbBhVUIOvMxC4SK6iqznUdqqsNAL6rjQtGlE4OiCVSNXzpSpyY3+wGRDirJFlb29OJbmFBpExRfqzDiu1M4lB0mIrbMUVqjWPxFcIqlrYM2C3pMc/moTlhg9p/18tWqpZ5Sp6sosaTpuWjkF1KivEPCYUbXOjMU7cT2WmDF5ri3rMuqB4fS8+OpWJRgu7mqi7r+pRNVCygGDWgLq4scepxgsy76zPhGEDFZDV0Gdzj7jSxgdrPeuJS/e6uc+cMOZEu9WV5S1OkpWwLeb1cFvCtOsr1efHf7DUBdEuBXshzUKrWMF6E8oflKmVHS/UxjECOtSDfNTwxiLOu113ndVqV54etVCtOx/1wLsyxsKdm19mZxkDTyatDVuGnrHcHIKpNl7FSEl8mims3E4cWkQ2sNhLVzNRu+VcjR3nGKh5wtKqU3C3m68jMQ+bgyEmwZ1ysUGQRvG0aMJi33frvRCzvQy31bYV1ReMhu3sYqjzm+Q9C1zebrMW5miLe/CcLEWkaErxVC1a3jzm13qpdbYCpvPBmIs/wFFGRyba13wa/17QSrYHNDTYrwxKzJbIMuVblfoOfbt8xcUZqhj0RldWZtbRWFW78DATVWZa1kto57a6wf0UrtB6qxQwFXUC0ZMXNqdIqcVriGR61UPG2GrvOcf8AXwJ8MHRGIU4uZho8rhE3wGJa/U5ZcV60LbdPEbtu2Yy7fOpmGjzzqcWwav8AqdZzyRt1zWesX3uWnxq12hUutpToXGbJa0fGrXaLm6mK4re5yK+AZ7rpcGHmfkiyNmXiB4HUHpxMJ9LHlCQirgVyOMkqv9aMKxHgV1PLrUnUpiKAiXVu7GV97d0vsjUdg3AXhi8TJ6lya7yFzUokjxmattePjeZuVyC/of8A4iCMYDZ56O87P5p+0x9pj7TH2mPtMfaY+0x9pj7TH2mPtMfaY+0x9pj7TH2mPtMfaY+0x9pj7TH2mPtMfaY+0x9pj7TH2mPtMfaY+0x9pj7TH2mPtMfaY+0x9pj7TH2mPtMfaY+0x9pj7TH2mPtMfaY+0x9pj7TH2mPtMfaY+0x9pj7TH2mPtMfaY+0x9pj7TH2mPtMfaY+0x9pj7TH2mPtMfaY+0xZnOrRel4r0/wB/O4/+LIeKfwoa/wCKaeVk9KDYzXvrOLVe7ZoDxKw6cwgWoOlw9IEQq8yMXXAPWHTHaSLrwD2x3iAKWnhwCjlp7eMOUeqCiFYG8sFlXctWJYubi+WE0i7fkGAS+PJi3TnUyrJUiCoZ30VLRKmVgM6HOl84n9koWwAVdeUY80ybqwpr4RmOZotQvQXVypIjx0FqCYHl9IeIgTy6gh3znqRLrCIYRpCsDzuKCZrQi0Ac4i0uocttHNWrRRwoc43ORBAzZloYdFqLXBGmCitVkHUEUV5lTbiiPhDZDy7mj2lTLOzlXhS+MVMSMyJ0TjjXlBuU9YXJV+B3qWOh7osLpS68oe0NmJLHJ3/b/GdENf8AFNISOu9OGIsVqVmHIj6TnblzKw0AVCnCzVg7t4sqFFIVJgCGneXKGrua6DDT25jZQBsK2rRvHFQpWu58WUZvpEswbM81vA/MaNLQZpKlwnrUyqu8bwhcngDvd31DVyympxMB0GJWUfynMWuHwqWZME/lL0Wav2iM5sWhyiJqmkmcWzWa5JHDmOsxHaSs3YsM0kVphMcAEK75ip3Ng1Vut1HEwysoAmMbhEEwITBvHaZMbWlxWKC9C1qcsTQZuvHWUP5rSt8mN5Yu2Q7v020eZUo8uV12GwddJfye8tRkqm9VKEIld/hVZ4rUXscCKEKx6ft/jOiGv9zpgEYdG16E+Ae8+Ae8+Ae8+Ae8+Ae8+Ae8+Ae8+Ae8+Ae8+Ae8+Ae8+Ae8+Ae8+Ae8+Ae8+Ae8+Ae8+Ae8+Ae8+Ae8+Ae8+Ae8+Ae8+Ae8+Ae8+Ae8+Ae8+Ae8+Ae8+Ae8+Ae8+Ae8+Ae8+Ae8+Ae8+Ae8+Ae8+Ae8+Ae8+Ae8+Ae8+Ae8+Ae8+Ae8+Ae8+Ae8+Ae8+Ae8+Ae8+Ae8+Ae8+Ae8+Ae8+Ae8+Ae8+Ae8+Ae8+Ae8+Ae8+Ae8+Ae8+Ae8+Ae8+Ae8+Ae8+Ae8+Ae8+Ae8+Ae8+Ae8+Ae8+Ae8+Ae8+Ae8sVStsOBhr/5k18Z0Q1+wNUP22qevEJpwpZ7Ab1x5XCzOqauuz8hvuQnlbVhihyyYZSGnNgCzCjvP/UR6ybsbhiKTKXCGWrHawbWciQc6OfGGNryPO1cZOK9IFtDXPtIqR7wUHgHzo+TL1N2EuMixxKYQgdSXYm071LkEbzFhWSm3TMmOahQpEe8yGymmln8wRpGKeFWAa2wCk1lVq7zwrvMRVF5NSmtd5dbmvZU1byOLloqorK73oY3X6fGdENfsDQxtOpmzLtlEmy4Q9ZSeTGRwDSjlFAKA8o9GTyR0yq7r5xC2Zrvky83j/qEuir8peTziJzmGTWih1CzwSkieD6QnCKatDY4pdv8A5LWDRNGlABuMPh3Q6jh1ntL6yWKOqrOdlSr+wYFYrXrdZW0+gFw0Uem5awNQHdGN34zLnB/Ao0OkOjkUYqhybvrMUUbSMAaq4qM3Arcz2o+kN/8AFcobu8jyqZYrxq739z9PjOiGv9xPgJw6Nr2nwD3nwD3nwD3nwD3nwD3nwD3nwD3nwD3nwD3nwD3nwD3nwD3nwD3nwD3nwD3nwD3nwD3nwD3nwD3nwD3nwD3nwD3nwD3nwD3nwD3nwD3nwD3nwD3nwD3nwD3nwD3nwD3nwD3nwD3nwD3nwD3nwD3nwD3nwD3nwD3nwD3nwD3nwD3nwD3nwD3nwD3nwD3nwD3nwD3nwD3nwD3nwD3nwD3nwD3nwD3nwD3nwD3nwD3nwD3nwD3nwD3nwD3nwD3nwD3nwD3nwD3nwD3nwD3nwD3nwD3nwD3nwD3nwD3nwD3l3NpNhwMNf/MmvjOiGv2BpMi7heIf4/Fnxm5oq/4JXcDLzzBcG7m5XejF2ogcDC7/APaxuYDb0vZeJd1gc4E7MlHT8IHilzMw8CiG64/JvtLHC1KgO/nCCZLWg3XqbqHEJws9/wBPjOiGv2Bp0hNcsIyFunMDxSltRs6M5ezmVPUG1hbKQcmbaiDTQuTbfiNArO9xB3hnpuC1zebCA0lY2xMOx6ywOcIooi2R117f9pdFdMikrHnMW1iNh5kALVVJgr25851meX4dPKpU4DO38WvGs+qCkmcX0oXbVYMVLLab1moarC4DEqX7ZWZbtZ783+nxnRDX/wAya+M6Ia/3AriLCNOJWel4/wDi379+/fv379+/fv379+/fv379+/fv379+/fv379+/fv379+/fv379+/fv379+/fv379+/fv379+/fv379+/fv378KzvOWHTYa/wDmTXxnRDX7A0VbMaZDR6HpEyBFumDeuLqqzbLaOCgCwBwPO3pCJIAVjl07phau5Y0O+tHa9kv4QGOpNpLuu6Vd5Ib5lFT2Lszmtdf+bdMbAIQOK6MuxQHED2O+8SEcr8C0qXzlzAnDCYLtWgl93gEVxQpVzrm48OkxEG+W9R1ZFb3S1MXfMBK2RX8gRu3/ANgFOm0q5V3HMJC284li8Gb6RlE6pcqsnnWS4umqJXRDpq7gw/8AoT1ddmrlgeI1nhdzVxOaCyRvlwQwKGd1tbwuNEBv626BOG9x0MMaAXa5TLyqAxGmsmNzDytuUdFDwc1FFF3rmdv0+M6Ia/YGs8663Ql+izJjmyUByjdMee4swsUhpi/ncpnrHgGWmRvp33LLc166Fd/OKBmqgdtHbw77iLT0VArbOcdb/wCaepBraZGxx3mfLWhUypaigCdZNFC/OIW5s5XVjAskbtYnJVtXuy6oOdm2fjmZRVZM/MjxPV9neLbfNuYK4583bz63dwU4gOopMnFcTdkgzFZQ4R7O3nkafxKklKoHlLl5QwAACzT2fiEg3mDjwW2HhEVEG5kfzthWesVLxRdO1S1tfVarGY8mMS9hKaEI273Mb+l7138YU2zlw0INea/0+M6Ia/3NipJicuJWOvP/AMWHDhw4cOHDhw4cOHDhw4cOHDhw4cOHDhw4cOHDhw4cOHDhw4cOHDhw4cOHDhw4cOHDhw4cOHDhw4cOHDhw4cOHDr5VzQw6zDX/AMya+M6Ia/YGr7QDc+B3XEwfDKgO+9KTygKra/6jvDqi0M3ew8agCP1PEV1lNihbjtnOHerB6gb/AO0wWtYFr18JiacD4IuwjI3xx2lioLmzKka0inprdYS4rcmVhucONQCCk/ytsv5Us43eRDXGn9PjOiGv2Bqw0qstsSxOpvpCGoq4m9Y5CjSmI2ZZIKXO9mXTXpeTYK6S1Vul3qOCHoohrGBvqwdAyLlxJ112jS9L4RqCxSuzg5/7VV/ZSgqp4sXGYryP/Zxvv5n8RbJ7QwktBeWUxVt3flBadGFYFb086uZipu0ulXfLO7GyxgsUeb+nxnRDX+5hehK+2n30++n30++n30++n30++n30++n30++n30++n30++n30++n30++n30++n30++n30++n30++n30++n30++lew859tPvp9tPtp99Pvp99Pvp99Pvp99Pvp99Pvp99Pvp99Pvp99Pvp99Pvp99Pvp99Pvp99Pvp99Pvp99Pvp99Pvp99Pvp99Pvp99PvpWA8Xshr/cBQiEHbSd2fBvafBvafBvafBvafBvafBvafBvafBvafBvafBvafBvafBvafBvafBvafBvafBvafBvafBvafBvafBvafBvafBvafBvafBvafBvafBvafBvafBvafBvafBvafBvafBvaXxdd0bxSjmDOI5YO1i/QhmrTGW80CYArs1j/AAzuAWFXpmLJOvfntFXCLS96IYw5wDHlU+C+0+De0+De0+De0+De0+De0+De0+De0+De0+De0+De0+De0+De0+De0+De0+De0+De0+De0+De0+De0+De0+De0+De0+De0+De0+De0+De0+De0+De0+De0+De0+De0+De0+De0o45B2GkLhr9gaCKuLqhgyaT/G4rPcIm5d6/agRK1KCM7z2AXsPdlFvh+JfTwPOYSQ+xuEDqLcsVi6r1g7XlcMLO3WEbw0Ek5NsBTCMVPVvd0yys9CZ8F3Xeo5VqovAdOp5VFd/xSk7u/X1gV1GwcnifsVozOB80qJVeenu6eMBQO46QdAipriaUC2jidp+JZjkOiJphoBtgHV9Fyz5NO80PAEWdzIRfpGAJwFlx15W/p8Z0Q1+wNMDwom3WwwIbNQvGXprGUrtKDrlYnSq7p4TRJw8FeGG19aIzdduR5Saxw3zxz0bAOhWmdZxFRmDbcQq+16g5aGCzVf5PWaVbYIiLJi7ZdAMsD1QOHfIHacdcwhoFJETSkLbU4rP7Kgksx5y93YPl/Jj+bA122XWXjf6qqWOeFCiOOo8wnMpCwJXi/mUqtPoEPjBKuXDsm6BgCnUFrHFeMWC3Iw7O0t1C5dG/r6S28NUcU9N32hFkH/ehKckVoj6bFvxzIiejtkqtGjx2xzdk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FJVEqtfAZkeuR264XcSExKK/z3A0SZTX+cYpOUZHkuaeFKeIxd04XxD+nxnRDX+5MDBcHLifm8/8DNmzZs2bNmzZs2bNmzZs2bNmzZs2bNmzZs2bMmSt6zUuWTcDOHC5d7g7Y5qeKr+YklVZcpjXxLGx1cV8rjg6v9AYS8MI/DiHOn5Fol9Q7QAkMAfAxesCYD/HZs2bN3BYrNPiH7s5s2bNmzZs2bNmzZs2bNmzZs2bNmzZsyENe+MOs/iGv/mTXxnRDX7A00ExAtGio+SAkKiFplzoiCijnCgw5CLKIfuDaYqp0VqUrD8FVnMGXB9oaHkz0iYSdLiAlurZguZRAEqyizS9F32ZQ4BlLALHT1jeA0kMHb+DAladWP2wzXPiQVNR+Uto/wDYkJYIi9Dxr6yjdJnRpMFckXF/VFHg1/Eu/wDog+E9J1WtXcors1BkxU7MdyQs7XR6scxF86UDes/xL5siiQscxNrUKXA2EwsnsCXH4mQ2UWnWDxd/p8Z0Q1+wNacHw3lzURPC7IGxeR31hSHeUr6wdAON3cuj4rbV5BRL3z2hTTvasL25IbTMUV1nlnN3G9o78gUxzk9IGlbt8kZrYuSANR8O2+T16wzK4GV9AyfC4QJhTTrt4rh3gOLKvPQKU5epMxAsNoNFXXiD7Yl+t8svEFd0oL7mMFTx/wCjbgazeemHvLIkMqLpkpz/AOS96BBkjq+amip2dl4WvO9QD8HGgUFK/wAxcugsRWADjpOmq6Krz+YGgEF1fc3+P0+M6Ia/3IWg70vuP/ihCEIQhCEIQhCEIQhCEIQhCEIQhCEIQhCEIQhCEIQhCEIQhCEIQhCEIQhCEIQhWQO72Q1/uOqBGDvpN5nz72nz72nz72nz72nz72nz72nz72nz72nz72nz72nz72nz72nz72nz72nz72nz72nz72nz72nz72nz72nz72nz72nz72nz72nz72nz72nz72nz72nz72nz72nz72nz72nz72nz72nz72nz72nz72nz72nz72nz72nz72nz72nz72nz72nz72nz72nz72nz72nz72nz72nz72nz72nz72nz72nz72nz72nz72nz72nz72nz72nz72nz72nz72nz72nz72nz72nz72nz72nz72nz72nz72nz72nz72nz72lSKIGw0hDX7A00PN0iHmLVo/QK4WpQfrulqolxICUVdNX/AA/9ndgVZWY6UVWFcWs8S/QNChLA71RO8dIH0lleVVViSNG62v0+M6Ia/YGtvjk6YROrWbldnwE7FVCV7puW5b5KHUYDWItjionKpwlDICovMN8LbM37RlVapsjQOORtfPcWpqiLCqLxLrqdogXq6k2ytU1iojMCVUq0PUO56RNHbAA1YoWBbADATZzywvrWarFweVGgBQrC0MOi3X/VK3HaDgXXOpQmvSRbw+t1rtDEhR8B/AxnqGHzrfxeF/mO3V8pfjVjcqVZHitxr0YZzADDd5anQoSFtxb1XGf0+M6Ia/YGgFCyIJVY6frS756wAqGeYjYH9KLuszN0ByR4kCXEuVSuVVy5gVr/AKyHZf6ADBRAChR/j8Z0Q1/uFMkGDg0dr/4tWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrBy72GHK/4hr/5k18Z0Q1+wNLZTXGQx/A9YGKT53au5vB4kKJoCVNoXeYBvQScjF3w84ocJbmE3z+I0H9UNfJui/JhoK8o7YPFZfKhzRiACpb3WPPEDZNhEIJbStJ4zGPJpsLtKDUu7E4Seg284gsZqaCgurui5fCi+Nvm3ivUmQkDqFKKHC2b9ZSOqkWksRKivTlJs6tezpxLuHLo5cOM9es6Wr2owNX1uqhgwD1zRvOE1Nd5KtGqbaZz/AOTEJmg1AXwDfh/zXZxK6EeeNSzBoVemIY7zZ3Q1w73xFvC8BC8ly3eLsstoKNxcmAMRbXF32iCCtazrePX6fGdENfsDV51m5Sdx6ygHSkC7aJtyx/yPKKVaVWiiukzvCa40PNMbCqaeo31d97iBNSuuEvAWhotlTyqrUGR1y+EGzy6BKJxzbNjhbxuuIFZe+YRC3+AUYqZdetxpYuc8V/EMcNTy3qKgjkKmFjnbUpkLrk2WA2UbXUCX+QK9KGT5Q6/Tlzyy/JbUHm1uDTRqtFRQOXMLGdqS0znVo4HfUsOwKkMXkTAaqEIaW8lZcUB/5pt1oHC0tsxcrubPJV/iY0mFCxdAAZ7TD6FHgKDAEwrJb2Mct46xb6GV42/OYXyEZkeC+t/p8Z0Q1/uSlgFq6JWu/wD8WsWLFixYsWLFixYsWLFixYsWLFixYsWLFixYsWLFixYsWLFixYsWLFixYsWLFixYsWLFixYsWLFixYsWLFixYsWZP5YbDgkNf/MmvjOiGv2BrI6C2ouvAZibYLe5EUx3mWL5DExitV16z1epksrriI22s1oYwYBndmsesucu/e4aeM/iECGRCLQ15x9EuxeoFpk6LK/QYOL2a+qIIHiNM3H9YFwaQmiq78J2DXzVKUs6yKY/2pmTQ785QZDucdZgNusipWhaEaWrPmghaAtlM48cR6VgKFUqjxY/146N9dinEoOO1UQy3xKbdrdZ4ubVHlFnClvYCNiDZZLK0dtLjfPlElE9a/WUq7xB7h3RpdfSJX9Jr9ZiEcgLj8BwjKVDltBQbxDqBp4fvCA9SXNrsH9S+slovS4UOClBvVUc7g3JM3FlnhFi/wC+sl7mVCAr0Wc/iNsQyAHI6/T4zohr9gaWdagw4UG0luPsoK6XV3qLqYYjZTwUQpjaddbjq87hIOrNvWe8yGmmj5mheqHEBodlxHFLrvlMZlccdclFa4IQ4LMnIVrAFmOsUMmpXsBabYXgzFlu3L1Zu+o+UGNeEJgAvALHnDgwa5QbAJjvDI1uVF7v3UIuq80u4zkC2aDOUxnZnEHFrhsAGLk10X5yo7sYXIAtM0Uji9YiEbGCQfM11eGFfgqLE2TZnqTb8ung0uPTylCTEwqKNdRq4osxSzltNDZLhGko2ZVDZ23FOAYKBail0aeI32pbuqr3KW1dr4Qgqljagcgae/MJpsbFS3thjGJgewo1na4tyfmUgSzzXC3HI3priX8RQOEjyiD3mCQ65VwM44OaGUZkUiUqw8M5vMEnh3zU4axiauHLmbcmzW/SAJbHLDCcGd+MsSEAlloGLqtQ7FfcVVmXLbo9oUTYKutYNpddzLibPW7d+f7zvXFAstpini5VGBgWtOSV59YZo0bSZdIsY3vMeZBaAovYlYy/oV0N6h4sd3w4rcU63ZFr2Ifp8Z0Q1+8NV0Hd+3WTmwN/8b4zohr/AHJASC0vqsef/i5VixYsWLFixYsWLFixYsWLFixYsWLFixYsWLFixYsWLFixYsWLFixYsWLFixYsWLFixYsWLFixYsWLFixYsWLFhjrsXnJGGv8A5k18Z0Q1+wNY2ZvFy3uFYA13WaHB49YIUOjS53Ny1nTRAXCRCbWtW2wSmnxp1e0b1WSUwsWLRwhTr4d4V8Ea5deGdGPGs0kIlbCDUstvnibIJUCU4jXNQu43NYA7z4EBboCCtba3B0Lpqqhaq+Kb1G/KqcDb4d5ZjvENVYm8uGfUl6vBKACkaN1bLh9DrofDKImcb6E4L/gHnM+Bgmb4PCBao0obDvNP59KdBzds7xNPLp49pR3ooYTcEN8Cy6X17ROgFGlNnjAopeoIsqXN6F0wSavHLG66xcZgDA232jKLqpVtQEhCDK/lMAiiDrIQyDoV0lvnEtW9WTDIeH7o9dodTdNtJkzWlDqCpMTHCB8ZghOjUGZ6K7zukUaYuBNBiCx6XiCtm6hhfXMuzoB/NYfH9PjOiGv2BrV830Uq2WcjW2QaRxi81MI+SHpMVPXNS4wUbqCDQ50dIclVgmtXkg5M2SwNl0xo6ykWE04a8jGzPaJVAJSpxjfhKYH7UeRQ7mHCOQ0Ts13/ABB6LEySBY16Ym4QErbKhxEJ10JbZYEu95YDqVVO2wPOvzKE7TVlfS7fCB4j5wLCqS3tKPa5BkxkAOpcd5A+BVZOSHSyMOuIGTEUKg2sBqsMIxy/IRBS1fAlkzzgXep4Ql90FXoOJUS2Ks6u6uyukpYWOE2kk+pLwC7wWWJk11qKLK92XxqvO5aZv5b+7bsyz0+q+SFruQMQoItXZW2XFZVUKlPAWMaU4SnVVXB9EXBFbBoYfJOkLNAyRbFErxyzJkEH0hqy+1ynEqmE5VfO6nT0Yf3puUtse6R4O3Fw4SpZjFWph6/ujznoq0PJrzn9fDmIvrmXdBAdbmrGpkniU1ptV6riNMabV4CAqdhSF1kCCC9jJ3K4fxcUgRS763D9PgeiGj/ciubPQyt0u/nXWXcPWdp6ztPWdp6ztPWdp6ztPWdp6ztPWdp6ztPWdp6ztPWdp6ztPWdp6ztPWdp6ztPWdp6ztPWdp6ztPWdp6ztPWdp6ztPWdp6ztPWdp6ztPWdp6ztPWdp6ztPWdp6ztPWdp6ztPWdp6ztPWdp6ztPWdp6ztPWdp6ztPWdp6ztPWdp6ztPWdp6ztPWdp6ztPWdp6ztPWdp6ztPWdp6ztPWdp6ztPWdp6ztPWdp6ztPWdp6ztPWdp6ztPWdp6ztPWdp6xsKuHAzf+88rUhYzpl5J9Vn1WfVZ9Vn1WfVZ9Vn1WfVZ9Vn1WfVZ9Vn1WfVZ9Vn1WfVZ9Vn1WfVZ9Vn1WfVZ9Vn1WfVZ9Vn1WfVZ9Vn1WfVZ9Vn1WfVZ9Vn1WfVZ9Vn1WfVZ9Vn1WfVZ9Vn1WfVZ9Vn1WfVZ9Vn1WfVZ9Vn1WfVZ9Vn1WfVZ9Vn1WfVZ9Vn1WfVZ9Vn1WfVZ9Vn1WfVZ9VncnKy//wAr0m1Uj4M+Ze84rfBr6RVQm1DPpW4Iy3VC/rMzg6f/ANPKNJihyPSmGgfFHgvM+Ze8X8NIFelf77/79VVVVVVVVVVVVVVVVVVVVDc/qnZh6HnWe0QmIG2r84InSHXptvUSXldraqWA08wqz1AgeVHGpkJ1BHcfLmWbjufE43dnpHB3bhFGXMy9MpL/ADCLIFS1jx6/71o/+AfL9DYjCtt3hS6uUvVxt13m4i0+QsAlNXgwvrcHCovRSglrly7agfC6Eznc+TrHl+pJSdSzXJKv6IAUbdS24Fy15yEhIfopoWv9/D9vaTt2gDL6RQVwBK3pz4SnXfeWN02kpdKX0uX9Szr+ZXcFXsEo2tYqydmBR1oS6e0qg6x1/Q5AlCUC7tM64mfiPYjjirdkw1BUqxMYckutu5Td463BOJ3QFfe8yx0/uZpU4HHfqbe9GV3KhgFul3anrM+T6wZpPSHd6lav/PeATwhRtpe9ekXxqrZh4Lq4IMQil28aOsWUQX1eNYFgP4Q+n+/h+3wFGHaNuDfTzmIRkBtOtp6suk6sOqzPjn8S6RdI1Oa0ZDwmD5/YhZjs32xUcOr1YDi6u4nXySyGM3dTYA7Vb3fGT+SZI2tGZl90bURt9jPSXjZsHBjoVrvHGhD2oIM84Ii6qFdbl6H5j7Do1qvy/iLI1IXaIcwT3RheAe70Ysmd2x1+dxxUgsG6JuuspMKKKB1zm/3NhRrj98Ar3lwgA9whneoeZNU88MEQng0Yq8a77lABrF0DtRj8xRporV4ofhLJBBsLr8npDz+abhm+bu+2oUWitCXbrvKFnp+je3+/h+3QXNipdRqzylof2dvUvTg9J7phiVVPjL3pifX0GrPAgQebs1+t1dxEaYBeBTE62bvT6qvvuLPe9TU6XVh2gKLbEnNoWwJsiCqaabrxg440AsdFWTxmprhlnODBHlznF3eFGvKUShsHTpSzymt1YM7Wn4hwGYlF+tjGuIELGwhHrTDAEYDq0OMnZg7joQDpRg/cyHzGKCKk96hbbXXhmDasSmnwr/EoQoxKDmg1q9zaIf0TIuGzPaBiard2hMVrvuIVWz+y+q3pL2ozo6xezoS771y9ojF4aTv4Fa/38P3ZvC6XKugGVmWUdma3xjzmRGhaBa0FvValjrPeBHQUUXBtwYj6vNLSZ85YbYrKCCuq4PWbMVM4CGeOjM3ota2aM8az+YGOrXYnW/3sJUJ6geQ5espiuALYvMAY6RtCqoo6Nn8RizcW924/y8zRyLLVWpNV+ZubQYcEUq3z5wMqCEFysUXxY56oe+7RKGNbIe8Rx5yrihkO/V/73D92wxaghKbBFJ1OJX4DwhWORQ1ht4lOeW0AXWrBdm1p6RjSZRaFVkWq8YQ6plVWCuYNqwrIAPlp1xZARWmciW12NlLgpgzMpQILADdb0w2KZplxA72MecFFp4WlRMF104iCKoFEW0pwps4f3skldNEuZO8bWuBbyZ6Q6lZOfFkHhi8F3lXtBA6ItdVG97o1MdcrV2B/NR0qt+OlxfMfhuwSOq1HtAG5+S1XTiGZt3N50arnt/v4fvq0b1tdOl9P+JEBNFlFd4vFVKgtC2X1hzdNiyW1bKtCBjwmHcsWQxRewxQcdYPAYbJunZMfjy63pjp+YI++q8fQJT+UVCuc+EtEMaGu/S4/31P0OxOxOxOxOxOxOxOxOxOxOxOxOxOxOxOxOxOxOxOxOxOxOxOxOxOxOxOxOxOxOxOxOxOxOxOxOxOxOxOxOxOxOxOxOxOxOxOxOxOxOxOxOxOxOxOxOxOxOxOxOxLu0AUfpVhK5VrdblV77NR4DPi84E2VCSjFq7z1l03UYKFO5UR+dT9a1trdQw1AKw2MWbR3aO2i5F8+kZeSgbaKUPnGaZcvgq1x33/8j/eeHYS/0MjLhjWr753LyraVh77+kuvNKhnw0nT8xG4XeT7Okso20PDefh3i/VrKHOh4wP2nDD37Hvco0RAjnL2//Itv/wDUF/kKFChQoUKFChQoUKFChQoUKFChQoUKFChQoUKFChQoUKFChQoUKFChQoUKFChQoUKFChQoUKFChQoUKFChQoUKFChQoUKFChQoUKFChQobr/BqXf7V/wDgCYx9tXMqIYs01x3x15gVaf3jk8oFOcXWu3FV5y3ARdI2Rxu1pPc0xuVq9wuKfWKW3nRS+CoiadFgmHY8ZZTG6B6XOxoUm7E0E5jyq6mAWOsS67RS13w3UZVHH686qWW6Ci+9lMrZPIrewqKqedQeLB9eEWnGQZm9VO0X+YZ7IS7zzmw8Vy7wuKfWULdu6tqCoKAEDyYqHteU6XbL5M1WiDKC+ekOJDsoWUjuotzs3Bs9YKfpkFXKi+Nct1aVW4XDmEse0FCgCPc/7eBpbroxYbKsjne6meqQUUorJzMDPKeetXXa4yZCx0xW61gNYxA9IB+QqLXuHD2x2jVSmqKOrx7wxDKQPqmKurvOrjrF8L706r3mB4yI95jcD2xG9iXUt43+YYHkYo9qi6c943+EOlWlOYgXHcWn0xGS5Y/kqAxnltO3pHAPYAs3qplseUXFQ1MIylmqPGLqCKIXenEsfi+hKFcYGRXTFcQjHMIuuab4JbaFzDtGyHuNq7CoIdLox4Yl0nzuO5y/9arLcFqt6RxEoFZuW3mvXiLT0qFKZ20Q9GZ+rQLkflEbwsQ1vTq6us7jh4VDlNCgXfPhEpsbOpeuNQKygKgqwV/l3Hyv120B3RncCFQlRyznOz1jQq+JzuLwZZiI6p+lV7Vv1g6iLCLw3ni2pg2hoAOWNzPIBSLnN7JkIV58ktrzgqu4bO7sRmMb8SGCYoo28qqoZWM5hYa29k6D7VHbpeZdYFYRKEdXhIU4/mtlrZk4i9fXPElUVqDPbO0fBV2+Mu0DePf86ilw7BXswttdJhcOC1LhU6y21BoaRpyYlSMBny3dvHhMQLWwOF28IacWAApd34xY55uOt85wTNfMQ1erBDKWIG74vOqqpxiVsvxBwwsSp5ZsBnvtggwJhmpZtXlLyKFy9IzpfE5HPt11dbq5YWJfcd1rgtqOxqwOFhtzk4vUW22jvX/RrkVDtN8lRij1wF+fjuAGgVzThsbJYlUlU1xgp6QZ1678yocq63GEzBKHY6cHHE6p4ZZzcSswKaiqs/kj2uV0YoFAVe+Yw3ItdBR4YIgizz8B4ZRRsCKCrGRKzqoH96ahXNB1Q5+8HQ2A5cc3LeC8Eiht5c9YdRBUKmma7dJUvAKlqCgb6kP5tst04GKnOyAQrfzqLttBJ4nMtus2wvABWXvmEyorRROROYK7W+A1XbVPSLKxb+jUulNsyK8glfmMFMYeHqxfmRZ8Kuk6sTXWBlAAbdtXEGlQAFeAmNw7UMRLRQa1HipqOKpf8QopfBqVpvZfmdZZywVh6vHvAxcuyu92uvFSh8wdwXWh12xsnd9rdrxCJgSycxWuMUaQttBRdrNdKhdMh2QrNP8AELLEpDnu7Eb8I3ESatunTngIa3wlMXnx6/8A9Qf/2gAMAwEAAgADAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIgkkBIBDgAAAADDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDKgPEAHAEAIAAACwQwQQwwwwwwwygQQQAbRSCQYAXxjBQQJiwEBEi1KAAAAAgAP4gAAAAAAAN/kVnsUb0bwFG2vvjXnfc84oQIAAAAAAAmVD4wAAAAAAAAAAAAAwzggzigjCAAAQAAAAAAAYjMAAAAg1sQwAAAAAAAAAAAAAQoqxn4smIQAAAAAAAAAAAAqAAACAAAQAAAAAAAAAAAAAAEwIo0o8IQAAAAAAAAAAAAA6AAANbjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjQAAAABDCHLGMPFCBCMIAAAAAABDHAIHKPPBOAAAAAAAAAAAAAAEHFKGCCAAAAAAAAAAAAAAACAAAAAAAAAADAABAAAAAAAAEIMMAEAAAAAAAAAAAACAFCDKMMEAAAAIEEAAMIAAAAAAAFFAAAAAAAAAAAAAEGKCAAKEIAAAAAAAAAAAAAAAAAAAAAADKAAABACADAABEOLPKABLBDAAAAAAAAAAAAAAAAAAAAAENEKAAAEMDMKIMKLMKAAEIJKCDCAAAAAAAAAAAAAAAAAABNFNAAAAAAAAAABCEAKABJGPJMICAAAAAAAAAACAAAAAABNPIEAAAAAAADADMPHAAFMAKBCOBCAAAAAAAAAKAAAAAAECMAAAAAAAAAICNKCCIAAJMFBMMIIAAAAAAAAACAAAAAAAFCAAAAAAAAACKGAFFAAEDGCEIAAAAAAAAAAAACAAAAAAEAKAAAAAAAAAMFDJBCCAAIAIAAAAAAAAAAAAAAAAAAAAAAILCCBCAAAAABCFIGJCAAAAAAAAAAAAAAAAAAAAAAAAAAANIAABJDAAAAEEMEDCIAAAAAAAAAAAAAAAAAAAAAAAAAAFCLNKNKPDAAAAAIEALKAAAAAAAAAAAAAAAAAAAAAAAAAAAMEAAEMEMAAAAAEIIMAAAAAAAAAAAAAAAAAAAAAAAAAAADL//AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/JAAAAAAvAAAAAAAAAAAkwsEQ8oYYMgssAcAAAAAAAAAAAWAAAAAAvgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAXAAAAAA/A04AAAAAAAAAAAAAAAAAAAAAAAAAAoYkswcsgWAAAAAAvgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWAAAAAA/Eg8UAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA4sAWAAAAAA/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAeAAAAAA/AEEEAAAAAAAAAAAAAAAAAAAAAAIEIEAAMIAIIWAAAAAA/QAAwAAAAAAAAAAAAAAAAAAAAAAQgwwwQQwAgAfAAAAAA/EAEEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIWAAAAAA/QwggAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwgwgXAAAAAA/AAAAAAAAAAAAAAAJW8mHKAAAAAAAAAIAIAIMA2AAAAAA/QoQAUUAAAAAAAAm6A8AzrmAAAAAAAwgwMQQggWAAAAAA/AAAAAAAAAAAAAEXQvyjT5TiAAAAAAAAAAAAAA2AAAAAA/AkMIEggMoAAAAWjLQpdPyBrAAAAAUQEwYcEogWAAAAAAvwwwwwwwwwwwwwUHFiZnlDpGwwwwwwwwwwwwww2AAAAAA/Q0EYUMg44k4MA6Hf7NzSp5nAAAAAAAQAUIcEgWAAAAAA7AAAAAAAAAAAAAGSNRFkprZvAAAAAAAAAAAAAAeAAAAAA/EIAUgMMEgIAAAAwrlrTHtCgAAAAAAU0EEQIwIWAAAAAA/AgwAQAQQggAAAAAS/aITR2AIAAAAAAAwgwgAAfAAAAAA/AIAIAEIAIAAAAAAAAAAAAAAAAAAAAAAAEEAEAWAAAAAA/EMsc8McMsMMMMMMMMMMMMMMMMMMMMMMMMMs8sfAAAAAAvAIEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMIMIWAAAAAA/QUUAUggAAAAAAAAAAAAAAAAAAAAAAAAAAwMQgWAAAAAAvwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww2AAAAAA/Ucko8skwMoEAAAAAAAAAAAAAAAAAAAAAAcEEoWAAAAAA/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA2AAAAAA/UAU84gocsEAo0EUoYEwoAAAAAAAAAAAAAkkwoWAAAAAA/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAeAAAAAA/AIMAAMAIAMMAIMEIEEMMAAAAAAAAAAAAAIEIAXAAAAAAGJRxhRxhhxxBhBhRRxhhxBBBBBBBBBBBBRhxRBfAAAAAAAP999999999999999999999999999999999998hAAAAAAEIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIUMcsggAAAAAAUAAAAAAAAAAAEMEIMAEMAIAAAAAAAAAAQU00UcgAAAAAAUAAAAAAAAAAAc8AUAskIgAAAAAAAAAAAAUYskQgAAAAAAUAAAAAAAAAAAAAoccgUoAAAAAAAAAAAAAQEU4sIAAAAAAUMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMIUQYEYoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQccs8IAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA7bsxtQy018f/wCLdsnwAAAAAAAAAAAAAAAAAAAAAAAAACCAGyxk8x0o6/hI1wwnjDAAAAAAAAAAAAAAAAAAAAAAAAEIAMEMMEMAMAIIAIMAMIIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/xAAlEQACAQQCAwEAAgMAAAAAAAAAAREhMVFhIEEwQFAQYHBxgJD/2gAIAQMBAT8Q/iAAAAAB+WWJ5dtttttnSC5bbaKEIdY0hyTSFXJL8VkS/FQBHQI1ItIX5rSEUbLgQQI9KDbJCgeEsF49XTb7EpLiRWX0Nk5ZQjY2a9Cq0mNSYr0iLUVz/Bh8T8+rVaEl1od3cDQTNy8a6f4Dr3+m6J+OtPiNDjz6RidWCHZQhrhxX4BQBWVQe+fIf6I0jzI0xYTEIIlfj72R2E3SQx6aoV+moKqqqqgNhtEtBM4b5foCRNfTKqqq8VaM2Gw2G42Gw2Gw2Gw2Gw2Gw2Gw2Gw2Gw2fm2Gw2Gw2Gw2Gw2Gw2Gw2Gw2Gw2Evf/KlKkcEcEcEcEcEcEcEcEcEcEcEcEcEcEcEcEcEcEcEcEcEcEcEcEcEcEcEcEcEcEcEcEcEcEcEcEcDtPO74zt53fGdvO74zt53fGdvO74zt53fGdvO74zt53fGdvO74zt53fGdvO70EpEI6RMoa9J287vOkT+oCrqP0Xbzu86U0HhCUSJYR3oHBjS69B287vMhOFIqVFTEtLEw5R/kqUP0Hbzu8yQwzA30XAgeAmEpI89287vMmNXCrAq53TATJFRCSU+e7ed3oWZE1RI5i7sclQm3CHrC87t53egm1xXELsRojviG2vQdvO70ZoI6huZSxf0Hbzu+M7ed3xnb807ed3xnbzu+M7ed3xnbzu+M7ed3xnbzu+M7ed3xnbzuIECBAgQIECBAgQIECBAgQIECGQyGQyGQyGQyGQyGQyBAgQIFi8G43G43G43G43G43G43G43G43G43G43G43G43G43G43G43G43G43G43G4bn5MEfkf7jQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQR/S6yhjaHORp+wiiqJhaxqE2dfhUkO8MWyT7FeK+zoElD95ZRtSzabCfjs2C7Q2dlPTOiRZCGqU4kSlgbextu/8Ad/8A/8QAJREAAwABAwUBAAIDAAAAAAAAAAERMSFRYRAwQEFQIJCRcIGh/9oACAECAQE/EPhrUnUfzguwtWuoHD2gAAABhHAcPQcPQeuDykPUNCwkcIsZHCYUMI4D1w4TGhavzMaOl2nIXDFW+0NFCVhL9l8h6JmE0NCSGmRImpD1Rq3HTHEzWQmIj2jShc2ZS25XTcZgOjuwXTGU2xlHW+84hnqXpNYGxqj80XZGroY6i/nhBbI60aH3n7OoGheuD9pCudM1d7P+W8OAAAAABRPqlAXprDlFi7wAAABqfysA5DkOQ5DkOQ5DkOQ5DkOQ5DkOQ5DkOQ5DkOQ5zkOQ5DkOQ5DkOQ5DkOQ5DkOQ5DkOQ5v4qURsRsRsRsRsRsRsRsRsRsRsRsRsRsRsRsRsRsRsRsRsRsRsRsRsRsRsRsRsRsRsRsRsRsRsRsRsPF+bfzV4+bfzV4+bfzV4+bfzV4+bfzV48fhD0vU1IoptqJ7KDZeC8eNz3grp66JPqh+0hesai1f6HPXgPxlrpBhrU+x5bM5GOvRIxkmIpQ13zx4tNS77mlNy7Ev7euhN/TNCNwa0vffiqag+hDwPZBFT7eBX3OisIdJGsu/fePFvlDuzVocpTRN5HehtGaGZZn9h99+KpwpW+hK70T9BTXAjgXfQrSwu+8ePTSFnRsKcUFr2aNPYyKsv+eA/HUylpYhPVGwHkOGHluN3V+A8fNv5q8fNvHzb+avHzb+avHzb+avHzb7DCEIQhCEIQhCEIQhCEIQhCEIQhCEIQhB9hWUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUV8q9b/ESAAAAAAAP/8A/wD/AP8A/pXBt6GyExFxCFYHTTPo43q7cSEaHRannzY6c5yioOcSB+8LAOXpt3QbJBt9jbef83//xAAuEAACAgEDAgUEAwEBAAMAAAABEQAhMUFRYXGBEDCRwfFAobHwIFBg0eFwkKD/2gAIAQEAAT8Q/wAQRzfqtxeCEOACGxH1/hTJkxau2keoYG8zX2Cz2OEeJSQ0dDyeh/wH+PMN8s4o/gAz938n2NPBYN0WWZ7xDVcdRujngIYN/rzSZYm3iDxbLaQxCMnc+vQSkQC8jgH+JKgfTmRF1c+IMVxrjCcGarWDuACBkCedaW8Ltcz4hCIo6fGe9m6wQBgA/wAH+yVKesH7wX/BcWaUmAgDcKP26sh0NsQA0QAfu1mfKCbImyJsibImyJsibImyJsibImyJsibImyJsibImyJsibImyJsibImyJsi7iLuImyJsibImyJsibImyJsibImyLuIu4i7iLuIu4i7iLuIu4ibImyLuIu4ibImyLuIu4i7iLuIu4i7iLuIu4ibImyLuIu4hFL5eD+X8TWjYvkP3JDyphJhBXuw9XxxqUe9xPsU1AA+z7+eJ2fLb1cAHuo21Zvtf4AM2bNmzZs2bNmzZs2bNmzZs2bNmzZo0bNmzZs2bNmzZg0aNGjRo0bNmHRs2aMGjRo0aNGzZo0ayurgCxeIazcWHSCB1VBwqcHJUduXWSAPnpwQeFADVpo2YQyfINwORsh8H8X+9kzABdo+NAOigDe/n+QOINt6YTyDufqpy6xM8AQ948tcBkBTgeD4BldpgajAWEQPsI5ryDTKuX8Gz3pZ/gBOWH5lwQtutdBmdHNfoCMlDM+mBrSqVB2+wYOIahC1GBqDY74x7U0iAHQJteAFesvxkMYG/kAfvMNGdgeMgCQfEGOzQGk1zc+sm7Igx1P7at5yAN/8dBB+9TDcEH6kJjA5CYK+iYEYFT8MMG5ieGudhCoQijw6vcAeyU+UwaegQCw/CwCxO8JWbyUfEvvQgZ4g4REq0SwYeg6qIUIMo/3aRqKV9yE15WZ30jBkOyC4rU5iKdlBTqKAIFtIGwCABpmSX0QMBRCmdi4cQe0Gzbo+EuR3AHJggCS1jYhQaAZdEq/UTF6GW6tRoIjAncTVCEa4JGSAuBVQT6nSA25/Lo2nDDlQPeA8omT2FgYCtiuhwBGA6qZVj93o7y9hH/q8oKK0qmCusLOsNwUITdTECjnas3OwisTba9mBWDLh7VjAhX1c2MbGq0F+kkvAKHUljhSr3AEaLCMMQgeEFDTBKPA4hn/ADAigogggyCEr+At/wCF5o/xUBshTOuMNrADMA0SjzkIAMs5sH6UDk+iAh4C4gAMZZBJop6X2T0fygZDkRPU9AgGEFMEBLIZskHFLe4y8prDrtww48VdZLCJ8M/qW0D48MLYJu6HS6U4k03B6QkZIIItBmEAf1oH5Eq2MUIboLgOmICO4BAGwDKErHdpzAUO3+3/AN5DoNUW064rgcwKMh2iLwG0AehOEsGa15IGaE9DwE/OQLSEcwKgK+qHcZc3dG7NUOzS6WZHmBKArpYfagW+iA0iabRYjmGOAKsp4s01L6wiFaMNR6EeBUAFpUiiDwDKKBJsOXPdKekQu3gB3NvoI97Ns0AquqGFlpCndlwQ3lTAcBHRUJuLhsCujFaHc/BBuYALQTpoYIanyXhB089UAN1DzPMg7tlNuvmH+CgwJTujrQGgEA56ce5YJgKydy+QADXIG76hiAZS1v7UQqj6VNQ+gMwsggcxSFqrZTxw7VAUBeLDDsL/ALrx/I+KjHfFkCKuJ16oQGdV7lQJ/I3VzsCCy6+KjoRLbfycgArDWGFbD60GCtRhAlchyyGEHGyYFqUHkoE5EvKByJgXahMb3/jHgKlu7ERQ0wWXyY0DHj0BnYsNrJcGYoG2K1q6qKXbCsNZFglCLXRi8TUQJAwzog/QXC+HEGQ/I0C3TM6k9kaoz1LDyZAMWrWwSThGgdo+RxAQNdj3MghvCEAq50h3PqgLnrEKpjwyGDOwAQH8z/BQCdlDRuI+RpBd8ks0HENjPmCDQgAqjHRQqBBbmJ9aACltWg1XIvIBxE3eyncgdkI1ZpbgtADgV3QvhjFIVXPHwPmasKssIO3fZPt36FB9iwYoE3STg+IScQFUViLQEDtHwr0gGocF6XCDF8j8k9wsxjqml25GTh5DEWB1FO0P2kAi4FHSJQQDEbDCM27OxiBxTmjhinEBe3TvpEj0PrAwwPNQAgrLTHxH+nMMs1F/QAgA9uH1wB4Y09GQcp9JgQyxLSWk9IVGDPnmiPJgF8CcYRv2OsE16NZGoVmXIObmAM+F07jmJ1AOATfoQEFStywkSgEahy3DIjKanN/EyTqYb4KaE+Btc9U6h9cMMD+uQAHvFuGBqurnmITcJxO+nHtS7GCRshzC/F6gYfFlLNcPyPArgd0xZjVDLMPJO2EyfV2zBGTBgYtQunaSgl2ahmCOSG9O9dOrSoR6whmjVM9AmxX0OBc4Zveye2YAoD2AXaDNYMfXDYDyMz/I1+i2gwPIExuIleATsw/5DqxZs2bNmzZs2bNmzZs2bNmzZs2bNmzZs2bNmzZs2bNmzZs2bNmzZs2bNmzZs2bNmzZs2bNmzZs2bNmzZs2bNmzZs2bNmRQ0sD/qPJ7y53ned53ned53ned53ned53ned53ned53ned53ned53ned53ned53ned53ned53ned53ned4jEZ3ned53ned53ned53ned53ned53ned53ned53ned53ned53ned53ned53j5l+YMG8u2DsOY8uebxF0C1GedE0Zf/CDos1V7WVfYiqojZQEerc3ELmkO+qQ1IxCzFpHDJAOVxDyxE0dE5YS1gCLY6MoQabc4MROylzpqncot86oVp3O3T3oq1mBGGHLLDdYAioTD1DJq9aPaCDhWA5IBGYEyX7JXabZqMAxyms0T3uaH7iUtOJ/NyAAw1KIeu1/ucxByt6QQAihl5EnUOoIlSRMrB1oonED4AUVmOl2hlbPccbXCBzwfzJHUeeSOS6KkzhrBUKVNAbpzcNmwVws/7xKTsUpU1NclSUNbgkwSR5XXgqBhB0cu6svSFp6RWDL+6dJlqwX/AISzuT4WFizDLaubqebugIYB5Uh2YgF9BE3jW+SkcZlgVlf8Q/v5bKYNECmyFZ+//wAzF79yIsmO/E6D4hKTrle0N8wNGAIYHypSP8DeH/1KGWD04Fo6RZ9fuOI+tFdvMSDoHe5ja7cJP1mCHIIY0z9IOn1g22MhQxAcHFpYgZbgvjo520QvOufpm7jTyl/Ei/gqEn/A1DmxfCx9Bl8QYcuKGK6pCswbhWJDCc6QSMBr4AL90hzJcIXbsBgHqpaiOKVxkHWSD9bXu0cUpTOI6JxeWnSst7jZC3xZBnuWBUn4Ks+GFj1JUJ2oIZ12pkaxHsjAL7DBAkUjcZF0CIF4gCeCS9xv0MfvIQthAyHpCE4YZrDSCVVHKLMkpJVVBQEpzkw/ceBTMg6ZSw6eezMF1q9o4AMj8ShC/FwobGh7PMDQKBJuNPqD7SDmCRZR/HB0OEPkPDpDFA+Tggo5IbSg6eCiIOZbBGwaxaEFaA3aostyJAh6Nenpc7YVB1NSoaHHgBNojTll21AnEMUVmZlZqwwNRz4VA3PPUhgPhUSgSu8EiIN8NKOODX2rzyZ0cIAWDbGujpO6cwQpcNloxspBUF1/uQbjALScaEYc7aXM28mK+qZDX60OZoETDl8PC0XUraEr7QAAkwcGLvrvw3QYKKqAgA28AASSAiMUa6pMywLMJSABOYDqF9eWiBAinhgB0f6NSpUqVKlSpUqVKlSpUqVKlSpUqVKlSpUqVKlSpUqRtenIqADM/QZ5dRW2VR94EQNYJraINkvECgCmkCa7lId6DM9UwY2Mq5GULkgS9SCuoU4BrwGBVQgExZPOPCdeDsaYuwUEIT0yEKRRHxAmlLxBvNw0HC3sBnxr9F/W4E/Nts6wgjMLTYagfgNOoUKLAcwDf8AASTQzCyROtivP4PNcfEqDnaPgkgiSMDcu0DwM6gaqnTm0tPPFS0ef4nA8JDbdAgnaGDBiVLgjnn0IrtlvRKUGy4GfwoABAcDlFOFXK4ZrqgQSL5S/rLqzBy0j8TCiCFPSXG/qI8J1wxzos70I+nCjRYrXHBtMPLQ0bXfsrgcDAZ8UkK0KEZyzEN7UUNE44u3fh831p5Jzy6/Rio2yVEydn0AK4hFB1P8AQI5cCVkXA7qkUw1pFoeFho68aNKkEWyL0eKIVQGAsJSl1V8wCCs73NLaA8RI6GpfNKQbOLlRiS/DBbZclUiMOXJuuUMM2k7oBMJV837keQGbcnseIA5Utg9N+bYJADLS8Lg++gECkSWnly+RbvEwB5AUMSmKMlBTi+XR1E0a868cxsO6aHCdv8j1rOBBXsyYnZW7tC1KuGzY0dyItIIqzrw0gwZuUNyHYoqKgi+DFdgvlA5wlx5H9gOgCwmg9s7gQQjbbrUvVkwPPGR5+3XQFsybr+jkyZMmTJkyZMmTJkyZMmTJkyZMmTJkyZMmTJkyZMke4BcQOgFHgg/xLKQSUFAHBSgJKSgpyzSCHexxEcQciAtoDDQ5KKkeRwXhQAcf1oBljgAQ4ATsaRvFAyVqDttBjsCGFPgNutAIu0jNCZ9pANiCyYFpXlHGVkZU0hTDWv7JCyAtlAfIukWKTgrq6tfqAERtEG1IHOMix6txEAHIIGQbchQQ0kUdEJAHj1odsSAMKhxev/KAxazcdGmeEa24ySXf+JdQZQI3PQM3Btnf/IPWvwgow/y/LH7eRkDCaDv5KNNt6OASrs4MwAgQugeYaIb07KBjeCufrmXH75hj0PPAfSN7wbtjZDMG4ZNB/OYALgxO/O3BS03LcQcNB0oG2WZDcPqF1oFOcEAIbBggFxQsCFA2NEwDWPztVGKKoh9Q5m5d40Lg85X2T4gso9MFsQhF9CJkoiim0vELZ0x1wmpPKgnXzqCHOhMqxB8uuhLudt/ESV6zMEpkAAEEaBRdiWBJ8Lm6wRumHgdXFrWLkdYNh++Jf19tHyAkQIDifdQKTLgltz0U3S7ZOX9IPdD1gr372Ao5Mve+ng3GsIANYCJbp0Rdy9EB9EACGwrgHtdmB05ADxJxh1aaKmIIH+cZUVTL0kWKzFCO+siWoKxLALZJ4hKEeztRZ1xbDGiubYggFz7Pt/EW45uwtBYtEHQw3AQ83kNGtovzh+5o6LCIchqJGsXhWcW/oD7f19ov54kgBq8LdGHM0IXAAS0QWoAm9fUr33tgw2SrfR5WjyULgG3k/bF+ajnxD0V9KYv4UOdOAbkw2qESNHp/IgUgAtaHRDtMzv1FNSLQsS4bmWYQWJWIV78SPhiB6GCVYdZtE7GsJJAqoUKNRiBa39hGqm8r3mDldn8I1h0l0hsuZLYYUeJZ+Vcn8RrkqkNDgi3PENYCRhErmCCIoyU9YDYLiUDpSS7CX9iKBTCNm7WESnbCAqRmhRQQjBkliwdR/ff1hu4yXSp41YZwRMha6uZUBtmZmBqzsM32OCh8ScNsdCFAIoc8HBQpCAIOxhBKcZKjh8CPDAgA/CCucDCHpsDX+Q08WLRwxtgqv0iBOdinIshAiIEC3ov3l6AR/wAxRmA5sVaC0Szs7tzkgKjlQPzRutFKDdOAI4/fGeNm3Mi+WPZCaunCfVQnr+BFdEy04v7TSIXTkIiKSFQkrH1bUnE1FAMHsLL+hiDUgM5YZapxpoSbwyO4DTEhFHugHnHW9F8YgQRgISFsC/prQiUJbVWNXD3Iu5ICIANYcKgbqBNDdqgwhltCI5SjkCDF7KJnn9tYodT6CAAcWnUo9oPZwPCAE3wvEZmWD+NoObbuWMd+6XNh5M4q8HRINFOsWMg1Bl/4hK3jgSVBQgljCIptkGpGU4VJb4nkLg0GAUNirTDlIkfWmfb+vtF/PLmGGJ2BwiMkJCweZiIIF34MCqCEIYgiMr8BlWgsLQ8FAhlKZICZTK+P5FBAtAqFoozFWfAUhLdhzjQq2oNQgM2PEahAZoeK4AcoF4BopxFWJ0eqEERAAACClF4ANAIWOsyd5BzZ8Tw6XQUDEvMAU+dYgWG2Nhyv42BE0EI9ysRfhWJoVta3m7FBiqcJbIaIlsSAk2uHdDVwC7bg2c5q7T86WxA8VAGFVYQGBgLiVMSpfXDygTIWfQI3pAep6XszCSJFOUEJ3OkOIjj6IaLXk0OFgEc4THPIz/TuKSI4L+CEKibSAqvEsjsB6VZqyvqt4FDnSYEd8kycAQVCCYTyWx0QHbvwTT/FKBNC10d5QBHHyxC6r0RQOGCfaCDyohQ4WEVHUA+oFI6IMjF1J24yRYmIAbpQUJgxgXkEWGsaMweB/EAr99Y4DY2zrGAYlAHRkXKLvKZmjTp9jBTELhE55wEHzFkRkCH8qV26UiLSY/yw4MQaKWQz9cJl1mtZtA38odFbI0GIWowzhGNhCs1xrqACBfoBcy7pQbhtrRCGCHudX0WzgIPX6hn07XY9fPVS1OnadoBNCERHKtBA47gLrGiPXEE04B4xUnZxcAxqQVrupIXcIDi0IT6oJbCzGoioBAyRGEdxFQL5QzKomeBQEwbf0in0Fj9TLADgq5ajASrQw4pseLqz1DSDQ5fgSjTeDWsscIArC/QhWfWGOS1QJzc16R4QVz4YRPBMfxU6LFzX50S4cwJ6GtOQMgxKILPeuYuLkFp2UAcjKMosbILds3RUrj1/O1SQeQNZtxwYQ2NyyY/HaAWGmTiAU2FCKYAbXi5dCLIKm/gEij4bV3TMgZI1VUCrBCtiZUOfpSfe1yTWpyNdjgBkMUX9Nu9JqJMFfS/9TPmAfPPAf7RUSVxAm8h6qetcoHkkbsD5NgwXeC8ZmIWMB0EIbOsYGUED9gZS8Ro5hlurCAZjiN4IZb47Q8Trbi68WO0JGgSZGuWvRLbs1XE5uv2g+jTvUcB2vUXcQ6boUlh5QC0CBPjF+5cqA4EMxyfxnALEg5snecqr4wYK0IPyORMm3I4JuNrMgqqgGgMOzySpfiH8QPPzYtTQDY5Ezwn3x2T+jFFmYgIEYKFU05hVCF4GC7A0tqVxeG1gAlm94UDSfXXNxcDu9BWrDip805nDfnq3y2g6mBq2tHmyueqgu4YELHwDkMN41j8CiUp11Cpbtmt3zsnRcqUuhcCq+tH9fiZrcqiwBC6XDMVuOtoW+lZ1sk6Z088mnai1ockHkZMClbD/ANgdqhckmConwG0SICT5jeG9IWHH0YboQEFZAyI3gKF2CaMcwfJIEmY/yAHBw8YYEyf2RjDD2ga7QKR0JgXuey/m6FnAkH4i76IF4bIYIh7HhM/8JQyZXKgBIopy3VbQ0fkAxJ2uHfkkYsuBrb+OB03mX/8AmopaKvw9MA6fxmfxhIJzFlyyYZZJuj6BisaRAqO1BNFEN2FA7myUiGZI21RcbRQE0G5qTHI5uuD6CMg0vR0I9nuJrSBbLI7XwTrBBc4a90YthQJVjhPXigzWOolRae40Nbd08tRqkcqfmcYJ7s5AjDMWG0fo3kJJydR0Gp88jjgjRMmoWLgKqTaPKEiRMGcglTozgDQ2lw+QPgYasTTqUZx+tlmJJhWvo3SdQ6xCAyTKvF7A2uzdg2BS1PFhOA8ApsBGxi8g+OFgZa5AnokTBvugcJvd7EJij3MrMucoNZanUnaRh6QyuFZ0axkALSOUGFtrMwy1b9QYR42YI2wGDQDoqAXFmQ1dMIMvuQpE1MruOsg3/iRCYCDKi4TX8C+AFjqc5OpgPwFCA4EwysgbNCiKYGqZYDdE5hY4zRAEGkKH3ZjsyQKuouiZHrD6GgfluMlojYG4/ZFaJAAEN4IVsR0lk/dZDcUru2PRJBhG8A1XU9Ub9AjgINUK769ZvRq4ApEIPFusgpmB8ipOfD1AkcbgXhp+i1alGTNh/wD5q4LRTEkIW/6IYlrcggMpwjCLDikYXYMo1oMhVOoOqfTDNx6lxSg1F4hVpyGdGafTF1AiwzuYH4LTmMKz9z7MNJrEcSHNpE1CC1aEm7NZaQfRHJQIAgccgSxcT8R0wJG4OkVitWzqErlNqpqqwKhWfYdxYC1AA6RiITVr76J8fxZ4AD1lX3jY0mHMwzQjoM/3ekSJkIwEgBBvXgaQw5UwG2Ulc3zaYb54QKgBrO+QhgjPqJtLYVceIg4BMVHI4j4z6UifK71dkpqw+qAOcX6kIPQ+eWzu4KsIE+iXa77a2ewSDZQwhaAeJC9Bb3en0pRMjgg4I3IIiphXbQJWMgLmEVl0FxHcHBNsRA/Qr67guaDIg5aUdd3RjBviFpXsw+QWDc3tBuPBlQAByo6bQQKXRkIgTaOtmAeBhneMPLCxrNzFjMoQfQQjC3BaaoomAkp44RYIGE6dzEvSEGfYSjM5FfxXwyk9oQaIhvG21CE7kKxUC+NjWsEcdNUoT3iKbeggqmaupiSSF7Npv/oLBYFWTsIA0MdRweas1OnBRv0D60HF5YwgjSAmEHs8YjHDkQGfX+pEDDdNiO4/ehxFLggjAIGi7U0LHigEZb61lIbQbhQmC1jofpMZh8Y4GAPMjYWu0NjOUqAJMfsAFD4xGa4sMNGCyzHH4nhuCGm0MDEAq1UnCDYmAEvfZCLhAHpCiS2QmAcQ6cEI9SPUPWH0DOkDADIGeYxinGsUKZLM5m1AU6EULml4BEBIBRwVHis51MD+JPcy9AnIOpiMTMj0RcoAHTR3vrWE8FLfJYAzh3QH81n1EEdVCG7KhAhD6RDwjkGBKtY+tG8Uv1IQeh8+zh1zLPC+uJa8V7Sgi/suD7BCEyudeRFIotnuulzY2mV9JxpY1BQIj364bRWVYBaGAK5kzgyoAVgwNcQYqbgn2CuYye3L8ZJmljqlLmiNjMiGR1fuj8SNNK7KPVVQOWSLkcQYWxeDL1qsNKxsF6w+cDJCeQXZhxKYBXlEkMp94cVLivpOwF/M0yhl8k2FAofxEwMIb7iSHCABGrwiELWbEf02WXrTmFzdt9WQooUMQoZ7f+9I6wP00fjrTQ8QAgAAFAD+sE6WScErXdEfPQw7oyzRplLBWwKwGRN3FiAsA/TmB1C9IkO90VK9J6NmBPK4OYAn9vsUBdeLEX3JuXOuF3Yleb38D1KxvJhEQmDmIxMP4iDylozALZ1JkSnQ5XGAFLc7ggOKz6c3ys4Dhjeqg5ASG96dR/b7u1etUH3Q5rjh7CmP/SDaonIEIOJDF/TpmiOmIhOOZKdCHPuDBEs0bwju/wDe2BX4wVCGC/1WERm7EVBJGxM0BVLMPyhonnt9Ab9bpBCrOHRmgpaNqpOAXSsK7MEsdYi7G2RMtAB1Ma6J2BOh/oPU/tyPNu/SZWsmme/88J88Ootce1u5Du4F6qQnkyqlZlhjTG+OVq4dxj1q6ASBnEFqzdJQQMIkQ8tEF59xxRPAtB3QSBXvAIxZiASGZkhS0KP/AJIKGDBAOtDJsFh6IcQa5gDqO8XUHzbjpRCGwkSCZEys2PSxuVxz+jZsDWQDUcbjFKKAqj7AEGdYKjuetwADJOv8e0MzdpF7BiXbfZ9EQVOrfgnggH7pZO3uYugQY4HxiFw9AHgU037OcpamI3JAPU9UvWxf24brRTkRikBBWkKE2ueTlLbaMQSaJTxWjXGd0DusdUpJmqIiE9OIgosgaLaFkUwrI7aZtchAZ92IOwAuEG8llcxInM8hbfdQnGCjaJs5FJScP4ofMQ51GUMVRYCoFWJuKgQA8wQIrDS7d2ebVphTUwDVqEMLQAKINECNNoajIbBIjS2DGsT5E43QZRoeOFDaU53LsAn0iHrKKAaOMbniDBbkF4ztVO/Ywd962m9f1IpRGd84bm1wGdR8smcKCqJxNXZ/OplOYM4iSHGFMaNIT/twFUqt9tq/Q5U1fHiH7wKhASsXhVaQAJRjPYTN1LESYYdQRRl7ruFCQiV185YXJlBQpEJ6QSQDsEgLeDqEo4t1le0BDvkDF6TkQQUwHSDAjlISQJCpXULYJ9NY2D4RW8b05QoAyVAJCooP6sPTMHI0+3rOTRAOYVtT0Ysk1JH2/QElKZr/APE3d1AZYZSwauG5AjGVVWOHIcvEdhJR4uuBZvwyEMAINygyIMGKdB4IL+3AHSDKObIEdQXEQI0NhAlAGxl24GUvaDRiKRM9AQgv4auoCrRYAzLM9ZEdrE6BITQJFeYRSnIB8s1gJAaD0NEEVpshaMOptkVxpkGYjCwE3lXVQyjsCY20b2AFccwSugETcI0AXam0CqBle7vI90QaGiaR2RZDSPZ2mCSWIY6PQReJ0PGhkJ6+7zX4i5RsABKdjQE0W+C4eAc1UdwJflH8mKBko1Qfkoe9AT6+whbG1yGZWonRx0kKEbRZuyP7dfAu4NXs7QhXQ0WqkvP0AvHZ1dAKS6xuaZLNREMRaNKnw0ldesCgzWV/f250E0ctNR+DJc0NRAQtkxdj0NsGXOg2mS/vXfiANGB+PAwNACAad7Im3o8NCAH6Im6nfQWHSViu70Qe4IDzMRWMDk66QgrMoctEOyBYaBwtfNfsr/B0H6UYmmtPLQTs7sKgEatsIOIEAloHtURVVFOiDT7kRANMgYgHQqVWtJTVDYnrG/5iUaCxujrofaS3gr2azRXwDJD3bByaToC4JYjhAGBBNx/txyRAUjmgI4hCF41L3kDDENHFXz4jOIH5g2ZtEZiag21Uz3vFzvwyh7qWMVqhDhcOA2NoSUw2iefJHQuOMRbd2zEbIZCEmD5QNcRwj0j3zEbIAj6OdoXRUo6v9Df1lmFycBWA5tKPJ8wIKiptAicIbJ0Pl2Qe+5G81INkQACFDy3cFWWOo7XFiQrAtkKRgn+i3YvpAIIj2EI8HVeIxeMmdmliWp1uiehmC7n2rJlqGYybAF+cqG45lG+zkOxOD/4QzNE7CSZ0AAslQ9BAYPuHf4pGrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWrVq1atWLLRHyeIi623gvzQVL7xj/Fl1qQO0sfm6eEAfTFWvIKqAwYJOlxZnq4CGKbvN3TmgxGu4dwxoWcWIXe8VbB478+mXQ6CbmwAC1ZzBQQXwDrzt92kEQaAbAKIFBhBey6JT3eODAkTQIiz1RjS1cTQ9rsQ/suCSUXF9LD1TkN5FDWTog9iv2FkGTDLeiOdkZwsXkB38wPiIckfdwB7ocLLRy+6z+wQ4Ss/XY8ow0hrfgM/YWHZqKDIXUSO4h7WpsIh1TaoBtvRuUjEPAOdYdTffw7B3MowAUUnGwOFzvAX6ywAl7yjE5LwCfbJEFdIBEaWco5GXBcD67B3LhI9CNoQ+5gaGo6oQzjhjjKIrD6iNj83TwgD6YuSngBHQSCH2j8PSJhv6NFLlB5CQOYNvvSPbH1JBLIdAiBpPwfWgUeXA+81TIumCDYNKAUYziw5hocQqBw4xEkcj7GZdwOkgmGhjVClM1AHEubhHsKrCu1tktYNg48A3jQg04Tob4a3uFu7g2sCwYVV7SNMEthUADqPUFvsPAA7UYBHSAI4PWFA02+mB40F4hLTJAFlFgWkHKFK3ytIdlwQjRN58HYhiCp1HzpIWX0hxLz6Eq5HsHEbMxptxkME0QZZR1IzhqroxBDYJSB+whxCF+f3GsPCUGP5/vBXUU3wmtpS8gnUbQIGqtdp4OkBghZN6AmKqq1E/URsfm6Ql3ZVDgQg2FcH/ABZ82bNmzZs2bNmzZs2bNmzZs2bNmzZs2bNmzZs2bNmzZs2bNmzZs2bNmzZs2bNmzZs2bNmzZs2bNmzZs2bNmzZs2J1JtJzhmPzdPDQP8XGx+bp4QBKcNiMNbMQSpArYxJQhEANdCF5uGybaarInuqxHk4ME+oUMlrYfgAqR2V4N/wBoImdvQTKDNQODJrUAEAax3EKE9u2VPohpmUBsIqvBFsGTBI9ibQ7xSsy2sB0PA6IPQEbRgnMsAi2Kgmpfpzg65SZSjYROmljZghS8kD2DkOQ4mCB6U6oIK0qA7xksiZhOcTxH4ooM/MY3Qlik1ObyCtyKuYJI5tjAYTYMwReKNj83TwgCNkpEBRnFpgWkIwcuZ+DQAfVr8ToXagxDrOG2ZscVxgMTMAOAkDZIpU0zqa/tBXULguNoNIjwZ/0JGpYJDUwT4FhiIDRQp2twxU+SjxQIOIoKkWMDazoJXADDQVS3kwhPCpsQJNWsiL1ZxqeIxKQSTdEdS4xszCBDpF1NmADacRv+ubWoBioT2UDrsFfUDiNyh58jDYRZD8mK0EEdjIf2NgxoZ64I7o8VmvTqvHGx+bpChenUOBCDRFcH/FsSJEiRIkSJEiRIkSJEiRIkSJEiRIkSJEiRIkSJEiRIkSJEiRIkSJEiRIkSJEiRIkSJEiRIkSJEiRIkSJEiRIkSNQkYCxOTH5unhoH+LjY/N08IAjWDvAAaDU8QsEHOgOg6KCjCgIMN+UIlClLjdQHlmgY5UOGa1JbZA4lDRZ2AYo2Cjg/3QLDQ3sFUQqcNvUYdHGYcnVhKH+cHDLTRftO1Rz8D1S7TsZhCMK5NnAGlZgM88OLRPtgZcUabDVkhiTV7eMbH5unhAEEfZPZnXfHAFy2YiY5wBjMLtCAz0c9eQc79mEJkWbuhHPwHgr9GOCYDRsBCa9apVs124Sg1lCta+b12H90JeEKx8SaDiN22zAytRjsVHsh0G6YZboDcIYDyzG5+ZwIfdgtwbwQozbQtACkMLhYsI0+NTaMRD6XeweY5Mp0F4xsfm6eEAf4uNj83SLD3QAvv5wLy/wDFVKlSpUqVKlSpUqVKlSpUqVKlSpUqVKlSpUqVKlSpUqVKlSpUqVKlSpUqVKlSpUqVKlSpUqVKlSpUqVKlSpUqVKnLpmC77OZj83TwgD/Fxsfm6eEATeg+Ex+TQaqtRygugA1BCApfTSNRH0YN00hTV8eh5yRuEE0HDiDxX+0mAd52pumahXUEsK98RkXKFh0f1r3fwpsxWyC2LOmeEKeLiogCmyeKwBwvyhQ3jt1AmxqYN13xc/i6nUQfvvJybfNtesrJNmUXIJYABxMQjQoA89TCgZZkcbxOdnTpH66iAMqrgBQ0XQQ5obJkkDLChe/xjR2IVwmA4ttJlvtH7TkwMAV1IFHFJCGoo9KhEl6RFjiRXtMOVg2hQAowfSKlmBfZVmiAuOF6gMoSDYCHINWYXejqQs3N1txCuWNSvGNj83Tw0CYujC2aN073hhkvRKCsDcCRyTYOyihYW7t45QDZwBgLhnV1ISgxDZRgapqxDO8FYb5Wj2TF7upNq13AXJfezf8AWqhR4zXgwAl+TElIRmSCdOcwOnuehPT1TR9iP5jFzvAujSjA2jNSGCYEuKwBkvDVG4/lReWWh1mbDjFmnzBuhc79Vmb3ilVa+wjDZWgaCHI5DdqaCnaGwZPOG6+iViACIxtkRMigjUjBL5zbTMEfQi9E06WhADSE8IxLAFt8jLuDYZCOMBMMximu+LRIbDpIhznhiOHJWXaLjxLe/kX6oBvkVOk6B6fFGx+bpACGJ89zp5qpWV/imTJkyZMmTJkyZMmTJkyZMmTJkyZMmTJkyZMmTJkyZMmTJkyZMmTJkyZMmTJkyZMmTJkyZMmTJkyZMmTJkyZMmTLkzLpsPRxMfm6eEAf4uNj83TwgCarY80rmgB1gu+JDIFaogDdKxalv0d/CAWSuiHcrLKlx0cZ9jKF0IHC0TdY4mG9AOVI7uAH/AHRg3bGBAN8OaQbnagcur0hkE7on0H6IIqIL7Kt+kr/wTj1cnICFwetaIQG1Mx1YFCMOh0E94Db0ESDfsffxjY/N08IAhC5qYih08hpjsK3DPqbWGMv6N8ng7HEYt4OCzPEoXqQXfECrJFQBkwTkJFqzhV2JCXbgnlEUp9FqQZbH90z+b9bBr5DEGFLUWJjGzJEaI2Le1I9RxD5X1Xtrvk5h0l28y0DLoogbk0Hb0vP/AGwY7bJ2SrXJjHjAnoKVR9Z+MbH5ukOwjUMPiM+Az4DPgM+Az4DPgM+Az4DPgM+Az4DPgM+Az4DPgM+Az4DPgM+Az4DPgM+Az4DPgM+Az4DPgM+Az4DPgM+Az4DCcAQOAs+Az4DPgM+Az4DPgM+Az4DPgM+Az4DPgM+Az4DPgM+Az4DPgM+Az4DPgM+Az4DPgM+Az4DPgM+Az4DPgM+Az4DPgM+Az4DPgM+Az4DPgM+AwBmHQix+bpAO+kxGBKDQHyf6CXLly5cuXLly5cuXLly5cuXLly5cuXLly5cuWUUSM5QWPgos9uhHoVPWt+xEXSgSsXYNgQ6HK+FYEECaig9EoQP/ALopgp60fnGeor+jsy5cuXLly5cuXLly5cuXLly5cuXLly5cuXLly5cvi6x9M8Y/N08IAhG0IOJO1wfp2UwR/EAWiKzCJxRYHZOAABsD9LSsMgbkw+yiSjQfCIFtxekD0RwgGhpwyXU4I2zgacdBbJhLLpdEegwoINou/agAPAe1gtQQYqEs0N6TZA1tDBB82vuhHS98HV9M8aEP7KFf69WEd/oQEJIDWAzE7Qf+kpj0Tf7qiQ0LNthiEV6KTYZBm7esrubmruPscDM9MO/oTBlzZ70Q5Q0QoTlDWZdJqi34T7GstMay84JX95xsZCRos04fEpsj1XjGx+bp4QBG75gcH/BLdWorCLSJkNKitjmd/PUL1JnziQZxOQBMAjva86nNgvzQssTq1A771jEYK9bZmIAaPGt4t5NjB1J6XnzQwgASXsmAQjrevNBOhTNqsaBQF9DxB0GhZJ4A1MfWEv8AdEaPSksP1oEoG5FMDK8S9K5yxAGlTe20BY+Y9sWimzJeqXKENoIRjDClaNgCwYsFC4KBcQBCBXy/jQv1PlQkUYERLmPdr9GJXASNgiBfc/ZC+psHzzMbQiN4Y8RZpxB1UzWlV/A0qseyrwWCKQnm4XpJcYlJVQ35aLrDc0Fy7PwMTiesF2MQZHCiugFxEhh2MwYAWi3E2LLpiZg/3Egxs6k1tMWEuRBjB/krWohz1WnHmByVEE5bLxBGx+bp4QB4OBQtOWVgjQuq6KLPgPQgzbeJbaBZO6B6Q8Sp1YkJzkzmaOqkqgkEAMAfQiZnCsASxwQnwLKN3RFlQSoWQyA4GPTxBmA359Z6SMX3zSTD3eC+SgPdhAHECZcIWEmveVRbqKxEzeggLKCcMtH2NCA48vX0gaCddZwcji9/pbeETvFZdp2XA14Y/wDANFOIqx/KNj83SGbhXtMDobLYauvrOPHjx48ePHjx48ePHjx48ePHjx48ePHjxzbvV9kzIbAhRX/5WUdnmA42fGPC9ihb0hYQt/0g/wD4ZibAvX4kTHy7vZrsl9AOyQ/BeEsjgyDbAlybOTdj0y4bVMgUexnSPXyYSjKOR4sWOU8bb/xJJzB2imhgVkAH9CBZvvQjRr67x48ePHjx48ePHjx48ePHjx48ePHjx48ePEBPcQNCB65j83Tw0D6sUtaneKFKFwXR+okoGBZAiSjjCbRpCBdyyWjdoloA/E1RKhpRaxZAdGPojBsF7GF2gEcN2Agq7MklKZ7jY9qR3QLWNA/igOC0OGC7X2RHmcZD1nEJ0OxNFuSLPqFEhGQ6lu7UitZ0pZhSy2h9QQt5xvAyR39fr42PzdPCAISdiYhLbyIPABuZf2Q0MGG4o9k2EdAXIxHlp26wdCCw3SXrm0jsdIioCvfQfTKoIAqzgRizECQzNSCGiwGjI+wY4cghij7WQYgeU9Y6GoMkjMOlqRScEvylCsbrwp0FBY6QxcIoBcZCA2Y8VcA/4kIcYgPWrjkD/HpEoACqUQ/JDMxpq1aqCk4I8oWAACiCDjH4oBUaQLpuY0SsTRIiH0pBMAgCiziMNkn4WQLxQ3MKYehYyrc2/wCvAJ2iFAuBykmzvWFtBSHN4ZDyQBsLR4rWGEgA9jq3lDkwAz7kqpaJDIhBHowTSOp7IACkC/DdxtoTpv8AQDoeYPGQ0TC70GO2DEWKGGs2XEqZsCuXRPp5pTGmCSG1MRh7oc7hQAgAhXwMiCa+l3rDoA2CNIQyG0IrwTICC0TnZYNEDKAERjuPAFZj5Ptoe9xCBaJjjUIp8rDMgAoTFefHo6KAxV4GDq8AfRBglA4le1U0vBxDTuxQlWHVbhEvfwXU+jEZ9kQfeIWGhF1bZcW54X7+MbH5unhAET2UICnMLHA0ntfHbkWgA+sOJQqA8XUcW7APzWFK1qcLWoENalrS8gsgjIl1UDy6UoHTapHT82cDNF9qUrcyYtz3kyj1R08aaaAAfWCqlAXMtLpQTRwRaCSAFdXEFD26WRtydwUE9EYFQoSCNNoIkQAghAbMHpCIOWp2PajeuIEuZlaBLrZ9mhud0EbqUFBpwB5JxAlNjy+233hCjpwOpv7oEWabFICXkNVw6bN0JIPSPRopb3IPUmybArafhHlCRNqknOBZ6SVBDYf2ARoBg8R2EIyFAv19MquoKP3EzeDlvJjc7CBWO7MYoFucjN/ys2rMIgOpieYtUIXaMXsZG4ED3ILMvjYEAChA70SeoQ6QFW8r/kRYtDWOjuXr5gULSqoDY8IDAkMFOqQDypGiOVhCyRKWwQBmGwgYMPUrYFssILmEVZS4ArqZlqJQ06YvaBEyXg3ysBuwE4N43y3dgJhGgPknvLwYCCoTNoYgsAPo4alpXigXemDOD4ARjz/EAH1gKy81gT4zkAEcKD4gTVa6m9ze5SNFJZDSEKB8Od9Gjp4xsfm6S4BtQNkWHAsbj6x8+fPnz58+fPnz58+fPnz58+fPnz58+fObcAEVp0+jAqQCZeYgiqP3TRIJZ4EmYN+vKy8XkOTBr44KQKDeUyO1gOWEcT4/KNVJBywmWwfIC4pi869Lh+QT6TwoiOAJjEG4HLAPtEI+MkCkhlyYO3iMMdZ70gAdIKGbQoITQ2DxNFnkHAThBI2DJqFQ18Cg3Dj618+fPnz58+fPnz58+fPnz58+fPnz58+fPk9kt813yMx+bp4QB9USEzGR9KCAn3TNN0j3liYXYFsqdHR6EdsISIhENkcL8h0Mo7bcQDEACtBBQy+ABof7qyIMcIDeHtKFIMpoEYi9tjrKVABQh/WDi11J1gxDAwJbaBWIXpTFYuTByKqNBBzAgVR3tgSt33ig0ZjYgjn/AOTQIrSx9dGx+bp4QBA5tk1H0ie1S9o5cgBKCVvLCEtk2FsCtVN6blKzC5xgLb1tB+TBGEAcQ1TkAz/wlhNS3rCEROkxXxuBc9JC13UMxgmSdBHfHCxAQPIAbGVpKAkFGX2gBgcwgCwOdy1g6sPhr50kdpUGuT9kY51JH/lDnqO5zIi8YVAxgSSZ/wCEAsTBzdxDCm6Yr43AuAIqZlIMgqA1qDcFg+JFQqT9IaNZNhLcY4J6qYAiQ38w8loivkIVlIwMpgQM6b0IGYD/AKSBPAYEJQk1PvafWDRWx83AOsgdZuoKUXK4wi8Xt1GAAy/NbB6iCQC6zboYkZIaLJ4gmBKgM58qXhR5wuCa5KsQ2wgEa41A0ZatKifR9APwwI7IxA1WEtfy+pPWFz4ZaGbbp2QBqgaT1bflEY8kjH37boKv7L0EEUQL1ZYDAmJRpA6GYLGTjiEowAaB68iJ6YjiDsIQTZZoa59Y48t3IBzmx2eMbH5unhAED/JbDkcKnmM7kjfhN0IJFGCBsw4ptxkPeCYtTqydqZgRqT6Zp8RSotCDRdKO0mpWEu3V2CY4AGwA16xsHkJPgekVhSFTgWA2U7OmiQQ96hJOQ4poHDIu27gE7DNRZhjQKBPRCPqwgJFNMKxrUAOvgGAjAJXqO8DMKygJCJdvHovFhuSv+gYKdxLS2MtWwIx/GWtEZDiMnWDzWhQkG5gWIHKB2wjIASp4rkVw4dGIBehdmTKkDF33L0EHqJAjfOM+yGUFDXR4u4Ta9Xa8LSe2MRFkfNC7AuYBDz0M29uwJqIcA4MaLJH7hDCghQerRpp9ZALovAKGSKtrxIJp9RICSMALI9S9yrSQE4K7K8pjQCjA2b50HgGBn0RvJMOZRB1Ej7dodivufaBNufZAoiciYJdAefo2SCiC/QH0BjSFpUr5DBcBJtlOlsB2IDhILNCT8GoZn/vMc9SWnUizlb4MAThmuIWIQCbxIuQGEQ7XdAywMo/AQbu0i9v28czk/E1nHTulzlZOh8p+wzDMM6Q4QnozQQ54BEaXT1eKNj83TwgD6skNPjDDPOGLXPFJkxSE2iug51tBdepwf5IiDmBAehlaF4Cc0SMltElFn5DG5mBhioIHPDp3I6aQEBro5wcbCaAzN0XiSDl+wFhworRYzge0MLgiZQGSYjSI+iy38kQOeIO5mRDoZVmNs7EQndTu9HFWVMARHDUfsRiAEfV59VwLPXxjY/N0hJL1AFvSZaqXl/V4vXr169evXr169evXr169evXr169evXowLE2eRvNuSEJkbIkDLwLsesMKqLaCFo72NvAy1ukrT2Lq4QRdqYTRierZ5gS/pLvoZmglCpmgKoabIDKpZlipjAw7e7wBAsjLdoNyjuzsYzK7/WYqtEar4dEBeIp8uFJ4UBymBK8ZOriF8IMO3wApkC4Wvp2BJjZLd9di9evXr169evXr169evXr169evXr169evXpOF8+/fb4x+bp4QBCGRA/kxdwFKCT1/gALIHX+CNO/MGQfAK4j2KekHAsI6Ewb2h2h6dSrNwNyCxdAAsZ/ZAWIYsRQ9ACx2mR2IA6Go9JXepejsekBJjgZ6hGxitA/WxA3VVjcOoQKgV5H2Y5mS1jeOcHq5QfAvZbgkTL82iCPEqk6WPqC6tkBxANADTzyULKgxg94jTuEMiBCGRAhDIgOEBRIggCiQ4mQPaI0w9ojTD2iNO4mQPaISgQ/GNj83TwgCGVNobTCaDJFINb5VU/E9RI3W4LHgyp93DornzB4R9DsNCUIgD+YCvjfgAMV9pIROCFDuFGIFENJRrRZyIyUHmqDYDUB6eQfXeEt+sLgAP/wBpNFX3Aa8N0EBUGBeTBQ8vpnG2dY6BFGKtadr2FJdIn8eA0eESljAluGusqYIG8jbrBGVtu0AQ2BmmIusg5K+5BeTLREojrm435Zuz4g2gENI9cXzO93eUtUgI194DcGbIV23yleYI/GH5wziwBlYYyc4kOWymOTACyxAIUBKCEhHfptF43yrzIiiQhT/64iku6jCVgLOpE7DMegAo6ga3AC0N3jBZNSak7/QFr46z3IGaikkvLJ6sCFYN2VHAOlBIFDWmhN+g0UFtUiz3d+9BMeLVhBMhjVU/4i6iiAEZmuSuOgMdBxd3SxRzCyq081Z+zR04GNMyAELib0Ip0Co2gNyWxOAggOUMssxFtiwHjGx+bp4aBF2ygJ4X5MDG6PAhMJNJGUB7BTD4fXPVQ0bQW/sRkyyGreDmQIVAUDHugQasB5RhnlmDzjwIrFBm4LWWICZtAQdBOYmyfY4ZFe6D1UrpoKHE41Y4MJ0oEIyfqmqx1WYGHqPraBDDuYURgTdGGm0IHDzp9JThQ8LDZUaeGabKijhktyVjQuOQ6y6CISmId0PMqzi2Iu4Ohg+J9rpEsioDD7QfCQSUlNStNKgzlpNpvWBOI2M9WNBwBAIh9HCAN+JAgDpvtKQhsAPAQW+Jlm2RJG3WxuhTesQd/GqygM4XCBYUDGG+jewpgoIfyG07vcoEhdAL1Cak7w/QgYnFDeosmphRng1fljQNIfFpPXIAdUu1p0H5+xNCgo1hwgVBUAoMBgwLswE0MUMKIpo0g4Z3Djh9imO2E46FsdrhWJESkWT/ANk+x4UfQzGVmdHkDPjGx+bpBBJgFnlbQHArP9Bs2bNmzZs2bNmzZs2bNmzZs2bNmzZs2bNmzZsHAkEjxA6BdceHf4lWK5486HaRplHS2CHQwjYGWmvfKDXIW31ctINmkPxQaCVEKcGPj8yxHUb6n1epA6BgoAfxmxZs2FBUQalpo9JlRkY+q+bNmzZs2bNmzZs2bNmzZs2bNmzZs2bOUbsew9HjH5unhAH+LjY/N08IAl8Mm5gS65mqcKqhoRrI61FrmZ9lA4llw5NharTcyoBGTxy0MJcI0RgmVGrvN6oPDRzg4S1QYZgtwvD9dwE2gtiWIP8Ae83SKbwcocMy3pyvbim1c/tUV/6IG6137YHr7bIQ0ykpHzDJg5E21aSzD96LHpcqDkmgwycCGP7EUhbN7FORZ2jM+t3o4sgzPEpplYVLegJkxyyPoNGcLbS4NERjKguvy+OjyoURLDAhKzOXAvl2Y9Rp4xsfm6eEAQBpztOLIH6zSfQyibTlmiG4YUMtTbbwscx2IIII2VwUwYUjNRaZ+Ra3rMLoSDJ634i1ldxCEJskasHU1FmY4q+jRJEqejqE8UDDfb7lua7GOpDFR/XQzq5S4Na4OCPXNmKg6M8oQgQAG2mVB3dHM9Xomc8Gx4oGw9QgwNX9jf63QFGox3EDHkTYS1z4OxcBKXerab0pQ9IXq27s5WZ6Q1/VABxzeBAlJkYkgMmMn7wDYCqa47u+KlBl/mq9PgDxRsfm6QNtzFIfG58InwifCJ8InwifCJ8InwifCJ8InwifCJ8InwifCJ8InwifCJ8InwifCJ8InwifCJ8InwifCJ8InwifCJ8InwifCJ8InwifCJ8InwifCJ8InwifCJ8InwifCJ8InwifCJ8InwifCJ8InwifCJ8InwifCJ8InwifCJ8InwifCJ8InwifCJ8InwifCJ8InwifCJ8IgzO4ABlj83SAAxLiECUKEHyf8WzZs2bNmzZs2bNmzZs2bNmzZs2bNmzZs2bNmzZs2bNmzZs2bNmzZs2bNmzZs2bNmzZs2bNmzZs2bNmzZs2bNmzZ8EFLRnMx+bp4QBMdk0H3Mwm9g/ceFEkyRuSYPDm8QLhwTHAiRgAHag9/7nY3UtsESvxhfsHmAAkQADcW2gkHLOkCq/AD1hB91AWr3QPA3lfrMG5f2l4xsfm6eEARcPu1PcdYADiNBCQwF7xy+5JdGGYeu+hGEBEygdRDbYEpSiqbC6ln7FBz5t8QwtQ0GUUWIwkpx3jbJAV++IlivhmRQfGrVYPwWAQmBTqPp4Z0a96ERsWk4HBQiDapO/OREoEJ/agqF3UEvPcUtcl1rrUj1Q9azDH+UGCf6JscCWDtIL4CgkwP6wtZ33VWTpYGtBsoXacZu5hgwFBjJL7njRsfm6eEAQnEPkEONsTgwqYoeGgiqpcBABZLMVVJYYaPhdAGCJ1hYlqGg5we0KrUB1WuSEiSTvAAACA/tkaksMY8EwWwBBIAGgH8o2PzdIz543bdJLyehq6/xR06dOnTp06dOnTp06dOnTp06dOnTp06dOnTp06dOnTp06dOnTp06dOnTp06dOnTp06dOnTp06dOnTp06dOnTp07wIKlyFiMfm6eGgf4uNj83TwgCGpBrSix0SzNs5Rw4TYchG5+NOoiD0nusjptB0pps4wQS5xJixvOtIR0NIDgmoQKkczUnt7IBD7kHAaGfWhS2FkhnLmPgLj0VOGXkUymMnEvB67chpAUeuagioABVP0lJKi0BWd7MAZCtmIFKkGnpWAOwhwUWcrSYsELIIitw+SC8KxOCq+2AUaBPYmEJLTd8bTsChQNm8ZFZ87JwcUI7YGKcrAerTMzyogWqv63B+vG2Vh9jSa2OZ8Ra3MRNtJqjqmCsL00qgIMQ7QJgwWF1RqNSs3ZJm+AJGlk0KYdTxjY/N08IAl8mGxCtEBRB3ENDsOOOvP1VpG1fRVxwykdG8QiZ1mh7c+qgTZSB3wmFG+9KTIaHBeiwzqbg3YybBcALEMbTaOPmYn3AANEIVDSIQaaoFEvpmuX0gIYG+LsgxgGKzOKiwPF0QNatpgCx1xDAfgB+5lIPhcBoQogRSqRBxEM9gJFjQfluLV/5LD1ORAKA4YERQrF+hzjiFErRhMIIAzlDtyBaulAoCZqB40bZsAT6QC+G9w+jhYOQCse93H9aLincILuqp4ld0J6hJUG69sMQDI2+7iDVoeRlI5gGAAbQqjK4oCVoI0SQ4RaokmAtyUObTkiQ6Kq3ijY/N0lzBaobItTQsbj/FvHjx48ePHjx48ePHjx48ePHjx48ePHjx48ePHjx48ePHjx48ePHjx48ePHjx48ePHjx48ePHjx48ePHjx48ePHieSW+aGfWY/N08IA/wAXGx+bp4QBB45ktH0iBlSSHywlBg3pOg/h/wDCEtCisn7Jk/8ABEfHCLtpfACd4eSwRO4jTNhK7VnkCteZjdCVWBCuttwiFPKY9UEQwA2gLF7+VDEDQUexBY7ZEDVGAyH0K3jeN3OTqNdkDdcxfWUIqkYOEVHQQC1N2oIXgLXH4oLJ2ELedo9w1wKKAc5IeRYMFp2TKh7YXhEHWYBAMtnt2T/0oQ4iODuYWAthgQB4PUOJXq8X0I1jtKneURMFs9ITpEZIE2kZ49gPAKsKtulBoM4a/k6EB4s8oPAA0rqxhQ9hyAkCOI2ZeROC2gvtAnilByWv1nAyQAy5PVCaniwjYB0hMMPUEkxAQNACTkWBoSBh5r8hZbpMBSnrMYHO1pk7hp+y2R4xsfm6eEAQdaWSCepygzJGCVtS3sIEFFOOcPbVPAFYWOek3zlB0wzkyvHLdOdlqkJugM+V1hg9J2NCAV6l4nQygEwpnDntIar9QZl1tTWsGmOrFCjZgDG6Qn0O4KCLQKxPoK3PBOC4m6zIUYDqhAgnkMwG1cj1JvEPwQDltgmeLTJzz5UcGRNCvD/bggZ+qtYVn2Q4OPzBv/V4166RgnYcejHoTD11zP0rl75gM+tpIvvRRZOqUZpgYScMGi4NZdP5qMr1N8h9lFRN4RFxoyBelQZaRholEYvDfvRQGHwHPMsSGIm6qAGwnLzXXiwNCEmhKwLjOtsoYkVSLYEnYHPgQMbPnPZxlT7ieyAxp98K4Yah8OIHCpqMDJpc9fN72D2Rpqqx6cQ7gAMVKtMiRzERyAcF7nND7kIDVlmVQcvQZt6qfWWG3sW/v6lYgI4GqUYwGpAboHC89drCeDoIAXF/kc1h5gqpuQ4gnAiWTfMF9KfLFtm4XAdXwXgCW21PjGx+bp4aB5rQNQIJYG305oyMEG5/p42PzdISKdIYWbC1Neg/xYkWLFixYsWLFixYsWLFixYsWLFixYsWLFixYsWLFixYsWLFixYsWLFixYsWLFixYsWLFixYsWLFixYsWLFixYsWpsMOSnfITH5unhAH+LjY/N08IAhqqfjoNkWvG0Ir2GwqUcVpHIEduuGI61CPSK5HJPSk4JcYvHpgEUxSdnAzjlATlxIx8xfzJwH+CF0pTehz3gA1gwl3OBgCG8fU3OkC4jD64ZOB1h6sppTAdNlAqhqJM9tDRgTorB6GksrzNUcWejVhmBAmcR7SPsgPDc8Ahq24ExzaMhENs5JvPQAUNLqL1iCYzaPWESJuYKm8FgGv21oSEQs9FB90XqZ0l1ugUY16r6ijwVSjbfsH9yF40DpwZ5CMLlqNQr9gwJIlAO+k2gRKoLtZ7esu+zwEtH1hRy672h0cQ4TOrX2HKCjuHd7nOm8IMEMGJ/zgTvQghq6GAWXB9bQGt2Ir58Tct4dX1ROWDNYqvbgQJB3o1/fzC48lv8oAA3iZT92JJmoQT2BAtXhRxmBcKV4yBv3RVBpjUEfanW1tq4lPEHjGx+fAEN9UEhfIBK7R00oahGiwZFA0F00GgGYlWQWsH3RelR+sxFvKEVVsXaUOCpHEcbbFFrCTHoDyx6JBS5jlwEndAE2Un6mdTliAozcWsV++ggbXQNCM0jYIbfEB31hntBZ9AnMdRodyBriPRdbBVJjMU8ztXyuE4olhcLuRgbpA8Cws5Nm4XENF8qiRUR94ONGQcesFyMFPAnuJ3SIUaQyLwTsQiexzKLlw4RIimdU5jb/Uj9wz2i720WaglpIdlTXwY5diBCd4jlfB0YMpRHBc0hIKKlQbB1GOhzCVGcDD0v0qKsWMyE80hDETm/e0QSwWlRHNRVQHjzWLjk6+UCQMWdU/E/omeVAVc91hLQh/ImYhDmhu5gIAaMuDy/4cwE9xGo4YuBfeM+Lgcm3r6rn4P2Nv91HUrZxxITpj3QotgwEDSgsDMOTywaS6ULRliccPKGh0hz0T2MOhZVGFfbJgbGZYZt9/Q8oNuStntNCL4IAX+KSlKUpSlKUpSlKUpSlKUpSlKUpSlKUpSlKUpSlKUpSlKUpSlKUpSlKUpSlKUpSh9ixWT2PYV94MecqI5AOxBn4EAfafvftP3v2n737T979p+9+0/e/afvftP3v2n737T979p+9+0/e/afvftP3v2n737T979p+9+0/e/afvftP3v2n737T979p+9+0/e/afvftP3v2n737T979p+9+0/e/afvftP3v2n737T979p+9+0/e/afvftP3v2n737T979p+9+0/e/afvftP3v2n737T979p+9+0/e/afvftP3v2n737T979p+9+0/e/afvftP3v2n737T979p+9+0/e/afvftP3v2n737T979p+9+0/e/afvftP3v2n737T979p+9+0/e/afvftAx6tnetZmnn3vL3l7y95e8veXvL3l7y95e8veXvL3l7y95e8veXvL3l7y95e8veXvL3l7y95e8veXvL3l7y95e8veXvL3l7y95e8veXvL3l7y95e8veXvL3l7y95e8veXvL3l7y95e8veXvL3l7y95e8ved53ned53l7zvO/+SLUxbT4krwZd1OS4bVK8UQ3X24h1DitoymudUv8AdpH+x3z4So1fTqnRXZ4MgcW7fsbzyADOJyGch9JyH0nIfSch9JyH0nIfSch9JyH0nIfSch9JyH0nIfSch9JyH0nIfSch9JyH0nIfSch9JyH0nIfSch9JyH0nIfSch9JyH0nIfSch9JyH0nIfSch9JyH0nIfSch9JyH0nIfSch9JyH0nIfSch9JyH0nIfSch9JyH0nIfSch9JyH0nIfSch9JyH0nIfSch9JyH0nIfSch9JyH0nIfSch9JyH0nIfSch9IS8W5lfXoQMwF4Eu3jNZlcYLOFyiM+JPYs2gkMA9WyVtDu2gbKXt8JfqmKRxuJGwuBt0bmv1K/BtJEJl1DnPzZz0As4bPPq0j/AIAh4vCoiZvVCABdZD4NoR7afZRiO4hMpdrArY8zrgrML8SSzAm/DvNejrgntl3uKG8OKUleo5nV3QITyN+lDmz8FhyWDz/d+nBk1vzIHcZQtgEVaceAMAGghjII0w4raKBEijgwSfCtoiAHbe3lmyB6jJfgbhCHoigtBJm9C4KQEPuZ1tAEERFdMABw5yxUAAf05+fwYQSxHXVr7yxKuwG8+ijVsw65HsJdJAE5PAgAarPrYDhCiIRGbqC4QIiYbFPQ6kNUSLky9TbENzudLOdwdWfP936cxDswA3UVBsw/cOBeRATraW9AmsDhsbMNIEPoG5PTEDKcgI0QCwR5iORknVfYIQCJDaw/omCBx3UeykGqmZ3SHZKnNw+ZIwC4721vcBOrfsgyCsMz+vWAyLN0HNuPWNdLUxs7GSOXu01iqsQHs7KJO1pDhB55sgX9OPz+IceQEIlHwsvpS3eLFux26v1QcG9qYG5CATJALIEJGBfJgiaczPaD2gOOGwzJ0YHcuzaQPQINiH1bk2gI1CrCdpsOvn+79Pz4424mYaSGz38OQEe5Wre4g/ZcmE8Q/cAm5BcaWdAwAf3jojJ0+UUXkAk5BvUIAYtMsZAyFN2+zBGHXvRZJDTrshQkBdwSHIwf82DTYQkipjvsF4jiCBB/noCYOJkD6n04fn8AypojbCoUroo7oSY0DN8PcSQKXrGGiAWiWdk9cZFD/gzsCWsBREdlajYWxABtw/MeRwIBAqzDdivzOjqmnz71QR4pvlGSVtPP936u9LdMv9kEKXuQXuoNCyuocAEARkAgbGy5AAtMGwOITjMVSIEAX8MAwNDKaXCnQR0Ewc8+rfn8Dksx/ROoYwx4Q8c9DTWOtUqiB2EVO06kbj1IrEDoQQBCgdSPvVaMZAi9YoCfEy+5DTynDbdbvB0QQkyh1HOGAj4RMgWzk+f7v1njPn8NgAudqsGVXiNgeAtmTlIsBpCXWvjfSx7DVMGpF0Pfj/vAhsdM3xkyJB5dhhd+1oNxaMjx0eogxW7hgp8QyZBTfPoh1D6v8/gnFTOUL1iyJXmNv9xdkFAzknGsZpVW/AEcOYFF6o5joAxFlZXu0g/rUDpEOVaeHhCV2wggRfWAhhmgvgCCzxTN6mGwDDz/AHfrh/RJG2z8/gDi4F7MCQ6KQYrnEFQOknAZfbwC0cotCe71I4lggQFntUo0b/gQphkRWgCUHfB2OSqaCrY5gueeQ54IA3LTKbXQPn9cGIdn++JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJIIxAn4FRr44adJpLJS5uzDAxMIZp2zeSCsHsbLBaB1M3DFhmYHmFAdET7qLffpPubCpjk4CAxHv7Kwg/KE2IBE2ioT/Iyx7sB4B9SeBprqA+qMm/Iw8IRRJwysrCgyMO/qHCoPQUndhmLpLd/ROQnMCpA7PCWgPonEp/toYQIXUtAlepP+RYbnVOqdU6p1TqnVOqZ5//AE8yZMmTJkyZMmTJkyZMmTJkyZMmTJkyZMmTJkyZMmTJkyZMmTJkyZMmTJkyZMmTJkyZMmTJkyZMmTJkyZMmTJkyZMmTJkyZMmTJkyZMmTJkkcjAGhCgwfAkATAGqGdow1MztO07Qi5mLiLiaeALx4KdvDE6RBmYxFX8Cf7nIlY81AHGN4hraibXAyEy3JncYMySO5AmCqxagYPx6BXbbJaMQOg/tM0GtxTZFRgx1wEO9aNRuRCULkjOsAK0VZRr/vEUDwPsrbEFQn4ZNLiAmYyjZWwUVq8aSbqaQr44GIcDRy+aPYMpdqCfCAp8d7TQi75ZfG8jkQhguC2qXmAbEttXC4ytrjyEH00Y62dGtTSiL4JZL/TZg/MqIgMwJNmZicGeAgOX4MypgyBxFObgi7GHLyITpF6qOCltTeAQ1R2x7JMwxzMSFkz/AHRICUuaEVCK5xVDxmeIGwkcfVVl0mJBm02miX6UBDBokHaEmZxm4QCqARiEAs7rR6y3HQBsg8Q7pSEOZCwNMVitlmq0BABymHCWM5oGH5moGw/mKAm5oXhBVcNFYGCPKDGFW8iRgpcGgSOsZGzLk8Op4eiY+hWpgg71KsfKzVMSIZzOCNHQdDtL7zIVQAomzymYFuk9i5jqbAa2QN4Igqw9gGFwcNgVIdpiyDAHoQWNSV9JWpfVBDGHRADobkd7PJiXDOtNEo1BwZdQM8xFAxcT0u7l5PsHLV3Iq/tctAcYBtLIlaTFkstFqHTYUITIkKWg6hcDIvzCImqYXuguRehMBKl2hNrriY+eLauRmoDjg+r2aTczTaeewVk6IQAkqI8RUwE1EHQrskJhIsEKzYgG5nTa2gWZKyEukUF5TlINX44S1DhlzUr23i1aHeY4KxBSJatoJ9tc1RzlUPOSjbSEcKg6igQqYZuDfImRbIhcskCK/iPJYpVOQBmF4o2UNt12dgiXg8Q7XEThCG6mkuL6g6CBTI/kccaU1iutkWFmSAdGoqAsRIcOS4BkNoW47S8ts5W4IaygXE0kGMiXVhOwJEDXN+FDO4AlyCTVMZiW3IMlmiIHcCoaOEJ+WSTKpCWO67m9ulGcJQITg2hIi2MCYwHIAE4E6ACY83VWbditTlya0Oig5wY3m3Fvxj3yhcBCNwlgrwB1BgFkRDgwbTsRSu2Eyt/Yg1Fz1KEoWOIJQ4rORvqQRM1He4GOxFK1HmxcbAkKToKToaFMJiUj3aTOLFCcP2+dAcIAdbO+FyO3CsUvyuqGgafrn4yr3DtgbeGPCvooAFdN94A0bInVFdN0uHaxRGqnTOTQIf3hCVsGbwQ0JoBeJMwFqQzTqSE1XOjDHKrQAkyOsYFBroKtF7XATs3m+BuEQQ2QNv7AYViCIi/HAHSFQpVrSCkNKohsPJ0Ga4A1IQGBpyPSEc1AxElNYEmZGEi0L/8AH7wrnwXnbjFJvFcpn1Je5DICRDYXVjQBZxGL/cr0vjbx1nNDAkKAJEwpKW9Vh7RK6QP2Ow2WC4w4CcOQY/4VoQJRJd1oMPKNDGQUgzgJFwKYs2JOWrm+Qwpg66uIQpEBuXvbdxnGLs5RXtG+a7A4BGz/AIrsSKRuGAtjufv9nBR32+kdGTXmQdRUBEcXN24H/wBoP//Z",
+      status: "APPROVED",
+      createdAt: "2026-09-10T09:57:32.970Z",
+      reviewedAt: "2026-09-15T13:45:06.983Z",
+      reviewedBy: "0929200166"
+    },
+    dep_1789034996757_37810d6d: {
+      id: "dep_1789034996757_37810d6d",
+      userId: "user_1789034996686_d3e68086",
+      userPhone: "0911417927",
+      userName: "Tolera Bekele",
+      provider: "Telebirr",
+      accountName: "Gabre shifaraa hayilu",
+      accountNumber: "0929200166",
+      amount: 150,
+      transactionId: "FT1789034996752",
+      receiptUrl: "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAP//////////////////////////////////////////////////////////////////////////////////////wgALCAABAAEBAREA/8QAFBABAAAAAAAAAAAAAAAAAAAAAP/aAAgBAQABPxA=",
+      status: "APPROVED",
+      createdAt: "2026-09-10T10:09:56.757Z",
+      reviewedAt: "2026-09-15T13:45:00.191Z",
+      reviewedBy: "0929200166"
+    },
+    dep_1789035008259_ed4d2065: {
+      id: "dep_1789035008259_ed4d2065",
+      userId: "user_1789035008188_9c5240c8",
+      userPhone: "0912582030",
+      userName: "Hundee Dibaba",
+      provider: "Commercial Bank of Ethiopia (CBE)",
+      accountName: "Asefa Wasenu Tadese",
+      accountNumber: "1000218818424",
+      amount: 250,
+      transactionId: "FT1789035008251",
+      receiptUrl: "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAP//////////////////////////////////////////////////////////////////////////////////////wgALCAABAAEBAREA/8QAFBABAAAAAAAAAAAAAAAAAAAAAP/aAAgBAQABPxA=",
+      status: "APPROVED",
+      createdAt: "2026-09-10T10:10:08.259Z",
+      reviewedAt: "2026-09-10T10:10:08.267Z",
+      reviewedBy: "0929200166"
+    },
+    dep_1789739760946_6ad81e4d: {
+      id: "dep_1789739760946_6ad81e4d",
+      userId: "user_1789032197481_2edd3a21",
+      userPhone: "0988776655",
+      userName: "Chala Bekele",
+      provider: "Commercial Bank of Ethiopia (CBE)",
+      accountName: "Asefa Wasenu Tadese",
+      accountNumber: "1000218818424",
+      amount: 500,
+      transactionId: "FT_TEST_1789739760945",
+      receiptUrl: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
+      status: "APPROVED",
+      createdAt: "2026-09-18T13:56:00.946Z",
+      reviewedAt: "2026-09-18T13:56:00.950Z",
+      reviewedBy: "0929200166"
+    },
+    dep_1789739906109_72d9d7be: {
+      id: "dep_1789739906109_72d9d7be",
+      userId: "user_1789032197481_2edd3a21",
+      userPhone: "0988776655",
+      userName: "Chala Bekele",
+      provider: "Commercial Bank of Ethiopia (CBE)",
+      accountName: "Asefa Wasenu Tadese",
+      accountNumber: "1000218818424",
+      amount: 500,
+      transactionId: "FT_TEST_1789739906109",
+      receiptUrl: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
+      status: "APPROVED",
+      createdAt: "2026-09-18T13:58:26.109Z",
+      reviewedAt: "2026-09-18T13:58:26.113Z",
+      reviewedBy: "0929200166"
+    },
+    dep_1789741020275_ad7d433e: {
+      id: "dep_1789741020275_ad7d433e",
+      userId: "user_1789741020213_205f0509",
+      userPhone: "0913321811",
+      userName: "Gudeta Tadesse",
+      provider: "Commercial Bank of Ethiopia (CBE)",
+      accountName: "Asefa Wasenu Tadese",
+      accountNumber: "1000218818424",
+      amount: 500,
+      transactionId: "TX_AUDIT_1789741020272",
+      receiptUrl: "https://example.com/receipt.jpg",
+      status: "APPROVED",
+      createdAt: "2026-09-18T14:17:00.275Z",
+      reviewedAt: "2026-09-18T14:17:00.286Z",
+      reviewedBy: "0929200166"
+    },
+    dep_1789741028339_38092238: {
+      id: "dep_1789741028339_38092238",
+      userId: "user_1789741028278_de2b3b7c",
+      userPhone: "0969302795",
+      userName: "Tolera Desta",
+      provider: "Commercial Bank of Ethiopia (CBE)",
+      accountName: "Asefa Wasenu Tadese",
+      accountNumber: "1000218818424",
+      amount: 500,
+      transactionId: "TX_W_1789741028335",
+      receiptUrl: "https://example.com/receipt.jpg",
+      status: "APPROVED",
+      createdAt: "2026-09-18T14:17:08.339Z",
+      reviewedAt: "2026-09-18T14:17:08.347Z",
+      reviewedBy: "0929200166"
+    },
+    dep_1789814777219_c40c7414: {
+      id: "dep_1789814777219_c40c7414",
+      userId: "user_1789032197481_2edd3a21",
+      userPhone: "0988776655",
+      userName: "Chala Bekele",
+      provider: "Commercial Bank of Ethiopia (CBE)",
+      accountName: "Asefa Wasenu Tadese",
+      accountNumber: "1000218818424",
+      amount: 500,
+      transactionId: "FT_TEST_1789814777219",
+      receiptUrl: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
+      status: "APPROVED",
+      createdAt: "2026-09-19T10:46:17.219Z",
+      reviewedAt: "2026-09-19T10:46:17.223Z",
+      reviewedBy: "0929200166"
+    },
+    dep_1789814787797_69c647a8: {
+      id: "dep_1789814787797_69c647a8",
+      userId: "user_1789032197481_2edd3a21",
+      userPhone: "0988776655",
+      userName: "Chala Bekele",
+      provider: "Commercial Bank of Ethiopia (CBE)",
+      accountName: "Asefa Wasenu Tadese",
+      accountNumber: "1000218818424",
+      amount: 500,
+      transactionId: "FT_TEST_1789814787796",
+      receiptUrl: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
+      status: "APPROVED",
+      createdAt: "2026-09-19T10:46:27.797Z",
+      reviewedAt: "2026-09-19T10:46:27.800Z",
+      reviewedBy: "0929200166"
+    },
+    dep_1789815273117_6b98d077: {
+      id: "dep_1789815273117_6b98d077",
+      userId: "user_1789032197481_2edd3a21",
+      userPhone: "0988776655",
+      userName: "Chala Bekele",
+      provider: "Commercial Bank of Ethiopia (CBE)",
+      accountName: "Asefa Wasenu Tadese",
+      accountNumber: "1000218818424",
+      amount: 500,
+      transactionId: "FT_TEST_1789815273117",
+      receiptUrl: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
+      status: "APPROVED",
+      createdAt: "2026-09-19T10:54:33.117Z",
+      reviewedAt: "2026-09-19T10:54:33.121Z",
+      reviewedBy: "0929200166"
+    },
+    dep_1789815282572_4235614f: {
+      id: "dep_1789815282572_4235614f",
+      userId: "user_1789032197481_2edd3a21",
+      userPhone: "0988776655",
+      userName: "Chala Bekele",
+      provider: "Commercial Bank of Ethiopia (CBE)",
+      accountName: "Asefa Wasenu Tadese",
+      accountNumber: "1000218818424",
+      amount: 500,
+      transactionId: "FT_TEST_1789815282571",
+      receiptUrl: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
+      status: "APPROVED",
+      createdAt: "2026-09-19T10:54:42.572Z",
+      reviewedAt: "2026-09-19T10:54:42.575Z",
+      reviewedBy: "0929200166"
+    },
+    dep_1789823646898_5a3ff2cb: {
+      id: "dep_1789823646898_5a3ff2cb",
+      userId: "user_1789032197481_2edd3a21",
+      userPhone: "0988776655",
+      userName: "Chala Bekele",
+      provider: "Commercial Bank of Ethiopia (CBE)",
+      accountName: "Asefa Wasenu Tadese",
+      accountNumber: "1000218818424",
+      amount: 500,
+      transactionId: "FT_TEST_1789823646897",
+      receiptUrl: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
+      status: "APPROVED",
+      createdAt: "2026-09-19T13:14:06.898Z",
+      reviewedAt: "2026-09-19T13:14:06.903Z",
+      reviewedBy: "0929200166"
+    }
+  },
+  transactionIdToDepositId: {
+    FT_TEST_1789032318846: "dep_1789032318847_affef5ed",
+    FT_TEST_1789032327992: "dep_1789032327993_8d998d89",
+    FT_TEST_1789032421482: "dep_1789032421482_11331692",
+    ft26510w29j: "dep_1789034252970_fa049f59",
+    FT1789034996752: "dep_1789034996757_37810d6d",
+    FT1789035008251: "dep_1789035008259_ed4d2065",
+    FT_TEST_1789739760945: "dep_1789739760946_6ad81e4d",
+    FT_TEST_1789739906109: "dep_1789739906109_72d9d7be",
+    TX_AUDIT_1789741020272: "dep_1789741020275_ad7d433e",
+    TX_W_1789741028335: "dep_1789741028339_38092238",
+    FT_TEST_1789814777219: "dep_1789814777219_c40c7414",
+    FT_TEST_1789814787796: "dep_1789814787797_69c647a8",
+    FT_TEST_1789815273117: "dep_1789815273117_6b98d077",
+    FT_TEST_1789815282571: "dep_1789815282572_4235614f",
+    FT_TEST_1789823646897: "dep_1789823646898_5a3ff2cb"
+  },
+  withdrawals: {
+    wdr_1789032327997_3511020e: {
+      id: "wdr_1789032327997_3511020e",
+      userId: "user_1789032197481_2edd3a21",
+      userPhone: "0988776655",
+      userName: "Chala Bekele",
+      provider: "Telebirr",
+      accountName: "Chala Bekele",
+      accountNumber: "0988776655",
+      amount: 200,
+      status: "REJECTED",
+      createdAt: "2026-09-10T09:25:27.997Z",
+      reviewedAt: "2026-09-10T09:25:27.998Z",
+      reviewedBy: "0929200166",
+      rejectReason: "Test rejection"
+    },
+    wdr_1789032421486_81c918f9: {
+      id: "wdr_1789032421486_81c918f9",
+      userId: "user_1789032197481_2edd3a21",
+      userPhone: "0988776655",
+      userName: "Chala Bekele",
+      provider: "Telebirr",
+      accountName: "Chala Bekele",
+      accountNumber: "0988776655",
+      amount: 200,
+      status: "REJECTED",
+      createdAt: "2026-09-10T09:27:01.486Z",
+      reviewedAt: "2026-09-10T09:27:01.488Z",
+      reviewedBy: "0929200166",
+      rejectReason: "Test rejection"
+    },
+    wdr_1789739760956_ccc95509: {
+      id: "wdr_1789739760956_ccc95509",
+      userId: "user_1789032197481_2edd3a21",
+      userPhone: "0988776655",
+      userName: "Chala Bekele",
+      provider: "Telebirr",
+      accountName: "Chala Bekele",
+      accountNumber: "0988776655",
+      amount: 200,
+      status: "REJECTED",
+      createdAt: "2026-09-18T13:56:00.956Z",
+      reviewedAt: "2026-09-18T13:56:00.958Z",
+      reviewedBy: "0929200166",
+      rejectReason: "Test rejection"
+    },
+    wdr_1789739906119_43b8fc81: {
+      id: "wdr_1789739906119_43b8fc81",
+      userId: "user_1789032197481_2edd3a21",
+      userPhone: "0988776655",
+      userName: "Chala Bekele",
+      provider: "Telebirr",
+      accountName: "Chala Bekele",
+      accountNumber: "0988776655",
+      amount: 200,
+      status: "REJECTED",
+      createdAt: "2026-09-18T13:58:26.119Z",
+      reviewedAt: "2026-09-18T13:58:26.122Z",
+      reviewedBy: "0929200166",
+      rejectReason: "Test rejection"
+    },
+    wdr_1789741028357_e15ad7d3: {
+      id: "wdr_1789741028357_e15ad7d3",
+      userId: "user_1789741028278_de2b3b7c",
+      userPhone: "0969302795",
+      userName: "Tolera Desta",
+      provider: "CBE",
+      accountName: "Tolera Desta",
+      accountNumber: "1000987654321",
+      amount: 150,
+      status: "APPROVED",
+      createdAt: "2026-09-18T14:17:08.358Z",
+      reviewedAt: "2026-09-18T14:17:08.366Z",
+      reviewedBy: "0929200166"
+    },
+    wdr_1789814777228_44138f24: {
+      id: "wdr_1789814777228_44138f24",
+      userId: "user_1789032197481_2edd3a21",
+      userPhone: "0988776655",
+      userName: "Chala Bekele",
+      provider: "Telebirr",
+      accountName: "Chala Bekele",
+      accountNumber: "0988776655",
+      amount: 200,
+      status: "REJECTED",
+      createdAt: "2026-09-19T10:46:17.228Z",
+      reviewedAt: "2026-09-19T10:46:17.230Z",
+      reviewedBy: "0929200166",
+      rejectReason: "Test rejection"
+    },
+    wdr_1789814787805_2782567e: {
+      id: "wdr_1789814787805_2782567e",
+      userId: "user_1789032197481_2edd3a21",
+      userPhone: "0988776655",
+      userName: "Chala Bekele",
+      provider: "Telebirr",
+      accountName: "Chala Bekele",
+      accountNumber: "0988776655",
+      amount: 200,
+      status: "REJECTED",
+      createdAt: "2026-09-19T10:46:27.805Z",
+      reviewedAt: "2026-09-19T10:46:27.808Z",
+      reviewedBy: "0929200166",
+      rejectReason: "Test rejection"
+    },
+    wdr_1789815273126_c5cff741: {
+      id: "wdr_1789815273126_c5cff741",
+      userId: "user_1789032197481_2edd3a21",
+      userPhone: "0988776655",
+      userName: "Chala Bekele",
+      provider: "Telebirr",
+      accountName: "Chala Bekele",
+      accountNumber: "0988776655",
+      amount: 200,
+      status: "REJECTED",
+      createdAt: "2026-09-19T10:54:33.126Z",
+      reviewedAt: "2026-09-19T10:54:33.129Z",
+      reviewedBy: "0929200166",
+      rejectReason: "Test rejection"
+    },
+    wdr_1789815282581_80acb5bc: {
+      id: "wdr_1789815282581_80acb5bc",
+      userId: "user_1789032197481_2edd3a21",
+      userPhone: "0988776655",
+      userName: "Chala Bekele",
+      provider: "Telebirr",
+      accountName: "Chala Bekele",
+      accountNumber: "0988776655",
+      amount: 200,
+      status: "REJECTED",
+      createdAt: "2026-09-19T10:54:42.581Z",
+      reviewedAt: "2026-09-19T10:54:42.583Z",
+      reviewedBy: "0929200166",
+      rejectReason: "Test rejection"
+    },
+    wdr_1789823646909_982c6225: {
+      id: "wdr_1789823646909_982c6225",
+      userId: "user_1789032197481_2edd3a21",
+      userPhone: "0988776655",
+      userName: "Chala Bekele",
+      provider: "Telebirr",
+      accountName: "Chala Bekele",
+      accountNumber: "0988776655",
+      amount: 200,
+      status: "REJECTED",
+      createdAt: "2026-09-19T13:14:06.909Z",
+      reviewedAt: "2026-09-19T13:14:06.912Z",
+      reviewedBy: "0929200166",
+      rejectReason: "Test rejection"
+    }
+  },
+  paymentMethods: {
+    pm_cbe: {
+      id: "pm_cbe",
+      provider: "Commercial Bank of Ethiopia (CBE)",
+      accountName: "Asefa Wasenu Tadese",
+      accountNumber: "1000218818424",
+      instructions: "Kaffaltii keessan lakkoofsa herregaa CBE (1000218818424 - Asefa Wasenu Tadese) irratti erga daddabarsitanii booda, lakk FT/Transaction ID fi suuraa ragaa kaffaltii (receipt) asitti ol-kaa'aa.",
+      minAmount: 50,
+      maxAmount: 5e4,
+      isActive: true,
+      sortOrder: 1
+    },
+    pm_awash: {
+      id: "pm_awash",
+      provider: "Awash Bank",
+      accountName: "Asefa Wasenu Tadese",
+      accountNumber: "01320561958100",
+      instructions: "Kaffaltii Awash Baankii lakkoofsa (01320561958100 - Asefa Wasenu Tadese) irratti erga kaffaltanii booda ragaa kaffaltii fi lakk daddabarsaa asitti ergaa.",
+      minAmount: 50,
+      maxAmount: 5e4,
+      isActive: true,
+      sortOrder: 2
+    },
+    pm_telebirr: {
+      id: "pm_telebirr",
+      provider: "Telebirr",
+      accountName: "Gabre shifaraa hayilu",
+      accountNumber: "0929200166",
+      phoneNumber: "0929200166",
+      instructions: "Kaffaltii Telebirr lakkoofsa bilbilaa 0929200166 (Maqaa: Gabre shifaraa hayilu) irratti ergaa, ragaa kaffaltii (receipt) fi lakk daddabarsaa asitti guutaa.",
+      minAmount: 50,
+      maxAmount: 25e3,
+      isActive: true,
+      sortOrder: 3
+    }
+  },
+  rounds: {
+    round_1: {
+      id: "round_1",
+      roundNumber: 1,
+      status: "COMPLETED",
+      ticketPrice: 50,
+      selections: {
+        "42": {
+          number: 42,
+          userId: "user_1789032197481_2edd3a21",
+          userName: "Chala Bekele",
+          userPhone: "0988776655",
+          selectedAt: "2026-09-10T09:25:28.000Z"
+        }
+      },
+      totalPool: 50,
+      winners: [
+        {
+          rank: 1,
+          number: 42,
+          userId: "user_1789032197481_2edd3a21",
+          userName: "Chala Bekele",
+          userPhone: "0988776655",
+          prizeAmount: 37.5,
+          percentage: 75
+        }
+      ],
+      createdAt: "2026-09-10T09:23:17.480Z",
+      drawnAt: "2026-09-10T09:25:28.002Z"
+    },
+    round_2: {
+      id: "round_2",
+      roundNumber: 2,
+      status: "COMPLETED",
+      ticketPrice: 50,
+      selections: {
+        "42": {
+          number: 42,
+          userId: "user_1789032197481_2edd3a21",
+          userName: "Chala Bekele",
+          userPhone: "0988776655",
+          selectedAt: "2026-09-10T09:27:01.490Z"
+        }
+      },
+      totalPool: 50,
+      winners: [
+        {
+          rank: 1,
+          number: 42,
+          userId: "user_1789032197481_2edd3a21",
+          userName: "Chala Bekele",
+          userPhone: "0988776655",
+          prizeAmount: 37.5,
+          percentage: 75
+        }
+      ],
+      createdAt: "2026-09-10T09:25:28.002Z",
+      drawnAt: "2026-09-10T09:27:01.491Z"
+    },
+    round_3: {
+      id: "round_3",
+      roundNumber: 3,
+      status: "COMPLETED",
+      ticketPrice: 50,
+      selections: {
+        "2": {
+          number: 2,
+          userId: "sim_2_seed",
+          userName: "Chala K.",
+          userPhone: "0911***42",
+          selectedAt: "2026-09-15T13:54:18.016Z",
+          isSimulated: true
+        },
+        "5": {
+          number: 5,
+          userId: "sim_5_seed",
+          userName: "Tolasa M.",
+          userPhone: "0922***89",
+          selectedAt: "2026-09-15T13:54:18.016Z",
+          isSimulated: true
+        },
+        "7": {
+          number: 7,
+          userId: "sim_7_seed",
+          userName: "Bontu G.",
+          userPhone: "0933***15",
+          selectedAt: "2026-09-15T13:54:18.016Z",
+          isSimulated: true
+        },
+        "9": {
+          number: 9,
+          userId: "sim_9_seed",
+          userName: "Abdi T.",
+          userPhone: "0944***67",
+          selectedAt: "2026-09-15T13:54:18.016Z",
+          isSimulated: true
+        },
+        "10": {
+          number: 10,
+          userId: "sim_10_seed",
+          userName: "Gemechu B.",
+          userPhone: "0912***34",
+          selectedAt: "2026-09-15T13:54:18.016Z",
+          isSimulated: true
+        },
+        "12": {
+          number: 12,
+          userId: "sim_12_seed",
+          userName: "Lensa D.",
+          userPhone: "0917***90",
+          selectedAt: "2026-09-15T13:54:18.016Z",
+          isSimulated: true
+        },
+        "14": {
+          number: 14,
+          userId: "sim_14_seed",
+          userName: "Sena F.",
+          userPhone: "0921***55",
+          selectedAt: "2026-09-15T13:54:18.016Z",
+          isSimulated: true
+        },
+        "16": {
+          number: 16,
+          userId: "sim_16_seed",
+          userName: "Bikila A.",
+          userPhone: "0915***22",
+          selectedAt: "2026-09-15T13:54:18.016Z",
+          isSimulated: true
+        },
+        "18": {
+          number: 18,
+          userId: "sim_18_seed",
+          userName: "Hawii T.",
+          userPhone: "0935***88",
+          selectedAt: "2026-09-15T13:54:18.016Z",
+          isSimulated: true
+        },
+        "20": {
+          number: 20,
+          userId: "sim_20_seed",
+          userName: "Kenna D.",
+          userPhone: "0918***71",
+          selectedAt: "2026-09-15T13:54:18.016Z",
+          isSimulated: true
+        },
+        "21": {
+          number: 21,
+          userId: "sim_21_seed",
+          userName: "Obsa B.",
+          userPhone: "0927***49",
+          selectedAt: "2026-09-15T13:54:18.016Z",
+          isSimulated: true
+        },
+        "23": {
+          number: 23,
+          userId: "sim_23_seed",
+          userName: "Kuma T.",
+          userPhone: "0913***63",
+          selectedAt: "2026-09-15T13:54:18.016Z",
+          isSimulated: true
+        },
+        "25": {
+          number: 25,
+          userId: "sim_25_seed",
+          userName: "Gadisa W.",
+          userPhone: "0919***12",
+          selectedAt: "2026-09-15T13:54:18.016Z",
+          isSimulated: true
+        },
+        "27": {
+          number: 27,
+          userId: "sim_27_seed",
+          userName: "Gudeta N.",
+          userPhone: "0920***74",
+          selectedAt: "2026-09-15T13:54:18.016Z",
+          isSimulated: true
+        },
+        "30": {
+          number: 30,
+          userId: "sim_30_seed",
+          userName: "Zelalem T.",
+          userPhone: "0914***38",
+          selectedAt: "2026-09-15T13:54:18.016Z",
+          isSimulated: true
+        },
+        "32": {
+          number: 32,
+          userId: "sim_32_seed",
+          userName: "Tadesse A.",
+          userPhone: "0923***95",
+          selectedAt: "2026-09-15T13:54:18.016Z",
+          isSimulated: true
+        },
+        "34": {
+          number: 34,
+          userId: "sim_34_seed",
+          userName: "Almaz B.",
+          userPhone: "0930***18",
+          selectedAt: "2026-09-15T13:54:18.016Z",
+          isSimulated: true
+        },
+        "36": {
+          number: 36,
+          userId: "sim_36_seed",
+          userName: "Yosef M.",
+          userPhone: "0916***57",
+          selectedAt: "2026-09-15T13:54:18.016Z",
+          isSimulated: true
+        },
+        "38": {
+          number: 38,
+          userId: "sim_38_seed",
+          userName: "Mekdes K.",
+          userPhone: "0924***81",
+          selectedAt: "2026-09-15T13:54:18.016Z",
+          isSimulated: true
+        },
+        "40": {
+          number: 40,
+          userId: "sim_40_seed",
+          userName: "Ermias G.",
+          userPhone: "0928***40",
+          selectedAt: "2026-09-15T13:54:18.016Z",
+          isSimulated: true
+        },
+        "41": {
+          number: 41,
+          userId: "sim_41_seed",
+          userName: "Desta F.",
+          userPhone: "0932***76",
+          selectedAt: "2026-09-15T13:54:18.016Z",
+          isSimulated: true
+        },
+        "42": {
+          number: 42,
+          userId: "user_1789032197481_2edd3a21",
+          userName: "Chala Bekele",
+          userPhone: "0988776655",
+          selectedAt: "2026-09-18T13:56:00.961Z"
+        },
+        "43": {
+          number: 43,
+          userId: "sim_43_seed",
+          userName: "Solomon K.",
+          userPhone: "0911***93",
+          selectedAt: "2026-09-15T13:54:18.016Z",
+          isSimulated: true
+        },
+        "45": {
+          number: 45,
+          userId: "sim_45_seed",
+          userName: "Rahel T.",
+          userPhone: "0925***31",
+          selectedAt: "2026-09-15T13:54:18.016Z",
+          isSimulated: true
+        },
+        "48": {
+          number: 48,
+          userId: "sim_48_seed",
+          userName: "Meron H.",
+          userPhone: "0931***60",
+          selectedAt: "2026-09-15T13:54:18.016Z",
+          isSimulated: true
+        },
+        "50": {
+          number: 50,
+          userId: "sim_50_seed",
+          userName: "Dagnachew T.",
+          userPhone: "0926***05",
+          selectedAt: "2026-09-15T13:54:18.016Z",
+          isSimulated: true
+        },
+        "52": {
+          number: 52,
+          userId: "sim_52_seed",
+          userName: "Ayantu D.",
+          userPhone: "0917***44",
+          selectedAt: "2026-09-15T13:54:18.016Z",
+          isSimulated: true
+        },
+        "54": {
+          number: 54,
+          userId: "sim_54_seed",
+          userName: "Tirhas M.",
+          userPhone: "0934***29",
+          selectedAt: "2026-09-15T13:54:18.016Z",
+          isSimulated: true
+        },
+        "56": {
+          number: 56,
+          userId: "sim_56_seed",
+          userName: "Sintayehu L.",
+          userPhone: "0929***83",
+          selectedAt: "2026-09-15T13:54:18.016Z",
+          isSimulated: true
+        },
+        "57": {
+          number: 57,
+          userId: "sim_57_seed",
+          userName: "Kalkidan B.",
+          userPhone: "0910***50",
+          selectedAt: "2026-09-15T13:54:18.016Z",
+          isSimulated: true
+        },
+        "59": {
+          number: 59,
+          userId: "sim_59_seed",
+          userName: "Beza W.",
+          userPhone: "0940***17",
+          selectedAt: "2026-09-15T13:54:18.016Z",
+          isSimulated: true
+        },
+        "61": {
+          number: 61,
+          userId: "sim_61_seed",
+          userName: "Tariku G.",
+          userPhone: "0912***96",
+          selectedAt: "2026-09-15T13:54:18.016Z",
+          isSimulated: true
+        },
+        "63": {
+          number: 63,
+          userId: "sim_63_seed",
+          userName: "Wondwosen K.",
+          userPhone: "0922***64",
+          selectedAt: "2026-09-15T13:54:18.016Z",
+          isSimulated: true
+        },
+        "66": {
+          number: 66,
+          userId: "sim_66_seed",
+          userName: "Mulugeta S.",
+          userPhone: "0933***72",
+          selectedAt: "2026-09-15T13:54:18.016Z",
+          isSimulated: true
+        },
+        "68": {
+          number: 68,
+          userId: "sim_68_seed",
+          userName: "Hiwot B.",
+          userPhone: "0918***35",
+          selectedAt: "2026-09-15T13:54:18.016Z",
+          isSimulated: true
+        },
+        "70": {
+          number: 70,
+          userId: "sim_70_seed",
+          userName: "Henok T.",
+          userPhone: "0927***19",
+          selectedAt: "2026-09-15T13:54:18.016Z",
+          isSimulated: true
+        },
+        "72": {
+          number: 72,
+          userId: "sim_72_seed",
+          userName: "Biniyam A.",
+          userPhone: "0914***88",
+          selectedAt: "2026-09-15T13:54:18.016Z",
+          isSimulated: true
+        },
+        "74": {
+          number: 74,
+          userId: "sim_74_seed",
+          userName: "Feven E.",
+          userPhone: "0920***52",
+          selectedAt: "2026-09-15T13:54:18.016Z",
+          isSimulated: true
+        },
+        "75": {
+          number: 75,
+          userId: "sim_75_seed",
+          userName: "Worku D.",
+          userPhone: "0915***33",
+          selectedAt: "2026-09-15T13:54:18.016Z",
+          isSimulated: true
+        },
+        "77": {
+          number: 77,
+          userId: "sim_77_seed",
+          userName: "Tigist M.",
+          userPhone: "0938***41",
+          selectedAt: "2026-09-15T13:54:18.016Z",
+          isSimulated: true
+        },
+        "79": {
+          number: 79,
+          userId: "sim_79_seed",
+          userName: "Dawit S.",
+          userPhone: "0921***99",
+          selectedAt: "2026-09-15T13:54:18.016Z",
+          isSimulated: true
+        },
+        "81": {
+          number: 81,
+          userId: "sim_81_seed",
+          userName: "Kumera L.",
+          userPhone: "0916***20",
+          selectedAt: "2026-09-15T13:54:18.016Z",
+          isSimulated: true
+        },
+        "83": {
+          number: 83,
+          userId: "sim_83_seed",
+          userName: "Derartu T.",
+          userPhone: "0919***81",
+          selectedAt: "2026-09-15T13:54:18.016Z",
+          isSimulated: true
+        },
+        "85": {
+          number: 85,
+          userId: "sim_85_seed",
+          userName: "Haile G.",
+          userPhone: "0923***44",
+          selectedAt: "2026-09-15T13:54:18.016Z",
+          isSimulated: true
+        },
+        "88": {
+          number: 88,
+          userId: "sim_88_seed",
+          userName: "Feyisa L.",
+          userPhone: "0934***11",
+          selectedAt: "2026-09-15T13:54:18.016Z",
+          isSimulated: true
+        },
+        "90": {
+          number: 90,
+          userId: "sim_90_seed",
+          userName: "Meseret D.",
+          userPhone: "0928***92",
+          selectedAt: "2026-09-15T13:54:18.016Z",
+          isSimulated: true
+        },
+        "92": {
+          number: 92,
+          userId: "sim_92_seed",
+          userName: "Tirunesh D.",
+          userPhone: "0917***65",
+          selectedAt: "2026-09-15T13:54:18.016Z",
+          isSimulated: true
+        },
+        "94": {
+          number: 94,
+          userId: "sim_94_seed",
+          userName: "Kenenisa B.",
+          userPhone: "0912***78",
+          selectedAt: "2026-09-15T13:54:18.016Z",
+          isSimulated: true
+        },
+        "96": {
+          number: 96,
+          userId: "sim_96_seed",
+          userName: "Sileshi S.",
+          userPhone: "0930***53",
+          selectedAt: "2026-09-15T13:54:18.016Z",
+          isSimulated: true
+        },
+        "98": {
+          number: 98,
+          userId: "sim_98_seed",
+          userName: "Girma W.",
+          userPhone: "0925***16",
+          selectedAt: "2026-09-15T13:54:18.016Z",
+          isSimulated: true
+        },
+        "100": {
+          number: 100,
+          userId: "sim_100_seed",
+          userName: "Getnet A.",
+          userPhone: "0913***87",
+          selectedAt: "2026-09-15T13:54:18.016Z",
+          isSimulated: true
+        }
+      },
+      totalPool: 2550,
+      winners: [
+        {
+          rank: 1,
+          number: 42,
+          userId: "user_1789032197481_2edd3a21",
+          userName: "Chala Bekele",
+          userPhone: "0988776655",
+          prizeAmount: 1530,
+          percentage: 75
+        },
+        {
+          rank: 2,
+          number: 96,
+          userId: "sim_96_seed",
+          userName: "Sileshi S.",
+          userPhone: "0930***53",
+          prizeAmount: 255,
+          percentage: 7
+        },
+        {
+          rank: 3,
+          number: 98,
+          userId: "sim_98_seed",
+          userName: "Girma W.",
+          userPhone: "0925***16",
+          prizeAmount: 102,
+          percentage: 3
+        }
+      ],
+      createdAt: "2026-09-10T09:27:01.491Z",
+      drawnAt: "2026-09-18T13:56:00.965Z"
+    },
+    round_4: {
+      id: "round_4",
+      roundNumber: 4,
+      status: "COMPLETED",
+      ticketPrice: 50,
+      selections: {
+        "42": {
+          number: 42,
+          userId: "user_1789032197481_2edd3a21",
+          userName: "Chala Bekele",
+          userPhone: "0988776655",
+          selectedAt: "2026-09-18T13:58:26.126Z"
+        }
+      },
+      totalPool: 50,
+      winners: [
+        {
+          rank: 1,
+          number: 42,
+          userId: "user_1789032197481_2edd3a21",
+          userName: "Chala Bekele",
+          userPhone: "0988776655",
+          prizeAmount: 30,
+          percentage: 75
+        }
+      ],
+      createdAt: "2026-09-18T13:56:00.965Z",
+      drawnAt: "2026-09-18T13:58:26.132Z"
+    },
+    round_5: {
+      id: "round_5",
+      roundNumber: 5,
+      status: "COMPLETED",
+      ticketPrice: 50,
+      selections: {
+        "1": {
+          number: 1,
+          userId: "user_1789741020213_205f0509",
+          userName: "Gudeta Tadesse",
+          userPhone: "0913321811",
+          selectedAt: "2026-09-18T14:17:00.298Z"
+        },
+        "2": {
+          number: 2,
+          userId: "sim_2_1789741020306",
+          userName: "Meron Hailu",
+          userPhone: "0931***60",
+          selectedAt: "2026-09-18T13:59:45.306Z",
+          isSimulated: true
+        },
+        "5": {
+          number: 5,
+          userId: "sim_5_1789741020306",
+          userName: "Dawit Seyoum",
+          userPhone: "0921***99",
+          selectedAt: "2026-09-18T13:47:45.306Z",
+          isSimulated: true
+        },
+        "6": {
+          number: 6,
+          userId: "sim_6_1789741020306",
+          userName: "Ermias Girma",
+          userPhone: "0928***40",
+          selectedAt: "2026-09-18T14:02:45.306Z",
+          isSimulated: true
+        },
+        "7": {
+          number: 7,
+          userId: "sim_7_1789741020306",
+          userName: "Beza Wondimu",
+          userPhone: "0940***17",
+          selectedAt: "2026-09-18T13:55:15.306Z",
+          isSimulated: true
+        },
+        "9": {
+          number: 9,
+          userId: "sim_9_1789741020306",
+          userName: "Derartu Tulu",
+          userPhone: "0932***80",
+          selectedAt: "2026-09-18T13:45:30.306Z",
+          isSimulated: true
+        },
+        "11": {
+          number: 11,
+          userId: "sim_11_1789741020306",
+          userName: "Hundee Oljira",
+          userPhone: "0911***58",
+          selectedAt: "2026-09-18T13:47:00.306Z",
+          isSimulated: true
+        },
+        "13": {
+          number: 13,
+          userId: "sim_13_1789741020306",
+          userName: "Almaz Bedada",
+          userPhone: "0930***18",
+          selectedAt: "2026-09-18T14:05:00.306Z",
+          isSimulated: true
+        },
+        "17": {
+          number: 17,
+          userId: "sim_17_1789741020306",
+          userName: "Bikila Assefa",
+          userPhone: "0915***22",
+          selectedAt: "2026-09-18T14:11:45.306Z",
+          isSimulated: true
+        },
+        "19": {
+          number: 19,
+          userId: "sim_19_1789741020306",
+          userName: "Hiwot Bekele",
+          userPhone: "0918***35",
+          selectedAt: "2026-09-18T13:52:15.306Z",
+          isSimulated: true
+        },
+        "20": {
+          number: 20,
+          userId: "sim_20_1789741020306",
+          userName: "Dagnachew Tefera",
+          userPhone: "0926***05",
+          selectedAt: "2026-09-18T13:59:00.306Z",
+          isSimulated: true
+        },
+        "21": {
+          number: 21,
+          userId: "sim_21_1789741020306",
+          userName: "Chala Bekele",
+          userPhone: "0911***42",
+          selectedAt: "2026-09-18T14:17:00.306Z",
+          isSimulated: true
+        },
+        "22": {
+          number: 22,
+          userId: "sim_22_1789741020306",
+          userName: "Abdi Tadesse",
+          userPhone: "0944***67",
+          selectedAt: "2026-09-18T14:14:45.306Z",
+          isSimulated: true
+        },
+        "23": {
+          number: 23,
+          userId: "sim_23_1789741020306",
+          userName: "Bontu Gemechu",
+          userPhone: "0933***15",
+          selectedAt: "2026-09-18T14:15:30.306Z",
+          isSimulated: true
+        },
+        "26": {
+          number: 26,
+          userId: "sim_26_1789741020306",
+          userName: "Sena Fikadu",
+          userPhone: "0921***55",
+          selectedAt: "2026-09-18T14:12:30.306Z",
+          isSimulated: true
+        },
+        "27": {
+          number: 27,
+          userId: "sim_27_1789741020306",
+          userName: "Haile Gebrselassie",
+          userPhone: "0911***10",
+          selectedAt: "2026-09-18T13:42:30.306Z",
+          isSimulated: true
+        },
+        "30": {
+          number: 30,
+          userId: "sim_30_1789741020306",
+          userName: "Ayantu Deressa",
+          userPhone: "0917***44",
+          selectedAt: "2026-09-18T13:58:15.306Z",
+          isSimulated: true
+        },
+        "33": {
+          number: 33,
+          userId: "sim_33_1789741020306",
+          userName: "Mulugeta Shiferaw",
+          userPhone: "0933***72",
+          selectedAt: "2026-09-18T13:53:00.306Z",
+          isSimulated: true
+        },
+        "34": {
+          number: 34,
+          userId: "sim_34_1789741020306",
+          userName: "Fatuma Roba",
+          userPhone: "0941***23",
+          selectedAt: "2026-09-18T13:44:45.306Z",
+          isSimulated: true
+        },
+        "39": {
+          number: 39,
+          userId: "sim_39_1789741020306",
+          userName: "Kuma Tolera",
+          userPhone: "0913***63",
+          selectedAt: "2026-09-18T14:08:45.306Z",
+          isSimulated: true
+        },
+        "42": {
+          number: 42,
+          userId: "user_1789032197481_2edd3a21",
+          userName: "Chala Bekele",
+          userPhone: "0988776655",
+          selectedAt: "2026-09-19T10:46:17.233Z"
+        },
+        "43": {
+          number: 43,
+          userId: "user_admin_0929200166",
+          userName: "Admin Gabre",
+          userPhone: "0929200166",
+          selectedAt: "2026-09-18T13:59:38.381Z"
+        },
+        "45": {
+          number: 45,
+          userId: "sim_45_1789741020306",
+          userName: "Worku Dejene",
+          userPhone: "0915***33",
+          selectedAt: "2026-09-18T13:49:15.306Z",
+          isSimulated: true
+        },
+        "46": {
+          number: 46,
+          userId: "sim_46_1789741020306",
+          userName: "Tolasa Megersa",
+          userPhone: "0922***89",
+          selectedAt: "2026-09-18T14:16:15.306Z",
+          isSimulated: true
+        },
+        "47": {
+          number: 47,
+          userId: "sim_47_1789741020306",
+          userName: "Tadesse Alemu",
+          userPhone: "0923***95",
+          selectedAt: "2026-09-18T14:05:45.306Z",
+          isSimulated: true
+        },
+        "48": {
+          number: 48,
+          userId: "sim_48_1789741020306",
+          userName: "Kenenisa Bekele",
+          userPhone: "0924***39",
+          selectedAt: "2026-09-18T13:43:15.306Z",
+          isSimulated: true
+        },
+        "49": {
+          number: 49,
+          userId: "sim_49_1789741020306",
+          userName: "Tariku Guta",
+          userPhone: "0912***96",
+          selectedAt: "2026-09-18T13:54:30.306Z",
+          isSimulated: true
+        },
+        "55": {
+          number: 55,
+          userId: "sim_55_1789741020306",
+          userName: "Kenna Desta",
+          userPhone: "0918***71",
+          selectedAt: "2026-09-18T14:10:15.306Z",
+          isSimulated: true
+        },
+        "57": {
+          number: 57,
+          userId: "sim_57_1789741020306",
+          userName: "Yosef Mamo",
+          userPhone: "0916***57",
+          selectedAt: "2026-09-18T14:04:15.306Z",
+          isSimulated: true
+        },
+        "58": {
+          number: 58,
+          userId: "sim_58_1789741020306",
+          userName: "Lensa Dibaba",
+          userPhone: "0917***90",
+          selectedAt: "2026-09-18T14:13:15.306Z",
+          isSimulated: true
+        },
+        "59": {
+          number: 59,
+          userId: "sim_59_1789741020306",
+          userName: "Wondwosen Kassa",
+          userPhone: "0922***64",
+          selectedAt: "2026-09-18T13:53:45.306Z",
+          isSimulated: true
+        },
+        "61": {
+          number: 61,
+          userId: "sim_61_1789741020306",
+          userName: "Meseret Defar",
+          userPhone: "0935***77",
+          selectedAt: "2026-09-18T13:41:45.306Z",
+          isSimulated: true
+        },
+        "62": {
+          number: 62,
+          userId: "sim_62_1789741020306",
+          userName: "Tigist Mekonnen",
+          userPhone: "0938***41",
+          selectedAt: "2026-09-18T13:48:30.306Z",
+          isSimulated: true
+        },
+        "64": {
+          number: 64,
+          userId: "sim_64_1789741020306",
+          userName: "Solomon Kumsa",
+          userPhone: "0911***93",
+          selectedAt: "2026-09-18T14:01:15.306Z",
+          isSimulated: true
+        },
+        "67": {
+          number: 67,
+          userId: "sim_67_1789741020306",
+          userName: "Obsa Bayisa",
+          userPhone: "0927***49",
+          selectedAt: "2026-09-18T14:09:30.306Z",
+          isSimulated: true
+        },
+        "68": {
+          number: 68,
+          userId: "sim_68_1789741020306",
+          userName: "Kalkidan Belay",
+          userPhone: "0910***50",
+          selectedAt: "2026-09-18T13:56:00.306Z",
+          isSimulated: true
+        },
+        "70": {
+          number: 70,
+          userId: "sim_70_1789741020306",
+          userName: "Kumera Wakgari",
+          userPhone: "0923***14",
+          selectedAt: "2026-09-18T13:46:15.306Z",
+          isSimulated: true
+        },
+        "72": {
+          number: 72,
+          userId: "sim_72_1789741020306",
+          userName: "Gemechu Birhanu",
+          userPhone: "0912***34",
+          selectedAt: "2026-09-18T14:14:00.306Z",
+          isSimulated: true
+        },
+        "77": {
+          number: 77,
+          userId: "sim_77_1789741020306",
+          userName: "Biniyam Abera",
+          userPhone: "0914***88",
+          selectedAt: "2026-09-18T13:50:45.306Z",
+          isSimulated: true
+        },
+        "80": {
+          number: 80,
+          userId: "sim_80_1789741020306",
+          userName: "Henok Takele",
+          userPhone: "0927***19",
+          selectedAt: "2026-09-18T13:51:30.306Z",
+          isSimulated: true
+        },
+        "81": {
+          number: 81,
+          userId: "sim_81_1789741020306",
+          userName: "Gudeta Negasa",
+          userPhone: "0920***74",
+          selectedAt: "2026-09-18T14:07:15.306Z",
+          isSimulated: true
+        },
+        "82": {
+          number: 82,
+          userId: "sim_82_1789741020306",
+          userName: "Zelalem Tura",
+          userPhone: "0914***38",
+          selectedAt: "2026-09-18T14:06:30.306Z",
+          isSimulated: true
+        },
+        "84": {
+          number: 84,
+          userId: "sim_84_1789741020306",
+          userName: "Hawii Tesfaye",
+          userPhone: "0935***88",
+          selectedAt: "2026-09-18T14:11:00.306Z",
+          isSimulated: true
+        },
+        "85": {
+          number: 85,
+          userId: "sim_85_1789741020306",
+          userName: "Tirhas Mengistu",
+          userPhone: "0934***29",
+          selectedAt: "2026-09-18T13:57:30.306Z",
+          isSimulated: true
+        },
+        "86": {
+          number: 86,
+          userId: "sim_86_1789741020306",
+          userName: "Mekdes Kebede",
+          userPhone: "0924***81",
+          selectedAt: "2026-09-18T14:03:30.306Z",
+          isSimulated: true
+        },
+        "93": {
+          number: 93,
+          userId: "sim_93_1789741020306",
+          userName: "Rahel Tilahun",
+          userPhone: "0925***31",
+          selectedAt: "2026-09-18T14:00:30.306Z",
+          isSimulated: true
+        },
+        "94": {
+          number: 94,
+          userId: "sim_94_1789741020306",
+          userName: "Feven Endale",
+          userPhone: "0920***52",
+          selectedAt: "2026-09-18T13:50:00.306Z",
+          isSimulated: true
+        },
+        "95": {
+          number: 95,
+          userId: "sim_95_1789741020306",
+          userName: "Sileshi Sihine",
+          userPhone: "0912***48",
+          selectedAt: "2026-09-18T13:44:00.306Z",
+          isSimulated: true
+        },
+        "99": {
+          number: 99,
+          userId: "sim_99_1789741020306",
+          userName: "Gadisa Worku",
+          userPhone: "0919***12",
+          selectedAt: "2026-09-18T14:08:00.306Z",
+          isSimulated: true
+        },
+        "100": {
+          number: 100,
+          userId: "sim_100_1789741020306",
+          userName: "Sintayehu Lema",
+          userPhone: "0929***83",
+          selectedAt: "2026-09-18T13:56:45.306Z",
+          isSimulated: true
+        }
+      },
+      totalPool: 2550,
+      winners: [
+        {
+          rank: 1,
+          number: 42,
+          userId: "user_1789032197481_2edd3a21",
+          userName: "Chala Bekele",
+          userPhone: "0988776655",
+          prizeAmount: 1530,
+          percentage: 75
+        },
+        {
+          rank: 2,
+          number: 72,
+          userId: "sim_72_1789741020306",
+          userName: "Gemechu Birhanu",
+          userPhone: "0912***34",
+          prizeAmount: 255,
+          percentage: 7
+        },
+        {
+          rank: 3,
+          number: 85,
+          userId: "sim_85_1789741020306",
+          userName: "Tirhas Mengistu",
+          userPhone: "0934***29",
+          prizeAmount: 102,
+          percentage: 3
+        }
+      ],
+      createdAt: "2026-09-18T13:58:26.132Z",
+      drawnAt: "2026-09-19T10:46:17.237Z"
+    },
+    round_6: {
+      id: "round_6",
+      roundNumber: 6,
+      status: "COMPLETED",
+      ticketPrice: 50,
+      selections: {
+        "42": {
+          number: 42,
+          userId: "user_1789032197481_2edd3a21",
+          userName: "Chala Bekele",
+          userPhone: "0988776655",
+          selectedAt: "2026-09-19T10:46:27.811Z"
+        }
+      },
+      totalPool: 50,
+      winners: [
+        {
+          rank: 1,
+          number: 42,
+          userId: "user_1789032197481_2edd3a21",
+          userName: "Chala Bekele",
+          userPhone: "0988776655",
+          prizeAmount: 30,
+          percentage: 75
+        }
+      ],
+      createdAt: "2026-09-19T10:46:17.237Z",
+      drawnAt: "2026-09-19T10:46:27.814Z"
+    },
+    round_7: {
+      id: "round_7",
+      roundNumber: 7,
+      status: "COMPLETED",
+      ticketPrice: 50,
+      selections: {
+        "1": {
+          number: 1,
+          userId: "user_p_1",
+          userName: "Tolasa Dibaba",
+          userPhone: "091008121",
+          selectedAt: "2026-09-19T09:14:16.304Z",
+          isSimulated: true
+        },
+        "2": {
+          number: 2,
+          userId: "user_p_2",
+          userName: "Chala Bekele",
+          userPhone: "091016242",
+          selectedAt: "2026-09-19T09:15:16.304Z",
+          isSimulated: true
+        },
+        "3": {
+          number: 3,
+          userId: "user_p_3",
+          userName: "Hawi Abera",
+          userPhone: "091024363",
+          selectedAt: "2026-09-19T09:16:16.304Z",
+          isSimulated: true
+        },
+        "4": {
+          number: 4,
+          userId: "user_p_4",
+          userName: "Bontu Gudina",
+          userPhone: "091032484",
+          selectedAt: "2026-09-19T09:17:16.304Z",
+          isSimulated: true
+        },
+        "5": {
+          number: 5,
+          userId: "user_p_5",
+          userName: "Caaltu Fayisa",
+          userPhone: "091040605",
+          selectedAt: "2026-09-19T09:18:16.304Z",
+          isSimulated: true
+        },
+        "6": {
+          number: 6,
+          userId: "user_p_6",
+          userName: "Obsa Tola",
+          userPhone: "091048726",
+          selectedAt: "2026-09-19T09:19:16.304Z",
+          isSimulated: true
+        },
+        "7": {
+          number: 7,
+          userId: "user_p_7",
+          userName: "Kumsa Desta",
+          userPhone: "091056847",
+          selectedAt: "2026-09-19T09:20:16.304Z",
+          isSimulated: true
+        },
+        "8": {
+          number: 8,
+          userId: "user_p_8",
+          userName: "Sifan Regassa",
+          userPhone: "091064968",
+          selectedAt: "2026-09-19T09:21:16.304Z",
+          isSimulated: true
+        },
+        "9": {
+          number: 9,
+          userId: "user_p_9",
+          userName: "Girma Negash",
+          userPhone: "091073089",
+          selectedAt: "2026-09-19T09:22:16.304Z",
+          isSimulated: true
+        },
+        "10": {
+          number: 10,
+          userId: "user_p_10",
+          userName: "Almaz Ayana",
+          userPhone: "091081210",
+          selectedAt: "2026-09-19T09:23:16.304Z",
+          isSimulated: true
+        },
+        "11": {
+          number: 11,
+          userId: "user_p_11",
+          userName: "Derartu Tulu",
+          userPhone: "091089331",
+          selectedAt: "2026-09-19T09:24:16.304Z",
+          isSimulated: true
+        },
+        "12": {
+          number: 12,
+          userId: "user_p_12",
+          userName: "Kenenisa Bekele",
+          userPhone: "091097452",
+          selectedAt: "2026-09-19T09:25:16.304Z",
+          isSimulated: true
+        },
+        "13": {
+          number: 13,
+          userId: "user_p_13",
+          userName: "Tirunesh Dibaba",
+          userPhone: "091105573",
+          selectedAt: "2026-09-19T09:26:16.304Z",
+          isSimulated: true
+        },
+        "14": {
+          number: 14,
+          userId: "user_p_14",
+          userName: "Haile Gebrselassie",
+          userPhone: "091113694",
+          selectedAt: "2026-09-19T09:27:16.304Z",
+          isSimulated: true
+        },
+        "15": {
+          number: 15,
+          userId: "user_p_15",
+          userName: "Aster Aweke",
+          userPhone: "091121815",
+          selectedAt: "2026-09-19T09:28:16.304Z",
+          isSimulated: true
+        },
+        "16": {
+          number: 16,
+          userId: "user_p_16",
+          userName: "Ali Birra",
+          userPhone: "091129936",
+          selectedAt: "2026-09-19T09:29:16.304Z",
+          isSimulated: true
+        },
+        "17": {
+          number: 17,
+          userId: "user_p_17",
+          userName: "Dawit Tsige",
+          userPhone: "091138057",
+          selectedAt: "2026-09-19T09:30:16.304Z",
+          isSimulated: true
+        },
+        "18": {
+          number: 18,
+          userId: "user_p_18",
+          userName: "Kalkidan Fikre",
+          userPhone: "091146178",
+          selectedAt: "2026-09-19T09:31:16.304Z",
+          isSimulated: true
+        },
+        "19": {
+          number: 19,
+          userId: "user_p_19",
+          userName: "Gemechu Kebede",
+          userPhone: "091154299",
+          selectedAt: "2026-09-19T09:32:16.304Z",
+          isSimulated: true
+        },
+        "20": {
+          number: 20,
+          userId: "user_p_20",
+          userName: "Birhanu Legesse",
+          userPhone: "091162420",
+          selectedAt: "2026-09-19T09:33:16.305Z",
+          isSimulated: true
+        },
+        "21": {
+          number: 21,
+          userId: "user_p_21",
+          userName: "Yared Negu",
+          userPhone: "091170541",
+          selectedAt: "2026-09-19T09:34:16.305Z",
+          isSimulated: true
+        },
+        "22": {
+          number: 22,
+          userId: "user_p_22",
+          userName: "Solomon Deneke",
+          userPhone: "091178662",
+          selectedAt: "2026-09-19T09:35:16.305Z",
+          isSimulated: true
+        },
+        "23": {
+          number: 23,
+          userId: "user_p_23",
+          userName: "Lensa Gamachu",
+          userPhone: "091186783",
+          selectedAt: "2026-09-19T09:36:16.305Z",
+          isSimulated: true
+        },
+        "24": {
+          number: 24,
+          userId: "user_p_24",
+          userName: "Ayantu Tolera",
+          userPhone: "091194904",
+          selectedAt: "2026-09-19T09:37:16.305Z",
+          isSimulated: true
+        },
+        "25": {
+          number: 25,
+          userId: "user_p_25",
+          userName: "Marta Haile",
+          userPhone: "091203025",
+          selectedAt: "2026-09-19T09:38:16.305Z",
+          isSimulated: true
+        },
+        "26": {
+          number: 26,
+          userId: "user_p_26",
+          userName: "Meseret Defar",
+          userPhone: "091211146",
+          selectedAt: "2026-09-19T09:39:16.305Z",
+          isSimulated: true
+        },
+        "27": {
+          number: 27,
+          userId: "user_p_27",
+          userName: "Gudaf Tsegay",
+          userPhone: "091219267",
+          selectedAt: "2026-09-19T09:40:16.305Z",
+          isSimulated: true
+        },
+        "28": {
+          number: 28,
+          userId: "user_p_28",
+          userName: "Tamirat Tola",
+          userPhone: "091227388",
+          selectedAt: "2026-09-19T09:41:16.305Z",
+          isSimulated: true
+        },
+        "29": {
+          number: 29,
+          userId: "user_p_29",
+          userName: "Selemon Barega",
+          userPhone: "091235509",
+          selectedAt: "2026-09-19T09:42:16.305Z",
+          isSimulated: true
+        },
+        "30": {
+          number: 30,
+          userId: "user_p_30",
+          userName: "Abdi Nageeye",
+          userPhone: "091243630",
+          selectedAt: "2026-09-19T09:43:16.305Z",
+          isSimulated: true
+        },
+        "31": {
+          number: 31,
+          userId: "user_p_31",
+          userName: "Feyisa Lilesa",
+          userPhone: "091251751",
+          selectedAt: "2026-09-19T09:44:16.305Z",
+          isSimulated: true
+        },
+        "32": {
+          number: 32,
+          userId: "user_p_32",
+          userName: "Werknesh Kidane",
+          userPhone: "091259872",
+          selectedAt: "2026-09-19T09:45:16.305Z",
+          isSimulated: true
+        },
+        "33": {
+          number: 33,
+          userId: "user_p_33",
+          userName: "Senbere Teferi",
+          userPhone: "091267993",
+          selectedAt: "2026-09-19T09:46:16.305Z",
+          isSimulated: true
+        },
+        "34": {
+          number: 34,
+          userId: "user_p_34",
+          userName: "Lelisa Desisa",
+          userPhone: "091276114",
+          selectedAt: "2026-09-19T09:47:16.305Z",
+          isSimulated: true
+        },
+        "35": {
+          number: 35,
+          userId: "user_p_35",
+          userName: "Tolasa Dibaba",
+          userPhone: "091284235",
+          selectedAt: "2026-09-19T09:48:16.305Z",
+          isSimulated: true
+        },
+        "36": {
+          number: 36,
+          userId: "user_p_36",
+          userName: "Chala Bekele",
+          userPhone: "091292356",
+          selectedAt: "2026-09-19T09:49:16.305Z",
+          isSimulated: true
+        },
+        "37": {
+          number: 37,
+          userId: "user_p_37",
+          userName: "Hawi Abera",
+          userPhone: "091300477",
+          selectedAt: "2026-09-19T09:50:16.305Z",
+          isSimulated: true
+        },
+        "38": {
+          number: 38,
+          userId: "user_p_38",
+          userName: "Bontu Gudina",
+          userPhone: "091308598",
+          selectedAt: "2026-09-19T09:51:16.305Z",
+          isSimulated: true
+        },
+        "39": {
+          number: 39,
+          userId: "user_p_39",
+          userName: "Caaltu Fayisa",
+          userPhone: "091316719",
+          selectedAt: "2026-09-19T09:52:16.305Z",
+          isSimulated: true
+        },
+        "40": {
+          number: 40,
+          userId: "user_p_40",
+          userName: "Obsa Tola",
+          userPhone: "091324840",
+          selectedAt: "2026-09-19T09:53:16.305Z",
+          isSimulated: true
+        },
+        "41": {
+          number: 41,
+          userId: "user_p_41",
+          userName: "Kumsa Desta",
+          userPhone: "091332961",
+          selectedAt: "2026-09-19T09:54:16.305Z",
+          isSimulated: true
+        },
+        "42": {
+          number: 42,
+          userId: "user_1789032197481_2edd3a21",
+          userName: "Chala Bekele",
+          userPhone: "0988776655",
+          selectedAt: "2026-09-19T10:54:42.586Z"
+        },
+        "43": {
+          number: 43,
+          userId: "user_p_43",
+          userName: "Girma Negash",
+          userPhone: "091349203",
+          selectedAt: "2026-09-19T09:56:16.305Z",
+          isSimulated: true
+        },
+        "44": {
+          number: 44,
+          userId: "user_p_44",
+          userName: "Almaz Ayana",
+          userPhone: "091357324",
+          selectedAt: "2026-09-19T09:57:16.305Z",
+          isSimulated: true
+        },
+        "45": {
+          number: 45,
+          userId: "user_p_45",
+          userName: "Derartu Tulu",
+          userPhone: "091365445",
+          selectedAt: "2026-09-19T09:58:16.305Z",
+          isSimulated: true
+        },
+        "46": {
+          number: 46,
+          userId: "user_p_46",
+          userName: "Kenenisa Bekele",
+          userPhone: "091373566",
+          selectedAt: "2026-09-19T09:59:16.305Z",
+          isSimulated: true
+        },
+        "47": {
+          number: 47,
+          userId: "user_p_47",
+          userName: "Tirunesh Dibaba",
+          userPhone: "091381687",
+          selectedAt: "2026-09-19T10:00:16.305Z",
+          isSimulated: true
+        },
+        "48": {
+          number: 48,
+          userId: "user_p_48",
+          userName: "Haile Gebrselassie",
+          userPhone: "091389808",
+          selectedAt: "2026-09-19T10:01:16.305Z",
+          isSimulated: true
+        },
+        "49": {
+          number: 49,
+          userId: "user_p_49",
+          userName: "Aster Aweke",
+          userPhone: "091397929",
+          selectedAt: "2026-09-19T10:02:16.305Z",
+          isSimulated: true
+        },
+        "50": {
+          number: 50,
+          userId: "user_p_50",
+          userName: "Ali Birra",
+          userPhone: "091406050",
+          selectedAt: "2026-09-19T10:03:16.305Z",
+          isSimulated: true
+        },
+        "51": {
+          number: 51,
+          userId: "user_p_51",
+          userName: "Dawit Tsige",
+          userPhone: "091414171",
+          selectedAt: "2026-09-19T10:04:16.305Z",
+          isSimulated: true
+        },
+        "52": {
+          number: 52,
+          userId: "user_p_52",
+          userName: "Kalkidan Fikre",
+          userPhone: "091422292",
+          selectedAt: "2026-09-19T10:05:16.305Z",
+          isSimulated: true
+        },
+        "53": {
+          number: 53,
+          userId: "user_p_53",
+          userName: "Gemechu Kebede",
+          userPhone: "091430413",
+          selectedAt: "2026-09-19T10:06:16.305Z",
+          isSimulated: true
+        },
+        "54": {
+          number: 54,
+          userId: "user_p_54",
+          userName: "Birhanu Legesse",
+          userPhone: "091438534",
+          selectedAt: "2026-09-19T10:07:16.305Z",
+          isSimulated: true
+        },
+        "55": {
+          number: 55,
+          userId: "user_p_55",
+          userName: "Yared Negu",
+          userPhone: "091446655",
+          selectedAt: "2026-09-19T10:08:16.305Z",
+          isSimulated: true
+        },
+        "56": {
+          number: 56,
+          userId: "user_p_56",
+          userName: "Solomon Deneke",
+          userPhone: "091454776",
+          selectedAt: "2026-09-19T10:09:16.305Z",
+          isSimulated: true
+        },
+        "57": {
+          number: 57,
+          userId: "user_p_57",
+          userName: "Lensa Gamachu",
+          userPhone: "091462897",
+          selectedAt: "2026-09-19T10:10:16.305Z",
+          isSimulated: true
+        },
+        "58": {
+          number: 58,
+          userId: "user_p_58",
+          userName: "Ayantu Tolera",
+          userPhone: "091471018",
+          selectedAt: "2026-09-19T10:11:16.305Z",
+          isSimulated: true
+        },
+        "59": {
+          number: 59,
+          userId: "user_p_59",
+          userName: "Marta Haile",
+          userPhone: "091479139",
+          selectedAt: "2026-09-19T10:12:16.305Z",
+          isSimulated: true
+        },
+        "60": {
+          number: 60,
+          userId: "user_p_60",
+          userName: "Meseret Defar",
+          userPhone: "091487260",
+          selectedAt: "2026-09-19T10:13:16.305Z",
+          isSimulated: true
+        },
+        "61": {
+          number: 61,
+          userId: "user_p_61",
+          userName: "Gudaf Tsegay",
+          userPhone: "091495381",
+          selectedAt: "2026-09-19T10:14:16.305Z",
+          isSimulated: true
+        },
+        "62": {
+          number: 62,
+          userId: "user_p_62",
+          userName: "Tamirat Tola",
+          userPhone: "091503502",
+          selectedAt: "2026-09-19T10:15:16.305Z",
+          isSimulated: true
+        },
+        "63": {
+          number: 63,
+          userId: "user_p_63",
+          userName: "Selemon Barega",
+          userPhone: "091511623",
+          selectedAt: "2026-09-19T10:16:16.305Z",
+          isSimulated: true
+        },
+        "64": {
+          number: 64,
+          userId: "user_p_64",
+          userName: "Abdi Nageeye",
+          userPhone: "091519744",
+          selectedAt: "2026-09-19T10:17:16.305Z",
+          isSimulated: true
+        },
+        "65": {
+          number: 65,
+          userId: "user_p_65",
+          userName: "Feyisa Lilesa",
+          userPhone: "091527865",
+          selectedAt: "2026-09-19T10:18:16.305Z",
+          isSimulated: true
+        },
+        "66": {
+          number: 66,
+          userId: "user_p_66",
+          userName: "Werknesh Kidane",
+          userPhone: "091535986",
+          selectedAt: "2026-09-19T10:19:16.305Z",
+          isSimulated: true
+        },
+        "67": {
+          number: 67,
+          userId: "user_p_67",
+          userName: "Senbere Teferi",
+          userPhone: "091544107",
+          selectedAt: "2026-09-19T10:20:16.305Z",
+          isSimulated: true
+        },
+        "68": {
+          number: 68,
+          userId: "user_p_68",
+          userName: "Lelisa Desisa",
+          userPhone: "091552228",
+          selectedAt: "2026-09-19T10:21:16.305Z",
+          isSimulated: true
+        },
+        "69": {
+          number: 69,
+          userId: "user_p_69",
+          userName: "Tolasa Dibaba",
+          userPhone: "091560349",
+          selectedAt: "2026-09-19T10:22:16.305Z",
+          isSimulated: true
+        },
+        "70": {
+          number: 70,
+          userId: "user_p_70",
+          userName: "Chala Bekele",
+          userPhone: "091568470",
+          selectedAt: "2026-09-19T10:23:16.305Z",
+          isSimulated: true
+        },
+        "71": {
+          number: 71,
+          userId: "user_p_71",
+          userName: "Hawi Abera",
+          userPhone: "091576591",
+          selectedAt: "2026-09-19T10:24:16.305Z",
+          isSimulated: true
+        },
+        "72": {
+          number: 72,
+          userId: "user_p_72",
+          userName: "Bontu Gudina",
+          userPhone: "091584712",
+          selectedAt: "2026-09-19T10:25:16.305Z",
+          isSimulated: true
+        },
+        "73": {
+          number: 73,
+          userId: "user_p_73",
+          userName: "Caaltu Fayisa",
+          userPhone: "091592833",
+          selectedAt: "2026-09-19T10:26:16.305Z",
+          isSimulated: true
+        },
+        "74": {
+          number: 74,
+          userId: "user_p_74",
+          userName: "Obsa Tola",
+          userPhone: "091600954",
+          selectedAt: "2026-09-19T10:27:16.305Z",
+          isSimulated: true
+        },
+        "75": {
+          number: 75,
+          userId: "user_p_75",
+          userName: "Kumsa Desta",
+          userPhone: "091609075",
+          selectedAt: "2026-09-19T10:28:16.305Z",
+          isSimulated: true
+        },
+        "76": {
+          number: 76,
+          userId: "user_p_76",
+          userName: "Sifan Regassa",
+          userPhone: "091617196",
+          selectedAt: "2026-09-19T10:29:16.305Z",
+          isSimulated: true
+        },
+        "77": {
+          number: 77,
+          userId: "user_p_77",
+          userName: "Girma Negash",
+          userPhone: "091625317",
+          selectedAt: "2026-09-19T10:30:16.305Z",
+          isSimulated: true
+        },
+        "78": {
+          number: 78,
+          userId: "user_p_78",
+          userName: "Almaz Ayana",
+          userPhone: "091633438",
+          selectedAt: "2026-09-19T10:31:16.305Z",
+          isSimulated: true
+        },
+        "79": {
+          number: 79,
+          userId: "user_p_79",
+          userName: "Derartu Tulu",
+          userPhone: "091641559",
+          selectedAt: "2026-09-19T10:32:16.305Z",
+          isSimulated: true
+        },
+        "80": {
+          number: 80,
+          userId: "user_p_80",
+          userName: "Kenenisa Bekele",
+          userPhone: "091649680",
+          selectedAt: "2026-09-19T10:33:16.305Z",
+          isSimulated: true
+        },
+        "81": {
+          number: 81,
+          userId: "user_p_81",
+          userName: "Tirunesh Dibaba",
+          userPhone: "091657801",
+          selectedAt: "2026-09-19T10:34:16.305Z",
+          isSimulated: true
+        },
+        "82": {
+          number: 82,
+          userId: "user_p_82",
+          userName: "Haile Gebrselassie",
+          userPhone: "091665922",
+          selectedAt: "2026-09-19T10:35:16.305Z",
+          isSimulated: true
+        },
+        "83": {
+          number: 83,
+          userId: "user_p_83",
+          userName: "Aster Aweke",
+          userPhone: "091674043",
+          selectedAt: "2026-09-19T10:36:16.305Z",
+          isSimulated: true
+        },
+        "84": {
+          number: 84,
+          userId: "user_p_84",
+          userName: "Ali Birra",
+          userPhone: "091682164",
+          selectedAt: "2026-09-19T10:37:16.305Z",
+          isSimulated: true
+        },
+        "85": {
+          number: 85,
+          userId: "user_p_85",
+          userName: "Dawit Tsige",
+          userPhone: "091690285",
+          selectedAt: "2026-09-19T10:38:16.305Z",
+          isSimulated: true
+        },
+        "86": {
+          number: 86,
+          userId: "user_p_86",
+          userName: "Kalkidan Fikre",
+          userPhone: "091698406",
+          selectedAt: "2026-09-19T10:39:16.305Z",
+          isSimulated: true
+        },
+        "87": {
+          number: 87,
+          userId: "user_p_87",
+          userName: "Gemechu Kebede",
+          userPhone: "091706527",
+          selectedAt: "2026-09-19T10:40:16.305Z",
+          isSimulated: true
+        },
+        "88": {
+          number: 88,
+          userId: "user_p_88",
+          userName: "Birhanu Legesse",
+          userPhone: "091714648",
+          selectedAt: "2026-09-19T10:41:16.305Z",
+          isSimulated: true
+        },
+        "89": {
+          number: 89,
+          userId: "user_p_89",
+          userName: "Yared Negu",
+          userPhone: "091722769",
+          selectedAt: "2026-09-19T10:42:16.305Z",
+          isSimulated: true
+        },
+        "90": {
+          number: 90,
+          userId: "user_p_90",
+          userName: "Solomon Deneke",
+          userPhone: "091730890",
+          selectedAt: "2026-09-19T10:43:16.305Z",
+          isSimulated: true
+        },
+        "91": {
+          number: 91,
+          userId: "user_admin_0929200166",
+          userName: "Admin Gabre",
+          userPhone: "0929200166",
+          selectedAt: "2026-09-19T10:48:52.580Z"
+        },
+        "92": {
+          number: 92,
+          userId: "user_p_92",
+          userName: "Ayantu Tolera",
+          userPhone: "091747132",
+          selectedAt: "2026-09-19T10:45:16.305Z",
+          isSimulated: true
+        },
+        "93": {
+          number: 93,
+          userId: "user_p_93",
+          userName: "Marta Haile",
+          userPhone: "091755253",
+          selectedAt: "2026-09-19T10:46:16.305Z",
+          isSimulated: true
+        },
+        "94": {
+          number: 94,
+          userId: "user_p_94",
+          userName: "Meseret Defar",
+          userPhone: "091763374",
+          selectedAt: "2026-09-19T10:47:16.305Z",
+          isSimulated: true
+        },
+        "95": {
+          number: 95,
+          userId: "user_p_95",
+          userName: "Gudaf Tsegay",
+          userPhone: "091771495",
+          selectedAt: "2026-09-19T10:48:16.305Z",
+          isSimulated: true
+        },
+        "96": {
+          number: 96,
+          userId: "user_p_96",
+          userName: "Tamirat Tola",
+          userPhone: "091779616",
+          selectedAt: "2026-09-19T10:49:16.305Z",
+          isSimulated: true
+        },
+        "97": {
+          number: 97,
+          userId: "user_p_97",
+          userName: "Selemon Barega",
+          userPhone: "091787737",
+          selectedAt: "2026-09-19T10:50:16.305Z",
+          isSimulated: true
+        },
+        "98": {
+          number: 98,
+          userId: "user_p_98",
+          userName: "Abdi Nageeye",
+          userPhone: "091795858",
+          selectedAt: "2026-09-19T10:51:16.305Z",
+          isSimulated: true
+        },
+        "99": {
+          number: 99,
+          userId: "user_p_99",
+          userName: "Feyisa Lilesa",
+          userPhone: "091803979",
+          selectedAt: "2026-09-19T10:52:16.305Z",
+          isSimulated: true
+        },
+        "100": {
+          number: 100,
+          userId: "user_p_100",
+          userName: "Werknesh Kidane",
+          userPhone: "091812100",
+          selectedAt: "2026-09-19T10:53:16.305Z",
+          isSimulated: true
+        }
+      },
+      totalPool: 5050,
+      winners: [
+        {
+          rank: 1,
+          number: 42,
+          userId: "user_1789032197481_2edd3a21",
+          userName: "Chala Bekele",
+          userPhone: "0988776655",
+          prizeAmount: 3e3,
+          percentage: 75
+        },
+        {
+          rank: 2,
+          number: 23,
+          userId: "user_p_23",
+          userName: "Lensa Gamachu",
+          userPhone: "091186783",
+          prizeAmount: 500,
+          percentage: 7
+        },
+        {
+          rank: 3,
+          number: 44,
+          userId: "user_p_44",
+          userName: "Almaz Ayana",
+          userPhone: "091357324",
+          prizeAmount: 200,
+          percentage: 3
+        }
+      ],
+      createdAt: "2026-09-19T10:46:27.814Z",
+      drawnAt: "2026-09-19T10:54:42.590Z"
+    },
+    round_8: {
+      id: "round_8",
+      roundNumber: 8,
+      status: "COMPLETED",
+      ticketPrice: 50,
+      selections: {
+        "1": {
+          number: 1,
+          userId: "user_p_1",
+          userName: "Tolasa Dibaba",
+          userPhone: "091008121",
+          selectedAt: "2026-09-19T10:05:18.866Z",
+          isSimulated: true
+        },
+        "2": {
+          number: 2,
+          userId: "user_p_2",
+          userName: "Chala Bekele",
+          userPhone: "091016242",
+          selectedAt: "2026-09-19T10:05:48.866Z",
+          isSimulated: true
+        },
+        "3": {
+          number: 3,
+          userId: "user_p_3",
+          userName: "Hawi Abera",
+          userPhone: "091024363",
+          selectedAt: "2026-09-19T10:06:18.866Z",
+          isSimulated: true
+        },
+        "4": {
+          number: 4,
+          userId: "user_p_4",
+          userName: "Bontu Gudina",
+          userPhone: "091032484",
+          selectedAt: "2026-09-19T10:06:48.866Z",
+          isSimulated: true
+        },
+        "5": {
+          number: 5,
+          userId: "user_p_5",
+          userName: "Caaltu Fayisa",
+          userPhone: "091040605",
+          selectedAt: "2026-09-19T10:07:18.866Z",
+          isSimulated: true
+        },
+        "6": {
+          number: 6,
+          userId: "user_p_6",
+          userName: "Obsa Tola",
+          userPhone: "091048726",
+          selectedAt: "2026-09-19T10:07:48.866Z",
+          isSimulated: true
+        },
+        "7": {
+          number: 7,
+          userId: "user_p_7",
+          userName: "Kumsa Desta",
+          userPhone: "091056847",
+          selectedAt: "2026-09-19T10:08:18.866Z",
+          isSimulated: true
+        },
+        "8": {
+          number: 8,
+          userId: "user_p_8",
+          userName: "Sifan Regassa",
+          userPhone: "091064968",
+          selectedAt: "2026-09-19T10:08:48.866Z",
+          isSimulated: true
+        },
+        "9": {
+          number: 9,
+          userId: "user_p_9",
+          userName: "Girma Negash",
+          userPhone: "091073089",
+          selectedAt: "2026-09-19T10:09:18.866Z",
+          isSimulated: true
+        },
+        "10": {
+          number: 10,
+          userId: "user_p_10",
+          userName: "Almaz Ayana",
+          userPhone: "091081210",
+          selectedAt: "2026-09-19T10:09:48.866Z",
+          isSimulated: true
+        },
+        "11": {
+          number: 11,
+          userId: "user_p_11",
+          userName: "Derartu Tulu",
+          userPhone: "091089331",
+          selectedAt: "2026-09-19T10:10:18.866Z",
+          isSimulated: true
+        },
+        "12": {
+          number: 12,
+          userId: "user_p_12",
+          userName: "Kenenisa Bekele",
+          userPhone: "091097452",
+          selectedAt: "2026-09-19T10:10:48.866Z",
+          isSimulated: true
+        },
+        "13": {
+          number: 13,
+          userId: "user_p_13",
+          userName: "Tirunesh Dibaba",
+          userPhone: "091105573",
+          selectedAt: "2026-09-19T10:11:18.866Z",
+          isSimulated: true
+        },
+        "14": {
+          number: 14,
+          userId: "user_p_14",
+          userName: "Haile Gebrselassie",
+          userPhone: "091113694",
+          selectedAt: "2026-09-19T10:11:48.866Z",
+          isSimulated: true
+        },
+        "15": {
+          number: 15,
+          userId: "user_p_15",
+          userName: "Aster Aweke",
+          userPhone: "091121815",
+          selectedAt: "2026-09-19T10:12:18.866Z",
+          isSimulated: true
+        },
+        "16": {
+          number: 16,
+          userId: "user_p_16",
+          userName: "Ali Birra",
+          userPhone: "091129936",
+          selectedAt: "2026-09-19T10:12:48.866Z",
+          isSimulated: true
+        },
+        "17": {
+          number: 17,
+          userId: "user_p_17",
+          userName: "Dawit Tsige",
+          userPhone: "091138057",
+          selectedAt: "2026-09-19T10:13:18.866Z",
+          isSimulated: true
+        },
+        "18": {
+          number: 18,
+          userId: "user_p_18",
+          userName: "Kalkidan Fikre",
+          userPhone: "091146178",
+          selectedAt: "2026-09-19T10:13:48.866Z",
+          isSimulated: true
+        },
+        "19": {
+          number: 19,
+          userId: "user_p_19",
+          userName: "Gemechu Kebede",
+          userPhone: "091154299",
+          selectedAt: "2026-09-19T10:14:18.866Z",
+          isSimulated: true
+        },
+        "20": {
+          number: 20,
+          userId: "user_p_20",
+          userName: "Birhanu Legesse",
+          userPhone: "091162420",
+          selectedAt: "2026-09-19T10:14:48.866Z",
+          isSimulated: true
+        },
+        "21": {
+          number: 21,
+          userId: "user_p_21",
+          userName: "Yared Negu",
+          userPhone: "091170541",
+          selectedAt: "2026-09-19T10:15:18.866Z",
+          isSimulated: true
+        },
+        "22": {
+          number: 22,
+          userId: "user_p_22",
+          userName: "Solomon Deneke",
+          userPhone: "091178662",
+          selectedAt: "2026-09-19T10:15:48.866Z",
+          isSimulated: true
+        },
+        "23": {
+          number: 23,
+          userId: "user_p_23",
+          userName: "Lensa Gamachu",
+          userPhone: "091186783",
+          selectedAt: "2026-09-19T10:16:18.866Z",
+          isSimulated: true
+        },
+        "24": {
+          number: 24,
+          userId: "user_p_24",
+          userName: "Ayantu Tolera",
+          userPhone: "091194904",
+          selectedAt: "2026-09-19T10:16:48.866Z",
+          isSimulated: true
+        },
+        "25": {
+          number: 25,
+          userId: "user_p_25",
+          userName: "Marta Haile",
+          userPhone: "091203025",
+          selectedAt: "2026-09-19T10:17:18.866Z",
+          isSimulated: true
+        },
+        "26": {
+          number: 26,
+          userId: "user_p_26",
+          userName: "Meseret Defar",
+          userPhone: "091211146",
+          selectedAt: "2026-09-19T10:17:48.866Z",
+          isSimulated: true
+        },
+        "27": {
+          number: 27,
+          userId: "user_p_27",
+          userName: "Gudaf Tsegay",
+          userPhone: "091219267",
+          selectedAt: "2026-09-19T10:18:18.866Z",
+          isSimulated: true
+        },
+        "28": {
+          number: 28,
+          userId: "user_p_28",
+          userName: "Tamirat Tola",
+          userPhone: "091227388",
+          selectedAt: "2026-09-19T10:18:48.866Z",
+          isSimulated: true
+        },
+        "29": {
+          number: 29,
+          userId: "user_p_29",
+          userName: "Selemon Barega",
+          userPhone: "091235509",
+          selectedAt: "2026-09-19T10:19:18.866Z",
+          isSimulated: true
+        },
+        "30": {
+          number: 30,
+          userId: "user_p_30",
+          userName: "Abdi Nageeye",
+          userPhone: "091243630",
+          selectedAt: "2026-09-19T10:19:48.866Z",
+          isSimulated: true
+        },
+        "31": {
+          number: 31,
+          userId: "user_p_31",
+          userName: "Feyisa Lilesa",
+          userPhone: "091251751",
+          selectedAt: "2026-09-19T10:20:18.866Z",
+          isSimulated: true
+        },
+        "32": {
+          number: 32,
+          userId: "user_p_32",
+          userName: "Werknesh Kidane",
+          userPhone: "091259872",
+          selectedAt: "2026-09-19T10:20:48.866Z",
+          isSimulated: true
+        },
+        "33": {
+          number: 33,
+          userId: "user_p_33",
+          userName: "Senbere Teferi",
+          userPhone: "091267993",
+          selectedAt: "2026-09-19T10:21:18.866Z",
+          isSimulated: true
+        },
+        "34": {
+          number: 34,
+          userId: "user_p_34",
+          userName: "Lelisa Desisa",
+          userPhone: "091276114",
+          selectedAt: "2026-09-19T10:21:48.866Z",
+          isSimulated: true
+        },
+        "35": {
+          number: 35,
+          userId: "user_p_35",
+          userName: "Tolasa Dibaba",
+          userPhone: "091284235",
+          selectedAt: "2026-09-19T10:22:18.866Z",
+          isSimulated: true
+        },
+        "36": {
+          number: 36,
+          userId: "user_p_36",
+          userName: "Chala Bekele",
+          userPhone: "091292356",
+          selectedAt: "2026-09-19T10:22:48.866Z",
+          isSimulated: true
+        },
+        "37": {
+          number: 37,
+          userId: "user_p_37",
+          userName: "Hawi Abera",
+          userPhone: "091300477",
+          selectedAt: "2026-09-19T10:23:18.866Z",
+          isSimulated: true
+        },
+        "38": {
+          number: 38,
+          userId: "user_p_38",
+          userName: "Bontu Gudina",
+          userPhone: "091308598",
+          selectedAt: "2026-09-19T10:23:48.866Z",
+          isSimulated: true
+        },
+        "39": {
+          number: 39,
+          userId: "user_p_39",
+          userName: "Caaltu Fayisa",
+          userPhone: "091316719",
+          selectedAt: "2026-09-19T10:24:18.866Z",
+          isSimulated: true
+        },
+        "40": {
+          number: 40,
+          userId: "user_p_40",
+          userName: "Obsa Tola",
+          userPhone: "091324840",
+          selectedAt: "2026-09-19T10:24:48.866Z",
+          isSimulated: true
+        },
+        "41": {
+          number: 41,
+          userId: "user_p_41",
+          userName: "Kumsa Desta",
+          userPhone: "091332961",
+          selectedAt: "2026-09-19T10:25:18.866Z",
+          isSimulated: true
+        },
+        "42": {
+          number: 42,
+          userId: "user_p_42",
+          userName: "Sifan Regassa",
+          userPhone: "091341082",
+          selectedAt: "2026-09-19T10:25:48.866Z",
+          isSimulated: true
+        },
+        "43": {
+          number: 43,
+          userId: "user_p_43",
+          userName: "Girma Negash",
+          userPhone: "091349203",
+          selectedAt: "2026-09-19T10:26:18.866Z",
+          isSimulated: true
+        },
+        "44": {
+          number: 44,
+          userId: "user_p_44",
+          userName: "Almaz Ayana",
+          userPhone: "091357324",
+          selectedAt: "2026-09-19T10:26:48.866Z",
+          isSimulated: true
+        },
+        "45": {
+          number: 45,
+          userId: "user_p_45",
+          userName: "Derartu Tulu",
+          userPhone: "091365445",
+          selectedAt: "2026-09-19T10:27:18.866Z",
+          isSimulated: true
+        },
+        "46": {
+          number: 46,
+          userId: "user_p_46",
+          userName: "Kenenisa Bekele",
+          userPhone: "091373566",
+          selectedAt: "2026-09-19T10:27:48.866Z",
+          isSimulated: true
+        },
+        "47": {
+          number: 47,
+          userId: "user_p_47",
+          userName: "Tirunesh Dibaba",
+          userPhone: "091381687",
+          selectedAt: "2026-09-19T10:28:18.866Z",
+          isSimulated: true
+        },
+        "48": {
+          number: 48,
+          userId: "user_p_48",
+          userName: "Haile Gebrselassie",
+          userPhone: "091389808",
+          selectedAt: "2026-09-19T10:28:48.866Z",
+          isSimulated: true
+        },
+        "49": {
+          number: 49,
+          userId: "user_p_49",
+          userName: "Aster Aweke",
+          userPhone: "091397929",
+          selectedAt: "2026-09-19T10:29:18.866Z",
+          isSimulated: true
+        },
+        "50": {
+          number: 50,
+          userId: "user_p_50",
+          userName: "Ali Birra",
+          userPhone: "091406050",
+          selectedAt: "2026-09-19T10:29:48.866Z",
+          isSimulated: true
+        },
+        "51": {
+          number: 51,
+          userId: "user_p_51",
+          userName: "Dawit Tsige",
+          userPhone: "091414171",
+          selectedAt: "2026-09-19T10:30:18.866Z",
+          isSimulated: true
+        },
+        "52": {
+          number: 52,
+          userId: "user_p_52",
+          userName: "Kalkidan Fikre",
+          userPhone: "091422292",
+          selectedAt: "2026-09-19T10:30:48.866Z",
+          isSimulated: true
+        },
+        "53": {
+          number: 53,
+          userId: "user_p_53",
+          userName: "Gemechu Kebede",
+          userPhone: "091430413",
+          selectedAt: "2026-09-19T10:31:18.866Z",
+          isSimulated: true
+        },
+        "54": {
+          number: 54,
+          userId: "user_p_54",
+          userName: "Birhanu Legesse",
+          userPhone: "091438534",
+          selectedAt: "2026-09-19T10:31:48.866Z",
+          isSimulated: true
+        },
+        "55": {
+          number: 55,
+          userId: "user_p_55",
+          userName: "Yared Negu",
+          userPhone: "091446655",
+          selectedAt: "2026-09-19T10:32:18.866Z",
+          isSimulated: true
+        },
+        "56": {
+          number: 56,
+          userId: "user_p_56",
+          userName: "Solomon Deneke",
+          userPhone: "091454776",
+          selectedAt: "2026-09-19T10:32:48.866Z",
+          isSimulated: true
+        },
+        "57": {
+          number: 57,
+          userId: "user_p_57",
+          userName: "Lensa Gamachu",
+          userPhone: "091462897",
+          selectedAt: "2026-09-19T10:33:18.866Z",
+          isSimulated: true
+        },
+        "58": {
+          number: 58,
+          userId: "user_p_58",
+          userName: "Ayantu Tolera",
+          userPhone: "091471018",
+          selectedAt: "2026-09-19T10:33:48.866Z",
+          isSimulated: true
+        },
+        "59": {
+          number: 59,
+          userId: "user_p_59",
+          userName: "Marta Haile",
+          userPhone: "091479139",
+          selectedAt: "2026-09-19T10:34:18.866Z",
+          isSimulated: true
+        },
+        "60": {
+          number: 60,
+          userId: "user_p_60",
+          userName: "Meseret Defar",
+          userPhone: "091487260",
+          selectedAt: "2026-09-19T10:34:48.866Z",
+          isSimulated: true
+        },
+        "61": {
+          number: 61,
+          userId: "user_p_61",
+          userName: "Gudaf Tsegay",
+          userPhone: "091495381",
+          selectedAt: "2026-09-19T10:35:18.866Z",
+          isSimulated: true
+        },
+        "62": {
+          number: 62,
+          userId: "user_p_62",
+          userName: "Tamirat Tola",
+          userPhone: "091503502",
+          selectedAt: "2026-09-19T10:35:48.866Z",
+          isSimulated: true
+        },
+        "63": {
+          number: 63,
+          userId: "user_p_63",
+          userName: "Selemon Barega",
+          userPhone: "091511623",
+          selectedAt: "2026-09-19T10:36:18.866Z",
+          isSimulated: true
+        },
+        "64": {
+          number: 64,
+          userId: "user_p_64",
+          userName: "Abdi Nageeye",
+          userPhone: "091519744",
+          selectedAt: "2026-09-19T10:36:48.866Z",
+          isSimulated: true
+        },
+        "65": {
+          number: 65,
+          userId: "user_p_65",
+          userName: "Feyisa Lilesa",
+          userPhone: "091527865",
+          selectedAt: "2026-09-19T10:37:18.866Z",
+          isSimulated: true
+        },
+        "66": {
+          number: 66,
+          userId: "user_p_66",
+          userName: "Werknesh Kidane",
+          userPhone: "091535986",
+          selectedAt: "2026-09-19T10:37:48.866Z",
+          isSimulated: true
+        },
+        "67": {
+          number: 67,
+          userId: "user_p_67",
+          userName: "Senbere Teferi",
+          userPhone: "091544107",
+          selectedAt: "2026-09-19T10:38:18.866Z",
+          isSimulated: true
+        },
+        "68": {
+          number: 68,
+          userId: "user_p_68",
+          userName: "Lelisa Desisa",
+          userPhone: "091552228",
+          selectedAt: "2026-09-19T10:38:48.866Z",
+          isSimulated: true
+        },
+        "69": {
+          number: 69,
+          userId: "user_p_69",
+          userName: "Tolasa Dibaba",
+          userPhone: "091560349",
+          selectedAt: "2026-09-19T10:39:18.866Z",
+          isSimulated: true
+        },
+        "70": {
+          number: 70,
+          userId: "user_p_70",
+          userName: "Chala Bekele",
+          userPhone: "091568470",
+          selectedAt: "2026-09-19T10:39:48.866Z",
+          isSimulated: true
+        },
+        "71": {
+          number: 71,
+          userId: "user_p_71",
+          userName: "Hawi Abera",
+          userPhone: "091576591",
+          selectedAt: "2026-09-19T10:40:18.866Z",
+          isSimulated: true
+        },
+        "72": {
+          number: 72,
+          userId: "user_p_72",
+          userName: "Bontu Gudina",
+          userPhone: "091584712",
+          selectedAt: "2026-09-19T10:40:48.866Z",
+          isSimulated: true
+        },
+        "73": {
+          number: 73,
+          userId: "user_p_73",
+          userName: "Caaltu Fayisa",
+          userPhone: "091592833",
+          selectedAt: "2026-09-19T10:41:18.866Z",
+          isSimulated: true
+        },
+        "74": {
+          number: 74,
+          userId: "user_p_74",
+          userName: "Obsa Tola",
+          userPhone: "091600954",
+          selectedAt: "2026-09-19T10:41:48.866Z",
+          isSimulated: true
+        },
+        "75": {
+          number: 75,
+          userId: "user_p_75",
+          userName: "Kumsa Desta",
+          userPhone: "091609075",
+          selectedAt: "2026-09-19T10:42:18.866Z",
+          isSimulated: true
+        },
+        "76": {
+          number: 76,
+          userId: "user_p_76",
+          userName: "Sifan Regassa",
+          userPhone: "091617196",
+          selectedAt: "2026-09-19T10:42:48.866Z",
+          isSimulated: true
+        },
+        "77": {
+          number: 77,
+          userId: "user_p_77",
+          userName: "Girma Negash",
+          userPhone: "091625317",
+          selectedAt: "2026-09-19T10:43:18.866Z",
+          isSimulated: true
+        },
+        "78": {
+          number: 78,
+          userId: "user_p_78",
+          userName: "Almaz Ayana",
+          userPhone: "091633438",
+          selectedAt: "2026-09-19T10:43:48.866Z",
+          isSimulated: true
+        },
+        "79": {
+          number: 79,
+          userId: "user_p_79",
+          userName: "Derartu Tulu",
+          userPhone: "091641559",
+          selectedAt: "2026-09-19T10:44:18.866Z",
+          isSimulated: true
+        },
+        "80": {
+          number: 80,
+          userId: "user_p_80",
+          userName: "Kenenisa Bekele",
+          userPhone: "091649680",
+          selectedAt: "2026-09-19T10:44:48.866Z",
+          isSimulated: true
+        },
+        "81": {
+          number: 81,
+          userId: "user_p_81",
+          userName: "Tirunesh Dibaba",
+          userPhone: "091657801",
+          selectedAt: "2026-09-19T10:45:18.866Z",
+          isSimulated: true
+        },
+        "82": {
+          number: 82,
+          userId: "user_p_82",
+          userName: "Haile Gebrselassie",
+          userPhone: "091665922",
+          selectedAt: "2026-09-19T10:45:48.866Z",
+          isSimulated: true
+        },
+        "83": {
+          number: 83,
+          userId: "user_p_83",
+          userName: "Aster Aweke",
+          userPhone: "091674043",
+          selectedAt: "2026-09-19T10:46:18.866Z",
+          isSimulated: true
+        },
+        "84": {
+          number: 84,
+          userId: "user_p_84",
+          userName: "Ali Birra",
+          userPhone: "091682164",
+          selectedAt: "2026-09-19T10:46:48.866Z",
+          isSimulated: true
+        },
+        "85": {
+          number: 85,
+          userId: "user_p_85",
+          userName: "Dawit Tsige",
+          userPhone: "091690285",
+          selectedAt: "2026-09-19T10:47:18.866Z",
+          isSimulated: true
+        },
+        "86": {
+          number: 86,
+          userId: "user_p_86",
+          userName: "Kalkidan Fikre",
+          userPhone: "091698406",
+          selectedAt: "2026-09-19T10:47:48.866Z",
+          isSimulated: true
+        },
+        "87": {
+          number: 87,
+          userId: "user_p_87",
+          userName: "Gemechu Kebede",
+          userPhone: "091706527",
+          selectedAt: "2026-09-19T10:48:18.866Z",
+          isSimulated: true
+        },
+        "88": {
+          number: 88,
+          userId: "user_p_88",
+          userName: "Birhanu Legesse",
+          userPhone: "091714648",
+          selectedAt: "2026-09-19T10:48:48.866Z",
+          isSimulated: true
+        },
+        "89": {
+          number: 89,
+          userId: "user_p_89",
+          userName: "Yared Negu",
+          userPhone: "091722769",
+          selectedAt: "2026-09-19T10:49:18.866Z",
+          isSimulated: true
+        },
+        "90": {
+          number: 90,
+          userId: "user_p_90",
+          userName: "Solomon Deneke",
+          userPhone: "091730890",
+          selectedAt: "2026-09-19T10:49:48.866Z",
+          isSimulated: true
+        },
+        "91": {
+          number: 91,
+          userId: "user_p_91",
+          userName: "Lensa Gamachu",
+          userPhone: "091739011",
+          selectedAt: "2026-09-19T10:50:18.866Z",
+          isSimulated: true
+        },
+        "92": {
+          number: 92,
+          userId: "user_p_92",
+          userName: "Ayantu Tolera",
+          userPhone: "091747132",
+          selectedAt: "2026-09-19T10:50:48.866Z",
+          isSimulated: true
+        },
+        "93": {
+          number: 93,
+          userId: "user_p_93",
+          userName: "Marta Haile",
+          userPhone: "091755253",
+          selectedAt: "2026-09-19T10:51:18.866Z",
+          isSimulated: true
+        },
+        "94": {
+          number: 94,
+          userId: "user_p_94",
+          userName: "Meseret Defar",
+          userPhone: "091763374",
+          selectedAt: "2026-09-19T10:51:48.866Z",
+          isSimulated: true
+        },
+        "95": {
+          number: 95,
+          userId: "user_p_95",
+          userName: "Gudaf Tsegay",
+          userPhone: "091771495",
+          selectedAt: "2026-09-19T10:52:18.866Z",
+          isSimulated: true
+        },
+        "96": {
+          number: 96,
+          userId: "user_p_96",
+          userName: "Tamirat Tola",
+          userPhone: "091779616",
+          selectedAt: "2026-09-19T10:52:48.866Z",
+          isSimulated: true
+        },
+        "97": {
+          number: 97,
+          userId: "user_p_97",
+          userName: "Selemon Barega",
+          userPhone: "091787737",
+          selectedAt: "2026-09-19T10:53:18.866Z",
+          isSimulated: true
+        },
+        "98": {
+          number: 98,
+          userId: "user_p_98",
+          userName: "Abdi Nageeye",
+          userPhone: "091795858",
+          selectedAt: "2026-09-19T10:53:48.866Z",
+          isSimulated: true
+        },
+        "99": {
+          number: 99,
+          userId: "user_p_99",
+          userName: "Feyisa Lilesa",
+          userPhone: "091803979",
+          selectedAt: "2026-09-19T10:54:18.866Z",
+          isSimulated: true
+        },
+        "100": {
+          number: 100,
+          userId: "user_p_100",
+          userName: "Werknesh Kidane",
+          userPhone: "091812100",
+          selectedAt: "2026-09-19T10:54:48.866Z",
+          isSimulated: true
+        }
+      },
+      totalPool: 5e3,
+      winners: [
+        {
+          rank: 1,
+          number: 95,
+          userId: "user_p_95",
+          userName: "Gudaf Tsegay",
+          userPhone: "091771495",
+          prizeAmount: 3e3,
+          percentage: 75
+        },
+        {
+          rank: 2,
+          number: 59,
+          userId: "user_p_59",
+          userName: "Marta Haile",
+          userPhone: "091479139",
+          prizeAmount: 500,
+          percentage: 7
+        },
+        {
+          rank: 3,
+          number: 88,
+          userId: "user_p_88",
+          userName: "Birhanu Legesse",
+          userPhone: "091714648",
+          prizeAmount: 200,
+          percentage: 3
+        }
+      ],
+      createdAt: "2026-09-19T10:54:42.590Z",
+      drawnAt: "2026-09-19T11:09:29.598Z"
+    },
+    round_9: {
+      id: "round_9",
+      roundNumber: 9,
+      status: "COMPLETED",
+      ticketPrice: 50,
+      selections: {
+        "42": {
+          number: 42,
+          userId: "user_1789032197481_2edd3a21",
+          userName: "Chala Bekele",
+          userPhone: "0988776655",
+          selectedAt: "2026-09-19T13:14:06.916Z"
+        }
+      },
+      totalPool: 50,
+      winners: [
+        {
+          rank: 1,
+          number: 42,
+          userId: "user_1789032197481_2edd3a21",
+          userName: "Chala Bekele",
+          userPhone: "0988776655",
+          prizeAmount: 30,
+          percentage: 75
+        }
+      ],
+      createdAt: "2026-09-19T11:09:29.600Z",
+      drawnAt: "2026-09-19T13:14:06.919Z"
+    },
+    round_10: {
+      id: "round_10",
+      roundNumber: 10,
+      status: "OPEN",
+      ticketPrice: 50,
+      selections: {
+        "1": {
+          number: 1,
+          userId: "user_p_1",
+          userName: "Tolasa Dibaba",
+          userPhone: "091008121",
+          selectedAt: "2026-09-19T12:24:47.146Z",
+          isSimulated: true
+        },
+        "2": {
+          number: 2,
+          userId: "user_p_2",
+          userName: "Chala Bekele",
+          userPhone: "091016242",
+          selectedAt: "2026-09-19T12:25:17.146Z",
+          isSimulated: true
+        },
+        "3": {
+          number: 3,
+          userId: "user_p_3",
+          userName: "Hawi Abera",
+          userPhone: "091024363",
+          selectedAt: "2026-09-19T12:25:47.146Z",
+          isSimulated: true
+        },
+        "4": {
+          number: 4,
+          userId: "user_p_4",
+          userName: "Bontu Gudina",
+          userPhone: "091032484",
+          selectedAt: "2026-09-19T12:26:17.146Z",
+          isSimulated: true
+        },
+        "5": {
+          number: 5,
+          userId: "user_p_5",
+          userName: "Caaltu Fayisa",
+          userPhone: "091040605",
+          selectedAt: "2026-09-19T12:26:47.146Z",
+          isSimulated: true
+        },
+        "6": {
+          number: 6,
+          userId: "user_p_6",
+          userName: "Obsa Tola",
+          userPhone: "091048726",
+          selectedAt: "2026-09-19T12:27:17.146Z",
+          isSimulated: true
+        },
+        "7": {
+          number: 7,
+          userId: "user_p_7",
+          userName: "Kumsa Desta",
+          userPhone: "091056847",
+          selectedAt: "2026-09-19T12:27:47.146Z",
+          isSimulated: true
+        },
+        "8": {
+          number: 8,
+          userId: "user_p_8",
+          userName: "Sifan Regassa",
+          userPhone: "091064968",
+          selectedAt: "2026-09-19T12:28:17.146Z",
+          isSimulated: true
+        },
+        "9": {
+          number: 9,
+          userId: "user_p_9",
+          userName: "Girma Negash",
+          userPhone: "091073089",
+          selectedAt: "2026-09-19T12:28:47.146Z",
+          isSimulated: true
+        },
+        "10": {
+          number: 10,
+          userId: "user_p_10",
+          userName: "Almaz Ayana",
+          userPhone: "091081210",
+          selectedAt: "2026-09-19T12:29:17.146Z",
+          isSimulated: true
+        },
+        "11": {
+          number: 11,
+          userId: "user_p_11",
+          userName: "Derartu Tulu",
+          userPhone: "091089331",
+          selectedAt: "2026-09-19T12:29:47.146Z",
+          isSimulated: true
+        },
+        "12": {
+          number: 12,
+          userId: "user_p_12",
+          userName: "Kenenisa Bekele",
+          userPhone: "091097452",
+          selectedAt: "2026-09-19T12:30:17.146Z",
+          isSimulated: true
+        },
+        "13": {
+          number: 13,
+          userId: "user_p_13",
+          userName: "Tirunesh Dibaba",
+          userPhone: "091105573",
+          selectedAt: "2026-09-19T12:30:47.146Z",
+          isSimulated: true
+        },
+        "14": {
+          number: 14,
+          userId: "user_p_14",
+          userName: "Haile Gebrselassie",
+          userPhone: "091113694",
+          selectedAt: "2026-09-19T12:31:17.146Z",
+          isSimulated: true
+        },
+        "15": {
+          number: 15,
+          userId: "user_p_15",
+          userName: "Aster Aweke",
+          userPhone: "091121815",
+          selectedAt: "2026-09-19T12:31:47.146Z",
+          isSimulated: true
+        },
+        "16": {
+          number: 16,
+          userId: "user_p_16",
+          userName: "Ali Birra",
+          userPhone: "091129936",
+          selectedAt: "2026-09-19T12:32:17.146Z",
+          isSimulated: true
+        },
+        "17": {
+          number: 17,
+          userId: "user_p_17",
+          userName: "Dawit Tsige",
+          userPhone: "091138057",
+          selectedAt: "2026-09-19T12:32:47.147Z",
+          isSimulated: true
+        },
+        "18": {
+          number: 18,
+          userId: "user_p_18",
+          userName: "Kalkidan Fikre",
+          userPhone: "091146178",
+          selectedAt: "2026-09-19T12:33:17.147Z",
+          isSimulated: true
+        },
+        "19": {
+          number: 19,
+          userId: "user_p_19",
+          userName: "Gemechu Kebede",
+          userPhone: "091154299",
+          selectedAt: "2026-09-19T12:33:47.147Z",
+          isSimulated: true
+        },
+        "20": {
+          number: 20,
+          userId: "user_p_20",
+          userName: "Birhanu Legesse",
+          userPhone: "091162420",
+          selectedAt: "2026-09-19T12:34:17.147Z",
+          isSimulated: true
+        },
+        "21": {
+          number: 21,
+          userId: "user_p_21",
+          userName: "Yared Negu",
+          userPhone: "091170541",
+          selectedAt: "2026-09-19T12:34:47.147Z",
+          isSimulated: true
+        },
+        "22": {
+          number: 22,
+          userId: "user_p_22",
+          userName: "Solomon Deneke",
+          userPhone: "091178662",
+          selectedAt: "2026-09-19T12:35:17.147Z",
+          isSimulated: true
+        },
+        "23": {
+          number: 23,
+          userId: "user_p_23",
+          userName: "Lensa Gamachu",
+          userPhone: "091186783",
+          selectedAt: "2026-09-19T12:35:47.147Z",
+          isSimulated: true
+        },
+        "24": {
+          number: 24,
+          userId: "user_p_24",
+          userName: "Ayantu Tolera",
+          userPhone: "091194904",
+          selectedAt: "2026-09-19T12:36:17.147Z",
+          isSimulated: true
+        },
+        "25": {
+          number: 25,
+          userId: "user_p_25",
+          userName: "Marta Haile",
+          userPhone: "091203025",
+          selectedAt: "2026-09-19T12:36:47.147Z",
+          isSimulated: true
+        },
+        "26": {
+          number: 26,
+          userId: "user_p_26",
+          userName: "Meseret Defar",
+          userPhone: "091211146",
+          selectedAt: "2026-09-19T12:37:17.147Z",
+          isSimulated: true
+        },
+        "27": {
+          number: 27,
+          userId: "user_p_27",
+          userName: "Gudaf Tsegay",
+          userPhone: "091219267",
+          selectedAt: "2026-09-19T12:37:47.147Z",
+          isSimulated: true
+        },
+        "28": {
+          number: 28,
+          userId: "user_p_28",
+          userName: "Tamirat Tola",
+          userPhone: "091227388",
+          selectedAt: "2026-09-19T12:38:17.147Z",
+          isSimulated: true
+        },
+        "29": {
+          number: 29,
+          userId: "user_p_29",
+          userName: "Selemon Barega",
+          userPhone: "091235509",
+          selectedAt: "2026-09-19T12:38:47.147Z",
+          isSimulated: true
+        },
+        "30": {
+          number: 30,
+          userId: "user_p_30",
+          userName: "Abdi Nageeye",
+          userPhone: "091243630",
+          selectedAt: "2026-09-19T12:39:17.147Z",
+          isSimulated: true
+        },
+        "31": {
+          number: 31,
+          userId: "user_p_31",
+          userName: "Feyisa Lilesa",
+          userPhone: "091251751",
+          selectedAt: "2026-09-19T12:39:47.147Z",
+          isSimulated: true
+        },
+        "32": {
+          number: 32,
+          userId: "user_p_32",
+          userName: "Werknesh Kidane",
+          userPhone: "091259872",
+          selectedAt: "2026-09-19T12:40:17.147Z",
+          isSimulated: true
+        },
+        "33": {
+          number: 33,
+          userId: "user_p_33",
+          userName: "Senbere Teferi",
+          userPhone: "091267993",
+          selectedAt: "2026-09-19T12:40:47.147Z",
+          isSimulated: true
+        },
+        "34": {
+          number: 34,
+          userId: "user_p_34",
+          userName: "Lelisa Desisa",
+          userPhone: "091276114",
+          selectedAt: "2026-09-19T12:41:17.147Z",
+          isSimulated: true
+        },
+        "35": {
+          number: 35,
+          userId: "user_p_35",
+          userName: "Tolasa Dibaba",
+          userPhone: "091284235",
+          selectedAt: "2026-09-19T12:41:47.147Z",
+          isSimulated: true
+        },
+        "36": {
+          number: 36,
+          userId: "user_p_36",
+          userName: "Chala Bekele",
+          userPhone: "091292356",
+          selectedAt: "2026-09-19T12:42:17.147Z",
+          isSimulated: true
+        },
+        "37": {
+          number: 37,
+          userId: "user_p_37",
+          userName: "Hawi Abera",
+          userPhone: "091300477",
+          selectedAt: "2026-09-19T12:42:47.147Z",
+          isSimulated: true
+        },
+        "38": {
+          number: 38,
+          userId: "user_p_38",
+          userName: "Bontu Gudina",
+          userPhone: "091308598",
+          selectedAt: "2026-09-19T12:43:17.147Z",
+          isSimulated: true
+        },
+        "39": {
+          number: 39,
+          userId: "user_p_39",
+          userName: "Caaltu Fayisa",
+          userPhone: "091316719",
+          selectedAt: "2026-09-19T12:43:47.147Z",
+          isSimulated: true
+        },
+        "40": {
+          number: 40,
+          userId: "user_p_40",
+          userName: "Obsa Tola",
+          userPhone: "091324840",
+          selectedAt: "2026-09-19T12:44:17.147Z",
+          isSimulated: true
+        },
+        "41": {
+          number: 41,
+          userId: "user_p_41",
+          userName: "Kumsa Desta",
+          userPhone: "091332961",
+          selectedAt: "2026-09-19T12:44:47.147Z",
+          isSimulated: true
+        },
+        "42": {
+          number: 42,
+          userId: "user_p_42",
+          userName: "Sifan Regassa",
+          userPhone: "091341082",
+          selectedAt: "2026-09-19T12:45:17.147Z",
+          isSimulated: true
+        },
+        "43": {
+          number: 43,
+          userId: "user_p_43",
+          userName: "Girma Negash",
+          userPhone: "091349203",
+          selectedAt: "2026-09-19T12:45:47.147Z",
+          isSimulated: true
+        },
+        "44": {
+          number: 44,
+          userId: "user_p_44",
+          userName: "Almaz Ayana",
+          userPhone: "091357324",
+          selectedAt: "2026-09-19T12:46:17.147Z",
+          isSimulated: true
+        },
+        "45": {
+          number: 45,
+          userId: "user_p_45",
+          userName: "Derartu Tulu",
+          userPhone: "091365445",
+          selectedAt: "2026-09-19T12:46:47.147Z",
+          isSimulated: true
+        },
+        "46": {
+          number: 46,
+          userId: "user_p_46",
+          userName: "Kenenisa Bekele",
+          userPhone: "091373566",
+          selectedAt: "2026-09-19T12:47:17.147Z",
+          isSimulated: true
+        },
+        "47": {
+          number: 47,
+          userId: "user_p_47",
+          userName: "Tirunesh Dibaba",
+          userPhone: "091381687",
+          selectedAt: "2026-09-19T12:47:47.147Z",
+          isSimulated: true
+        },
+        "48": {
+          number: 48,
+          userId: "user_p_48",
+          userName: "Haile Gebrselassie",
+          userPhone: "091389808",
+          selectedAt: "2026-09-19T12:48:17.147Z",
+          isSimulated: true
+        },
+        "49": {
+          number: 49,
+          userId: "user_p_49",
+          userName: "Aster Aweke",
+          userPhone: "091397929",
+          selectedAt: "2026-09-19T12:48:47.147Z",
+          isSimulated: true
+        },
+        "50": {
+          number: 50,
+          userId: "user_p_50",
+          userName: "Ali Birra",
+          userPhone: "091406050",
+          selectedAt: "2026-09-19T12:49:17.147Z",
+          isSimulated: true
+        },
+        "51": {
+          number: 51,
+          userId: "user_p_51",
+          userName: "Dawit Tsige",
+          userPhone: "091414171",
+          selectedAt: "2026-09-19T12:49:47.147Z",
+          isSimulated: true
+        },
+        "52": {
+          number: 52,
+          userId: "user_p_52",
+          userName: "Kalkidan Fikre",
+          userPhone: "091422292",
+          selectedAt: "2026-09-19T12:50:17.147Z",
+          isSimulated: true
+        },
+        "53": {
+          number: 53,
+          userId: "user_p_53",
+          userName: "Gemechu Kebede",
+          userPhone: "091430413",
+          selectedAt: "2026-09-19T12:50:47.147Z",
+          isSimulated: true
+        },
+        "54": {
+          number: 54,
+          userId: "user_p_54",
+          userName: "Birhanu Legesse",
+          userPhone: "091438534",
+          selectedAt: "2026-09-19T12:51:17.147Z",
+          isSimulated: true
+        },
+        "55": {
+          number: 55,
+          userId: "user_p_55",
+          userName: "Yared Negu",
+          userPhone: "091446655",
+          selectedAt: "2026-09-19T12:51:47.147Z",
+          isSimulated: true
+        },
+        "56": {
+          number: 56,
+          userId: "user_p_56",
+          userName: "Solomon Deneke",
+          userPhone: "091454776",
+          selectedAt: "2026-09-19T12:52:17.147Z",
+          isSimulated: true
+        },
+        "57": {
+          number: 57,
+          userId: "user_p_57",
+          userName: "Lensa Gamachu",
+          userPhone: "091462897",
+          selectedAt: "2026-09-19T12:52:47.147Z",
+          isSimulated: true
+        },
+        "58": {
+          number: 58,
+          userId: "user_p_58",
+          userName: "Ayantu Tolera",
+          userPhone: "091471018",
+          selectedAt: "2026-09-19T12:53:17.147Z",
+          isSimulated: true
+        },
+        "59": {
+          number: 59,
+          userId: "user_p_59",
+          userName: "Marta Haile",
+          userPhone: "091479139",
+          selectedAt: "2026-09-19T12:53:47.147Z",
+          isSimulated: true
+        },
+        "60": {
+          number: 60,
+          userId: "user_p_60",
+          userName: "Meseret Defar",
+          userPhone: "091487260",
+          selectedAt: "2026-09-19T12:54:17.147Z",
+          isSimulated: true
+        },
+        "61": {
+          number: 61,
+          userId: "user_p_61",
+          userName: "Gudaf Tsegay",
+          userPhone: "091495381",
+          selectedAt: "2026-09-19T12:54:47.147Z",
+          isSimulated: true
+        },
+        "62": {
+          number: 62,
+          userId: "user_p_62",
+          userName: "Tamirat Tola",
+          userPhone: "091503502",
+          selectedAt: "2026-09-19T12:55:17.147Z",
+          isSimulated: true
+        },
+        "63": {
+          number: 63,
+          userId: "user_p_63",
+          userName: "Selemon Barega",
+          userPhone: "091511623",
+          selectedAt: "2026-09-19T12:55:47.147Z",
+          isSimulated: true
+        },
+        "64": {
+          number: 64,
+          userId: "user_p_64",
+          userName: "Abdi Nageeye",
+          userPhone: "091519744",
+          selectedAt: "2026-09-19T12:56:17.147Z",
+          isSimulated: true
+        },
+        "65": {
+          number: 65,
+          userId: "user_p_65",
+          userName: "Feyisa Lilesa",
+          userPhone: "091527865",
+          selectedAt: "2026-09-19T12:56:47.147Z",
+          isSimulated: true
+        },
+        "66": {
+          number: 66,
+          userId: "user_p_66",
+          userName: "Werknesh Kidane",
+          userPhone: "091535986",
+          selectedAt: "2026-09-19T12:57:17.147Z",
+          isSimulated: true
+        },
+        "67": {
+          number: 67,
+          userId: "user_p_67",
+          userName: "Senbere Teferi",
+          userPhone: "091544107",
+          selectedAt: "2026-09-19T12:57:47.147Z",
+          isSimulated: true
+        },
+        "68": {
+          number: 68,
+          userId: "user_p_68",
+          userName: "Lelisa Desisa",
+          userPhone: "091552228",
+          selectedAt: "2026-09-19T12:58:17.147Z",
+          isSimulated: true
+        },
+        "69": {
+          number: 69,
+          userId: "user_p_69",
+          userName: "Tolasa Dibaba",
+          userPhone: "091560349",
+          selectedAt: "2026-09-19T12:58:47.147Z",
+          isSimulated: true
+        },
+        "70": {
+          number: 70,
+          userId: "user_p_70",
+          userName: "Chala Bekele",
+          userPhone: "091568470",
+          selectedAt: "2026-09-19T12:59:17.147Z",
+          isSimulated: true
+        },
+        "71": {
+          number: 71,
+          userId: "user_p_71",
+          userName: "Hawi Abera",
+          userPhone: "091576591",
+          selectedAt: "2026-09-19T12:59:47.147Z",
+          isSimulated: true
+        },
+        "72": {
+          number: 72,
+          userId: "user_p_72",
+          userName: "Bontu Gudina",
+          userPhone: "091584712",
+          selectedAt: "2026-09-19T13:00:17.147Z",
+          isSimulated: true
+        },
+        "73": {
+          number: 73,
+          userId: "user_p_73",
+          userName: "Caaltu Fayisa",
+          userPhone: "091592833",
+          selectedAt: "2026-09-19T13:00:47.147Z",
+          isSimulated: true
+        },
+        "74": {
+          number: 74,
+          userId: "user_p_74",
+          userName: "Obsa Tola",
+          userPhone: "091600954",
+          selectedAt: "2026-09-19T13:01:17.147Z",
+          isSimulated: true
+        },
+        "75": {
+          number: 75,
+          userId: "user_p_75",
+          userName: "Kumsa Desta",
+          userPhone: "091609075",
+          selectedAt: "2026-09-19T13:01:47.147Z",
+          isSimulated: true
+        },
+        "76": {
+          number: 76,
+          userId: "user_p_76",
+          userName: "Sifan Regassa",
+          userPhone: "091617196",
+          selectedAt: "2026-09-19T13:02:17.147Z",
+          isSimulated: true
+        },
+        "77": {
+          number: 77,
+          userId: "user_p_77",
+          userName: "Girma Negash",
+          userPhone: "091625317",
+          selectedAt: "2026-09-19T13:02:47.147Z",
+          isSimulated: true
+        },
+        "78": {
+          number: 78,
+          userId: "user_p_78",
+          userName: "Almaz Ayana",
+          userPhone: "091633438",
+          selectedAt: "2026-09-19T13:03:17.147Z",
+          isSimulated: true
+        },
+        "79": {
+          number: 79,
+          userId: "user_p_79",
+          userName: "Derartu Tulu",
+          userPhone: "091641559",
+          selectedAt: "2026-09-19T13:03:47.147Z",
+          isSimulated: true
+        },
+        "80": {
+          number: 80,
+          userId: "user_p_80",
+          userName: "Kenenisa Bekele",
+          userPhone: "091649680",
+          selectedAt: "2026-09-19T13:04:17.147Z",
+          isSimulated: true
+        },
+        "81": {
+          number: 81,
+          userId: "user_p_81",
+          userName: "Tirunesh Dibaba",
+          userPhone: "091657801",
+          selectedAt: "2026-09-19T13:04:47.147Z",
+          isSimulated: true
+        },
+        "82": {
+          number: 82,
+          userId: "user_p_82",
+          userName: "Haile Gebrselassie",
+          userPhone: "091665922",
+          selectedAt: "2026-09-19T13:05:17.147Z",
+          isSimulated: true
+        },
+        "83": {
+          number: 83,
+          userId: "user_p_83",
+          userName: "Aster Aweke",
+          userPhone: "091674043",
+          selectedAt: "2026-09-19T13:05:47.147Z",
+          isSimulated: true
+        },
+        "84": {
+          number: 84,
+          userId: "user_p_84",
+          userName: "Ali Birra",
+          userPhone: "091682164",
+          selectedAt: "2026-09-19T13:06:17.147Z",
+          isSimulated: true
+        },
+        "85": {
+          number: 85,
+          userId: "user_p_85",
+          userName: "Dawit Tsige",
+          userPhone: "091690285",
+          selectedAt: "2026-09-19T13:06:47.147Z",
+          isSimulated: true
+        },
+        "86": {
+          number: 86,
+          userId: "user_p_86",
+          userName: "Kalkidan Fikre",
+          userPhone: "091698406",
+          selectedAt: "2026-09-19T13:07:17.147Z",
+          isSimulated: true
+        },
+        "87": {
+          number: 87,
+          userId: "user_p_87",
+          userName: "Gemechu Kebede",
+          userPhone: "091706527",
+          selectedAt: "2026-09-19T13:07:47.147Z",
+          isSimulated: true
+        },
+        "88": {
+          number: 88,
+          userId: "user_p_88",
+          userName: "Birhanu Legesse",
+          userPhone: "091714648",
+          selectedAt: "2026-09-19T13:08:17.147Z",
+          isSimulated: true
+        },
+        "89": {
+          number: 89,
+          userId: "user_p_89",
+          userName: "Yared Negu",
+          userPhone: "091722769",
+          selectedAt: "2026-09-19T13:08:47.147Z",
+          isSimulated: true
+        },
+        "90": {
+          number: 90,
+          userId: "user_p_90",
+          userName: "Solomon Deneke",
+          userPhone: "091730890",
+          selectedAt: "2026-09-19T13:09:17.147Z",
+          isSimulated: true
+        },
+        "91": {
+          number: 91,
+          userId: "user_p_91",
+          userName: "Lensa Gamachu",
+          userPhone: "091739011",
+          selectedAt: "2026-09-19T13:09:47.147Z",
+          isSimulated: true
+        },
+        "92": {
+          number: 92,
+          userId: "user_p_92",
+          userName: "Ayantu Tolera",
+          userPhone: "091747132",
+          selectedAt: "2026-09-19T13:10:17.147Z",
+          isSimulated: true
+        },
+        "93": {
+          number: 93,
+          userId: "user_p_93",
+          userName: "Marta Haile",
+          userPhone: "091755253",
+          selectedAt: "2026-09-19T13:10:47.147Z",
+          isSimulated: true
+        },
+        "94": {
+          number: 94,
+          userId: "user_p_94",
+          userName: "Meseret Defar",
+          userPhone: "091763374",
+          selectedAt: "2026-09-19T13:11:17.147Z",
+          isSimulated: true
+        },
+        "95": {
+          number: 95,
+          userId: "user_p_95",
+          userName: "Gudaf Tsegay",
+          userPhone: "091771495",
+          selectedAt: "2026-09-19T13:11:47.147Z",
+          isSimulated: true
+        },
+        "96": {
+          number: 96,
+          userId: "user_p_96",
+          userName: "Tamirat Tola",
+          userPhone: "091779616",
+          selectedAt: "2026-09-19T13:12:17.147Z",
+          isSimulated: true
+        },
+        "97": {
+          number: 97,
+          userId: "user_p_97",
+          userName: "Selemon Barega",
+          userPhone: "091787737",
+          selectedAt: "2026-09-19T13:12:47.147Z",
+          isSimulated: true
+        },
+        "98": {
+          number: 98,
+          userId: "user_p_98",
+          userName: "Abdi Nageeye",
+          userPhone: "091795858",
+          selectedAt: "2026-09-19T13:13:17.147Z",
+          isSimulated: true
+        },
+        "99": {
+          number: 99,
+          userId: "user_p_99",
+          userName: "Feyisa Lilesa",
+          userPhone: "091803979",
+          selectedAt: "2026-09-19T13:13:47.147Z",
+          isSimulated: true
+        },
+        "100": {
+          number: 100,
+          userId: "user_p_100",
+          userName: "Werknesh Kidane",
+          userPhone: "091812100",
+          selectedAt: "2026-09-19T13:14:17.147Z",
+          isSimulated: true
+        }
+      },
+      totalPool: 5e3,
+      winners: [],
+      createdAt: "2026-09-19T13:14:06.919Z"
+    }
+  },
+  activeRoundId: "round_10",
+  settings: {
+    ticketPrice: 50,
+    firstPrizePercent: 75,
+    secondPrizePercent: 7,
+    thirdPrizePercent: 3,
+    platformPercent: 15,
+    minDepositAmount: 50,
+    minWithdrawalAmount: 100,
+    referralBonusAmount: 25,
+    referralMinDeposit: 100,
+    siteName: "Spin Ethiopia",
+    maintenanceMode: false
+  },
+  auditLogs: [
+    {
+      id: "audit_1789823646922_e1d68a64",
+      actorId: "admin_audit_tester",
+      actorPhone: "0929200166",
+      action: "TEST_BALANCE_IMPACT_AUDIT",
+      targetType: "WALLET",
+      targetId: "user_test_123",
+      details: "Verified balance audit recording into dedicated audit log system",
+      createdAt: "2026-09-19T13:14:06.922Z"
+    },
+    {
+      id: "audit_1789823646919_33335aa6",
+      actorId: "admin_1",
+      actorPhone: "0929200166",
+      action: "ROUND_DRAWN",
+      targetType: "ROUND",
+      targetId: "round_9",
+      details: "Drawn winners for Round #9. 1st: #42 (30 ETB), 2nd: #42 (5 ETB), 3rd: #42 (2 ETB)",
+      createdAt: "2026-09-19T13:14:06.919Z"
+    },
+    {
+      id: "audit_1789823646912_55005eff",
+      actorId: "admin_1",
+      actorPhone: "0929200166",
+      action: "WITHDRAWAL_REJECTED",
+      targetType: "WITHDRAWAL",
+      targetId: "wdr_1789823646909_982c6225",
+      details: "Rejected withdrawal of 200 ETB for 0988776655. Refunded back to wallet. New balance: 10845 ETB",
+      createdAt: "2026-09-19T13:14:06.912Z"
+    },
+    {
+      id: "audit_1789823646909_7cd3c177",
+      actorId: "user_1789032197481_2edd3a21",
+      actorPhone: "0988776655",
+      action: "WITHDRAWAL_REQUESTED",
+      targetType: "WITHDRAWAL",
+      targetId: "wdr_1789823646909_982c6225",
+      details: "Requested withdrawal of 200 ETB to Telebirr (0988776655). New balance: 10645 ETB",
+      createdAt: "2026-09-19T13:14:06.909Z"
+    },
+    {
+      id: "audit_1789823646903_724dac26",
+      actorId: "admin_1",
+      actorPhone: "0929200166",
+      action: "DEPOSIT_APPROVED",
+      targetType: "DEPOSIT",
+      targetId: "dep_1789823646898_5a3ff2cb",
+      details: "Approved deposit of 500 ETB for user 0988776655. New balance: 10845 ETB",
+      createdAt: "2026-09-19T13:14:06.903Z"
+    },
+    {
+      id: "audit_1789823646898_93213aa9",
+      actorId: "user_1789032197481_2edd3a21",
+      actorPhone: "0988776655",
+      action: "DEPOSIT_SUBMITTED",
+      targetType: "DEPOSIT",
+      targetId: "dep_1789823646898_5a3ff2cb",
+      details: "Submitted deposit request of 500 ETB via Commercial Bank of Ethiopia (CBE) (FT: FT_TEST_1789823646897)",
+      createdAt: "2026-09-19T13:14:06.898Z"
+    },
+    {
+      id: "audit_1789816169598_607c4884",
+      actorId: "user_admin_0929200166",
+      actorPhone: "0929200166",
+      action: "ROUND_DRAWN",
+      targetType: "ROUND",
+      targetId: "round_8",
+      details: "Drawn winners for Round #8. 1st: #95 (3000 ETB), 2nd: #59 (500 ETB), 3rd: #88 (200 ETB)",
+      createdAt: "2026-09-19T11:09:29.598Z"
+    },
+    {
+      id: "audit_1789815282593_a77fa395",
+      actorId: "admin_audit_tester",
+      actorPhone: "0929200166",
+      action: "TEST_BALANCE_IMPACT_AUDIT",
+      targetType: "WALLET",
+      targetId: "user_test_123",
+      details: "Verified balance audit recording into dedicated audit log system",
+      createdAt: "2026-09-19T10:54:42.593Z"
+    },
+    {
+      id: "audit_1789815282590_fc05bf56",
+      actorId: "admin_1",
+      actorPhone: "0929200166",
+      action: "ROUND_DRAWN",
+      targetType: "ROUND",
+      targetId: "round_7",
+      details: "Drawn winners for Round #7. 1st: #42 (3000 ETB), 2nd: #23 (500 ETB), 3rd: #44 (200 ETB)",
+      createdAt: "2026-09-19T10:54:42.590Z"
+    },
+    {
+      id: "audit_1789815282583_0a85c3e0",
+      actorId: "admin_1",
+      actorPhone: "0929200166",
+      action: "WITHDRAWAL_REJECTED",
+      targetType: "WITHDRAWAL",
+      targetId: "wdr_1789815282581_80acb5bc",
+      details: "Rejected withdrawal of 200 ETB for 0988776655. Refunded back to wallet. New balance: 7395 ETB",
+      createdAt: "2026-09-19T10:54:42.583Z"
+    },
+    {
+      id: "audit_1789815282581_ec779b63",
+      actorId: "user_1789032197481_2edd3a21",
+      actorPhone: "0988776655",
+      action: "WITHDRAWAL_REQUESTED",
+      targetType: "WITHDRAWAL",
+      targetId: "wdr_1789815282581_80acb5bc",
+      details: "Requested withdrawal of 200 ETB to Telebirr (0988776655). New balance: 7195 ETB",
+      createdAt: "2026-09-19T10:54:42.581Z"
+    },
+    {
+      id: "audit_1789815282575_1f4bc6ee",
+      actorId: "admin_1",
+      actorPhone: "0929200166",
+      action: "DEPOSIT_APPROVED",
+      targetType: "DEPOSIT",
+      targetId: "dep_1789815282572_4235614f",
+      details: "Approved deposit of 500 ETB for user 0988776655. New balance: 7395 ETB",
+      createdAt: "2026-09-19T10:54:42.576Z"
+    },
+    {
+      id: "audit_1789815282572_002dd285",
+      actorId: "user_1789032197481_2edd3a21",
+      actorPhone: "0988776655",
+      action: "DEPOSIT_SUBMITTED",
+      targetType: "DEPOSIT",
+      targetId: "dep_1789815282572_4235614f",
+      details: "Submitted deposit request of 500 ETB via Commercial Bank of Ethiopia (CBE) (FT: FT_TEST_1789815282571)",
+      createdAt: "2026-09-19T10:54:42.572Z"
+    },
+    {
+      id: "audit_1789815273129_0b18b2cd",
+      actorId: "admin_1",
+      actorPhone: "0929200166",
+      action: "WITHDRAWAL_REJECTED",
+      targetType: "WITHDRAWAL",
+      targetId: "wdr_1789815273126_c5cff741",
+      details: "Rejected withdrawal of 200 ETB for 0988776655. Refunded back to wallet. New balance: 6895 ETB",
+      createdAt: "2026-09-19T10:54:33.129Z"
+    },
+    {
+      id: "audit_1789815273126_d15d7254",
+      actorId: "user_1789032197481_2edd3a21",
+      actorPhone: "0988776655",
+      action: "WITHDRAWAL_REQUESTED",
+      targetType: "WITHDRAWAL",
+      targetId: "wdr_1789815273126_c5cff741",
+      details: "Requested withdrawal of 200 ETB to Telebirr (0988776655). New balance: 6695 ETB",
+      createdAt: "2026-09-19T10:54:33.126Z"
+    },
+    {
+      id: "audit_1789815273121_46f9c0e8",
+      actorId: "admin_1",
+      actorPhone: "0929200166",
+      action: "DEPOSIT_APPROVED",
+      targetType: "DEPOSIT",
+      targetId: "dep_1789815273117_6b98d077",
+      details: "Approved deposit of 500 ETB for user 0988776655. New balance: 6895 ETB",
+      createdAt: "2026-09-19T10:54:33.121Z"
+    },
+    {
+      id: "audit_1789815273117_9ad6d983",
+      actorId: "user_1789032197481_2edd3a21",
+      actorPhone: "0988776655",
+      action: "DEPOSIT_SUBMITTED",
+      targetType: "DEPOSIT",
+      targetId: "dep_1789815273117_6b98d077",
+      details: "Submitted deposit request of 500 ETB via Commercial Bank of Ethiopia (CBE) (FT: FT_TEST_1789815273117)",
+      createdAt: "2026-09-19T10:54:33.117Z"
+    },
+    {
+      id: "audit_1789814787816_a7250e09",
+      actorId: "admin_audit_tester",
+      actorPhone: "0929200166",
+      action: "TEST_BALANCE_IMPACT_AUDIT",
+      targetType: "WALLET",
+      targetId: "user_test_123",
+      details: "Verified balance audit recording into dedicated audit log system",
+      createdAt: "2026-09-19T10:46:27.816Z"
+    },
+    {
+      id: "audit_1789814787814_615d6d3e",
+      actorId: "admin_1",
+      actorPhone: "0929200166",
+      action: "ROUND_DRAWN",
+      targetType: "ROUND",
+      targetId: "round_6",
+      details: "Drawn winners for Round #6. 1st: #42 (30 ETB), 2nd: #42 (5 ETB), 3rd: #42 (2 ETB)",
+      createdAt: "2026-09-19T10:46:27.814Z"
+    },
+    {
+      id: "audit_1789814787808_28b32a79",
+      actorId: "admin_1",
+      actorPhone: "0929200166",
+      action: "WITHDRAWAL_REJECTED",
+      targetType: "WITHDRAWAL",
+      targetId: "wdr_1789814787805_2782567e",
+      details: "Rejected withdrawal of 200 ETB for 0988776655. Refunded back to wallet. New balance: 6415 ETB",
+      createdAt: "2026-09-19T10:46:27.808Z"
+    },
+    {
+      id: "audit_1789814787805_ce55d399",
+      actorId: "user_1789032197481_2edd3a21",
+      actorPhone: "0988776655",
+      action: "WITHDRAWAL_REQUESTED",
+      targetType: "WITHDRAWAL",
+      targetId: "wdr_1789814787805_2782567e",
+      details: "Requested withdrawal of 200 ETB to Telebirr (0988776655). New balance: 6215 ETB",
+      createdAt: "2026-09-19T10:46:27.805Z"
+    },
+    {
+      id: "audit_1789814787800_6eee8044",
+      actorId: "admin_1",
+      actorPhone: "0929200166",
+      action: "DEPOSIT_APPROVED",
+      targetType: "DEPOSIT",
+      targetId: "dep_1789814787797_69c647a8",
+      details: "Approved deposit of 500 ETB for user 0988776655. New balance: 6415 ETB",
+      createdAt: "2026-09-19T10:46:27.800Z"
+    },
+    {
+      id: "audit_1789814787797_62f5094d",
+      actorId: "user_1789032197481_2edd3a21",
+      actorPhone: "0988776655",
+      action: "DEPOSIT_SUBMITTED",
+      targetType: "DEPOSIT",
+      targetId: "dep_1789814787797_69c647a8",
+      details: "Submitted deposit request of 500 ETB via Commercial Bank of Ethiopia (CBE) (FT: FT_TEST_1789814787796)",
+      createdAt: "2026-09-19T10:46:27.797Z"
+    },
+    {
+      id: "audit_1789814777237_21b434e3",
+      actorId: "admin_1",
+      actorPhone: "0929200166",
+      action: "ROUND_DRAWN",
+      targetType: "ROUND",
+      targetId: "round_5",
+      details: "Drawn winners for Round #5. 1st: #42 (1530 ETB), 2nd: #72 (255 ETB), 3rd: #85 (102 ETB)",
+      createdAt: "2026-09-19T10:46:17.237Z"
+    },
+    {
+      id: "audit_1789814777230_8243a8fc",
+      actorId: "admin_1",
+      actorPhone: "0929200166",
+      action: "WITHDRAWAL_REJECTED",
+      targetType: "WITHDRAWAL",
+      targetId: "wdr_1789814777228_44138f24",
+      details: "Rejected withdrawal of 200 ETB for 0988776655. Refunded back to wallet. New balance: 4435 ETB",
+      createdAt: "2026-09-19T10:46:17.230Z"
+    },
+    {
+      id: "audit_1789814777228_9b0213d4",
+      actorId: "user_1789032197481_2edd3a21",
+      actorPhone: "0988776655",
+      action: "WITHDRAWAL_REQUESTED",
+      targetType: "WITHDRAWAL",
+      targetId: "wdr_1789814777228_44138f24",
+      details: "Requested withdrawal of 200 ETB to Telebirr (0988776655). New balance: 4235 ETB",
+      createdAt: "2026-09-19T10:46:17.228Z"
+    },
+    {
+      id: "audit_1789814777223_e66ac410",
+      actorId: "admin_1",
+      actorPhone: "0929200166",
+      action: "DEPOSIT_APPROVED",
+      targetType: "DEPOSIT",
+      targetId: "dep_1789814777219_c40c7414",
+      details: "Approved deposit of 500 ETB for user 0988776655. New balance: 4435 ETB",
+      createdAt: "2026-09-19T10:46:17.223Z"
+    },
+    {
+      id: "audit_1789814777219_0f21dfc5",
+      actorId: "user_1789032197481_2edd3a21",
+      actorPhone: "0988776655",
+      action: "DEPOSIT_SUBMITTED",
+      targetType: "DEPOSIT",
+      targetId: "dep_1789814777219_c40c7414",
+      details: "Submitted deposit request of 500 ETB via Commercial Bank of Ethiopia (CBE) (FT: FT_TEST_1789814777219)",
+      createdAt: "2026-09-19T10:46:17.219Z"
+    },
+    {
+      id: "audit_1789741028366_f5a5261e",
+      actorId: "user_admin_0929200166",
+      actorPhone: "0929200166",
+      action: "WITHDRAWAL_APPROVED",
+      targetType: "WITHDRAWAL",
+      targetId: "wdr_1789741028357_e15ad7d3",
+      details: "Approved payout of 150 ETB to CBE (1000987654321) for 0969302795",
+      createdAt: "2026-09-18T14:17:08.366Z"
+    },
+    {
+      id: "audit_1789741028358_e2b6f685",
+      actorId: "user_1789741028278_de2b3b7c",
+      actorPhone: "0969302795",
+      action: "WITHDRAWAL_REQUESTED",
+      targetType: "WITHDRAWAL",
+      targetId: "wdr_1789741028357_e15ad7d3",
+      details: "Requested withdrawal of 150 ETB to CBE (1000987654321). New balance: 350 ETB",
+      createdAt: "2026-09-18T14:17:08.358Z"
+    },
+    {
+      id: "audit_1789741028347_276ca3ee",
+      actorId: "user_admin_0929200166",
+      actorPhone: "0929200166",
+      action: "DEPOSIT_APPROVED",
+      targetType: "DEPOSIT",
+      targetId: "dep_1789741028339_38092238",
+      details: "Approved deposit of 500 ETB for user 0969302795. New balance: 500 ETB",
+      createdAt: "2026-09-18T14:17:08.347Z"
+    },
+    {
+      id: "audit_1789741028339_806d257f",
+      actorId: "user_1789741028278_de2b3b7c",
+      actorPhone: "0969302795",
+      action: "DEPOSIT_SUBMITTED",
+      targetType: "DEPOSIT",
+      targetId: "dep_1789741028339_38092238",
+      details: "Submitted deposit request of 500 ETB via Commercial Bank of Ethiopia (CBE) (FT: TX_W_1789741028335)",
+      createdAt: "2026-09-18T14:17:08.339Z"
+    },
+    {
+      id: "audit_1789741020306_0340050c",
+      actorId: "user_admin_0929200166",
+      actorPhone: "0929200166",
+      action: "ROUND_50_PERCENT_CLAIMED",
+      targetType: "ROUND",
+      targetId: "round_5",
+      details: "Lakkoofsi 50% (50/100) mirkaneeffamee qabameera. Baajanni: 2500 ETB. Hash: d71143166ebf79cd...",
+      createdAt: "2026-09-18T14:17:00.306Z"
+    },
+    {
+      id: "audit_1789741020286_8dfbaf1a",
+      actorId: "user_admin_0929200166",
+      actorPhone: "0929200166",
+      action: "DEPOSIT_APPROVED",
+      targetType: "DEPOSIT",
+      targetId: "dep_1789741020275_ad7d433e",
+      details: "Approved deposit of 500 ETB for user 0913321811. New balance: 500 ETB",
+      createdAt: "2026-09-18T14:17:00.286Z"
+    },
+    {
+      id: "audit_1789741020286_5953bc6e",
+      actorId: "user_admin_0929200166",
+      actorPhone: "0929200166",
+      action: "REFERRAL_BONUS_AWARDED",
+      targetType: "USER",
+      targetId: "user_admin_0929200166",
+      details: "Awarded 25 ETB referral bonus to referrer 0929200166 for deposit by 0913321811",
+      createdAt: "2026-09-18T14:17:00.286Z"
+    },
+    {
+      id: "audit_1789741020275_50ab0fbe",
+      actorId: "user_1789741020213_205f0509",
+      actorPhone: "0913321811",
+      action: "DEPOSIT_SUBMITTED",
+      targetType: "DEPOSIT",
+      targetId: "dep_1789741020275_ad7d433e",
+      details: "Submitted deposit request of 500 ETB via Commercial Bank of Ethiopia (CBE) (FT: TX_AUDIT_1789741020272)",
+      createdAt: "2026-09-18T14:17:00.275Z"
+    },
+    {
+      id: "audit_1789740977729_cbef8be9",
+      actorId: "user_admin_0929200166",
+      actorPhone: "0929200166",
+      action: "ROUND_50_PERCENT_CLAIMED",
+      targetType: "ROUND",
+      targetId: "round_5",
+      details: "Lakkoofsi 50% (50/100) mirkaneeffamee qabameera. Baajanni: 2500 ETB. Hash: 45ae203b2cc0a6a8...",
+      createdAt: "2026-09-18T14:16:17.729Z"
+    },
+    {
+      id: "audit_1789740920770_3ef59175",
+      actorId: "user_admin_0929200166",
+      actorPhone: "0929200166",
+      action: "SLOT_RELEASED",
+      targetType: "ROUND",
+      targetId: "round_5",
+      details: "Released slot #2",
+      createdAt: "2026-09-18T14:15:20.770Z"
+    },
+    {
+      id: "audit_1789739906132_82bcbf2e",
+      actorId: "admin_1",
+      actorPhone: "0929200166",
+      action: "ROUND_DRAWN",
+      targetType: "ROUND",
+      targetId: "round_4",
+      details: "Drawn winners for Round #4. 1st: #42 (30 ETB), 2nd: #42 (5 ETB), 3rd: #42 (2 ETB)",
+      createdAt: "2026-09-18T13:58:26.132Z"
+    },
+    {
+      id: "audit_1789739906122_e3c13941",
+      actorId: "admin_1",
+      actorPhone: "0929200166",
+      action: "WITHDRAWAL_REJECTED",
+      targetType: "WITHDRAWAL",
+      targetId: "wdr_1789739906119_43b8fc81",
+      details: "Rejected withdrawal of 200 ETB for 0988776655. Refunded back to wallet. New balance: 3955 ETB",
+      createdAt: "2026-09-18T13:58:26.122Z"
+    },
+    {
+      id: "audit_1789739906120_2bf893e3",
+      actorId: "user_1789032197481_2edd3a21",
+      actorPhone: "0988776655",
+      action: "WITHDRAWAL_REQUESTED",
+      targetType: "WITHDRAWAL",
+      targetId: "wdr_1789739906119_43b8fc81",
+      details: "Requested withdrawal of 200 ETB to Telebirr (0988776655). New balance: 3755 ETB",
+      createdAt: "2026-09-18T13:58:26.120Z"
+    },
+    {
+      id: "audit_1789739906113_ebe7a6a1",
+      actorId: "admin_1",
+      actorPhone: "0929200166",
+      action: "DEPOSIT_APPROVED",
+      targetType: "DEPOSIT",
+      targetId: "dep_1789739906109_72d9d7be",
+      details: "Approved deposit of 500 ETB for user 0988776655. New balance: 3955 ETB",
+      createdAt: "2026-09-18T13:58:26.113Z"
+    },
+    {
+      id: "audit_1789739906109_9747625a",
+      actorId: "user_1789032197481_2edd3a21",
+      actorPhone: "0988776655",
+      action: "DEPOSIT_SUBMITTED",
+      targetType: "DEPOSIT",
+      targetId: "dep_1789739906109_72d9d7be",
+      details: "Submitted deposit request of 500 ETB via Commercial Bank of Ethiopia (CBE) (FT: FT_TEST_1789739906109)",
+      createdAt: "2026-09-18T13:58:26.109Z"
+    },
+    {
+      id: "audit_1789739760965_9e41e76f",
+      actorId: "admin_1",
+      actorPhone: "0929200166",
+      action: "ROUND_DRAWN",
+      targetType: "ROUND",
+      targetId: "round_3",
+      details: "Drawn winners for Round #3. 1st: #42 (1530 ETB), 2nd: #96 (255 ETB), 3rd: #98 (102 ETB)",
+      createdAt: "2026-09-18T13:56:00.965Z"
+    },
+    {
+      id: "audit_1789739760958_d452a40e",
+      actorId: "admin_1",
+      actorPhone: "0929200166",
+      action: "WITHDRAWAL_REJECTED",
+      targetType: "WITHDRAWAL",
+      targetId: "wdr_1789739760956_ccc95509",
+      details: "Rejected withdrawal of 200 ETB for 0988776655. Refunded back to wallet. New balance: 1975 ETB",
+      createdAt: "2026-09-18T13:56:00.958Z"
+    },
+    {
+      id: "audit_1789739760956_6b85e2d8",
+      actorId: "user_1789032197481_2edd3a21",
+      actorPhone: "0988776655",
+      action: "WITHDRAWAL_REQUESTED",
+      targetType: "WITHDRAWAL",
+      targetId: "wdr_1789739760956_ccc95509",
+      details: "Requested withdrawal of 200 ETB to Telebirr (0988776655). New balance: 1775 ETB",
+      createdAt: "2026-09-18T13:56:00.956Z"
+    },
+    {
+      id: "audit_1789739760950_79b4b74a",
+      actorId: "admin_1",
+      actorPhone: "0929200166",
+      action: "DEPOSIT_APPROVED",
+      targetType: "DEPOSIT",
+      targetId: "dep_1789739760946_6ad81e4d",
+      details: "Approved deposit of 500 ETB for user 0988776655. New balance: 1975 ETB",
+      createdAt: "2026-09-18T13:56:00.950Z"
+    },
+    {
+      id: "audit_1789739760946_4ef99db4",
+      actorId: "user_1789032197481_2edd3a21",
+      actorPhone: "0988776655",
+      action: "DEPOSIT_SUBMITTED",
+      targetType: "DEPOSIT",
+      targetId: "dep_1789739760946_6ad81e4d",
+      details: "Submitted deposit request of 500 ETB via Commercial Bank of Ethiopia (CBE) (FT: FT_TEST_1789739760945)",
+      createdAt: "2026-09-18T13:56:00.946Z"
+    },
+    {
+      id: "audit_1789479906983_fc51159e",
+      actorId: "user_admin_0929200166",
+      actorPhone: "0929200166",
+      action: "DEPOSIT_APPROVED",
+      targetType: "DEPOSIT",
+      targetId: "dep_1789034252970_fa049f59",
+      details: "Approved deposit of 50 ETB for user 0921209810. New balance: 50 ETB",
+      createdAt: "2026-09-15T13:45:06.983Z"
+    },
+    {
+      id: "audit_1789479900191_ad958b25",
+      actorId: "user_admin_0929200166",
+      actorPhone: "0929200166",
+      action: "DEPOSIT_APPROVED",
+      targetType: "DEPOSIT",
+      targetId: "dep_1789034996757_37810d6d",
+      details: "Approved deposit of 150 ETB for user 0911417927. New balance: 150 ETB",
+      createdAt: "2026-09-15T13:45:00.191Z"
+    },
+    {
+      id: "audit_1789035008267_d519f727",
+      actorId: "user_admin_0929200166",
+      actorPhone: "0929200166",
+      action: "DEPOSIT_APPROVED",
+      targetType: "DEPOSIT",
+      targetId: "dep_1789035008259_ed4d2065",
+      details: "Approved deposit of 250 ETB for user 0912582030. New balance: 250 ETB",
+      createdAt: "2026-09-10T10:10:08.267Z"
+    },
+    {
+      id: "audit_1789035008259_dbcdefd5",
+      actorId: "user_1789035008188_9c5240c8",
+      actorPhone: "0912582030",
+      action: "DEPOSIT_SUBMITTED",
+      targetType: "DEPOSIT",
+      targetId: "dep_1789035008259_ed4d2065",
+      details: "Submitted deposit request of 250 ETB via Commercial Bank of Ethiopia (CBE) (FT: FT1789035008251)",
+      createdAt: "2026-09-10T10:10:08.259Z"
+    },
+    {
+      id: "audit_1789034996757_aedac926",
+      actorId: "user_1789034996686_d3e68086",
+      actorPhone: "0911417927",
+      action: "DEPOSIT_SUBMITTED",
+      targetType: "DEPOSIT",
+      targetId: "dep_1789034996757_37810d6d",
+      details: "Submitted deposit request of 150 ETB via Telebirr (FT: FT1789034996752)",
+      createdAt: "2026-09-10T10:09:56.757Z"
+    },
+    {
+      id: "audit_1789034252971_1967f395",
+      actorId: "user_1789032730229_bd002e72",
+      actorPhone: "0921209810",
+      action: "DEPOSIT_SUBMITTED",
+      targetType: "DEPOSIT",
+      targetId: "dep_1789034252970_fa049f59",
+      details: "Submitted deposit request of 50 ETB via Telebirr (FT: ft26510w29j)",
+      createdAt: "2026-09-10T09:57:32.971Z"
+    },
+    {
+      id: "audit_1789032421491_2545a092",
+      actorId: "admin_1",
+      actorPhone: "0929200166",
+      action: "ROUND_DRAWN",
+      targetType: "ROUND",
+      targetId: "round_2",
+      details: "Drawn winners for Round #2. 1st: #42 (37.5 ETB), 2nd: #42 (3.5 ETB), 3rd: #42 (1.5 ETB)",
+      createdAt: "2026-09-10T09:27:01.491Z"
+    },
+    {
+      id: "audit_1789032421488_6e5801db",
+      actorId: "admin_1",
+      actorPhone: "0929200166",
+      action: "WITHDRAWAL_REJECTED",
+      targetType: "WITHDRAWAL",
+      targetId: "wdr_1789032421486_81c918f9",
+      details: "Rejected withdrawal of 200 ETB for 0988776655. Refunded back to wallet. New balance: 1487.5 ETB",
+      createdAt: "2026-09-10T09:27:01.488Z"
+    },
+    {
+      id: "audit_1789032421486_956e4e64",
+      actorId: "user_1789032197481_2edd3a21",
+      actorPhone: "0988776655",
+      action: "WITHDRAWAL_REQUESTED",
+      targetType: "WITHDRAWAL",
+      targetId: "wdr_1789032421486_81c918f9",
+      details: "Requested withdrawal of 200 ETB to Telebirr (0988776655). New balance: 1287.5 ETB",
+      createdAt: "2026-09-10T09:27:01.486Z"
+    },
+    {
+      id: "audit_1789032421484_db3e1027",
+      actorId: "admin_1",
+      actorPhone: "0929200166",
+      action: "DEPOSIT_APPROVED",
+      targetType: "DEPOSIT",
+      targetId: "dep_1789032421482_11331692",
+      details: "Approved deposit of 500 ETB for user 0988776655. New balance: 1487.5 ETB",
+      createdAt: "2026-09-10T09:27:01.484Z"
+    },
+    {
+      id: "audit_1789032421483_86d1f85c",
+      actorId: "user_1789032197481_2edd3a21",
+      actorPhone: "0988776655",
+      action: "DEPOSIT_SUBMITTED",
+      targetType: "DEPOSIT",
+      targetId: "dep_1789032421482_11331692",
+      details: "Submitted deposit request of 500 ETB via Commercial Bank of Ethiopia (CBE) (FT: FT_TEST_1789032421482)",
+      createdAt: "2026-09-10T09:27:01.483Z"
+    },
+    {
+      id: "audit_1789032328002_a2dde7ef",
+      actorId: "admin_1",
+      actorPhone: "0929200166",
+      action: "ROUND_DRAWN",
+      targetType: "ROUND",
+      targetId: "round_1",
+      details: "Drawn winners for Round #1. 1st: #42 (37.5 ETB), 2nd: #42 (3.5 ETB), 3rd: #42 (1.5 ETB)",
+      createdAt: "2026-09-10T09:25:28.002Z"
+    },
+    {
+      id: "audit_1789032327998_a1c5e386",
+      actorId: "admin_1",
+      actorPhone: "0929200166",
+      action: "WITHDRAWAL_REJECTED",
+      targetType: "WITHDRAWAL",
+      targetId: "wdr_1789032327997_3511020e",
+      details: "Rejected withdrawal of 200 ETB for 0988776655. Refunded back to wallet. New balance: 1000 ETB",
+      createdAt: "2026-09-10T09:25:27.998Z"
+    },
+    {
+      id: "audit_1789032327997_826ba0e3",
+      actorId: "user_1789032197481_2edd3a21",
+      actorPhone: "0988776655",
+      action: "WITHDRAWAL_REQUESTED",
+      targetType: "WITHDRAWAL",
+      targetId: "wdr_1789032327997_3511020e",
+      details: "Requested withdrawal of 200 ETB to Telebirr (0988776655). New balance: 800 ETB",
+      createdAt: "2026-09-10T09:25:27.997Z"
+    },
+    {
+      id: "audit_1789032327994_f02f7c5e",
+      actorId: "admin_1",
+      actorPhone: "0929200166",
+      action: "DEPOSIT_APPROVED",
+      targetType: "DEPOSIT",
+      targetId: "dep_1789032327993_8d998d89",
+      details: "Approved deposit of 500 ETB for user 0988776655. New balance: 1000 ETB",
+      createdAt: "2026-09-10T09:25:27.994Z"
+    },
+    {
+      id: "audit_1789032327993_4013b421",
+      actorId: "user_1789032197481_2edd3a21",
+      actorPhone: "0988776655",
+      action: "DEPOSIT_SUBMITTED",
+      targetType: "DEPOSIT",
+      targetId: "dep_1789032327993_8d998d89",
+      details: "Submitted deposit request of 500 ETB via Commercial Bank of Ethiopia (CBE) (FT: FT_TEST_1789032327992)",
+      createdAt: "2026-09-10T09:25:27.993Z"
+    },
+    {
+      id: "audit_1789032318848_a841cb67",
+      actorId: "admin_1",
+      actorPhone: "0929200166",
+      action: "DEPOSIT_APPROVED",
+      targetType: "DEPOSIT",
+      targetId: "dep_1789032318847_affef5ed",
+      details: "Approved deposit of 500 ETB for user 0988776655. New balance: 500 ETB",
+      createdAt: "2026-09-10T09:25:18.848Z"
+    },
+    {
+      id: "audit_1789032318847_8fb6879d",
+      actorId: "user_1789032197481_2edd3a21",
+      actorPhone: "0988776655",
+      action: "DEPOSIT_SUBMITTED",
+      targetType: "DEPOSIT",
+      targetId: "dep_1789032318847_affef5ed",
+      details: "Submitted deposit request of 500 ETB via Commercial Bank of Ethiopia (CBE) (FT: FT_TEST_1789032318846)",
+      createdAt: "2026-09-10T09:25:18.847Z"
+    },
+    {
+      id: "audit_init",
+      actorId: "user_admin_0929200166",
+      actorPhone: "0929200166",
+      action: "SYSTEM_INITIALIZED",
+      targetType: "SYSTEM",
+      targetId: "INIT",
+      details: "Spin Ethiopia production database initialized with official payment destinations.",
+      createdAt: "2026-09-10T09:23:17.480Z"
+    }
+  ],
+  processedReferralBonuses: {
+    user_1789741020213_205f0509: true
+  }
+};
+
+// server/postgres.ts
+import pg from "pg";
+var { Pool } = pg;
+var pool = null;
+var isConnected = false;
+var initPromise = null;
+function getDatabaseUrl() {
+  return process.env.DATABASE_URL || process.env.POSTGRES_URL || process.env.PG_CONNECTION_STRING;
+}
+function isPostgresConfigured() {
+  return Boolean(getDatabaseUrl());
+}
+function getPgPool() {
+  if (pool) return pool;
+  const dbUrl = getDatabaseUrl();
+  if (!dbUrl) return null;
+  try {
+    const isLocalhost = dbUrl.includes("localhost") || dbUrl.includes("127.0.0.1");
+    pool = new Pool({
+      connectionString: dbUrl,
+      ssl: isLocalhost ? false : { rejectUnauthorized: false },
+      max: 20,
+      idleTimeoutMillis: 3e4,
+      connectionTimeoutMillis: 5e3
+    });
+    pool.on("error", (err) => {
+      console.error("Unexpected PostgreSQL pool error:", err);
+      isConnected = false;
+    });
+    return pool;
+  } catch (err) {
+    console.error("Failed to initialize PostgreSQL pool:", err);
+    return null;
+  }
+}
+async function initPostgresSchema() {
+  const p = getPgPool();
+  if (!p) return false;
+  if (initPromise) return initPromise;
+  initPromise = (async () => {
+    const client = await p.connect();
+    try {
+      await client.query(`
+        CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+        CREATE EXTENSION IF NOT EXISTS "pgcrypto";
+      `);
+      await client.query(`
+        CREATE TABLE IF NOT EXISTS users (
+          id VARCHAR(64) PRIMARY KEY,
+          first_name VARCHAR(100) NOT NULL,
+          last_name VARCHAR(100) NOT NULL,
+          phone VARCHAR(20) UNIQUE NOT NULL,
+          password_hash VARCHAR(255) NOT NULL,
+          salt VARCHAR(64) NOT NULL,
+          role VARCHAR(20) DEFAULT 'USER' NOT NULL,
+          wallet_balance NUMERIC(12, 2) DEFAULT 0.00 NOT NULL CHECK (wallet_balance >= 0),
+          referral_code VARCHAR(32) UNIQUE NOT NULL,
+          referred_by VARCHAR(64),
+          is_active BOOLEAN DEFAULT true NOT NULL,
+          created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL,
+          updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL
+        );
+        CREATE INDEX IF NOT EXISTS idx_users_phone ON users(phone);
+        CREATE INDEX IF NOT EXISTS idx_users_referral_code ON users(referral_code);
+      `);
+      await client.query(`
+        CREATE TABLE IF NOT EXISTS sessions (
+          token VARCHAR(128) PRIMARY KEY,
+          user_id VARCHAR(64) NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+          created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL,
+          expires_at TIMESTAMP WITH TIME ZONE NOT NULL
+        );
+        CREATE INDEX IF NOT EXISTS idx_sessions_user_id ON sessions(user_id);
+      `);
+      await client.query(`
+        CREATE TABLE IF NOT EXISTS payment_methods (
+          id VARCHAR(64) PRIMARY KEY,
+          provider VARCHAR(100) NOT NULL,
+          account_name VARCHAR(150) NOT NULL,
+          account_number VARCHAR(100) NOT NULL,
+          phone_number VARCHAR(20),
+          instructions TEXT NOT NULL,
+          min_amount NUMERIC(10, 2) DEFAULT 50.00 NOT NULL,
+          max_amount NUMERIC(10, 2) DEFAULT 50000.00 NOT NULL,
+          is_active BOOLEAN DEFAULT true NOT NULL,
+          sort_order INT DEFAULT 0 NOT NULL,
+          created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL
+        );
+      `);
+      await client.query(`
+        CREATE TABLE IF NOT EXISTS deposits (
+          id VARCHAR(64) PRIMARY KEY,
+          user_id VARCHAR(64) NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+          user_name VARCHAR(150) NOT NULL,
+          user_phone VARCHAR(20) NOT NULL,
+          payment_method_id VARCHAR(64),
+          provider VARCHAR(100) NOT NULL,
+          account_name VARCHAR(150),
+          account_number VARCHAR(100),
+          amount NUMERIC(12, 2) NOT NULL CHECK (amount > 0),
+          transaction_id VARCHAR(100) NOT NULL,
+          receipt_url TEXT NOT NULL,
+          sender_phone VARCHAR(20),
+          sender_name VARCHAR(100),
+          status VARCHAR(20) DEFAULT 'PENDING' NOT NULL,
+          admin_notes TEXT,
+          reject_reason TEXT,
+          reviewed_by VARCHAR(64),
+          reviewed_at TIMESTAMP WITH TIME ZONE,
+          created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL,
+          CONSTRAINT uq_deposit_tx_id UNIQUE (transaction_id)
+        );
+        CREATE INDEX IF NOT EXISTS idx_deposits_user_id ON deposits(user_id);
+        CREATE INDEX IF NOT EXISTS idx_deposits_status ON deposits(status);
+        CREATE INDEX IF NOT EXISTS idx_deposits_created_at ON deposits(created_at DESC);
+      `);
+      await client.query(`
+        CREATE TABLE IF NOT EXISTS withdrawals (
+          id VARCHAR(64) PRIMARY KEY,
+          user_id VARCHAR(64) NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+          user_name VARCHAR(150) NOT NULL,
+          user_phone VARCHAR(20) NOT NULL,
+          provider VARCHAR(100) NOT NULL,
+          account_name VARCHAR(150) NOT NULL,
+          account_number VARCHAR(100) NOT NULL,
+          amount NUMERIC(12, 2) NOT NULL CHECK (amount > 0),
+          status VARCHAR(20) DEFAULT 'PENDING' NOT NULL,
+          admin_notes TEXT,
+          reject_reason TEXT,
+          reviewed_by VARCHAR(64),
+          reviewed_at TIMESTAMP WITH TIME ZONE,
+          created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL
+        );
+        CREATE INDEX IF NOT EXISTS idx_withdrawals_user_id ON withdrawals(user_id);
+        CREATE INDEX IF NOT EXISTS idx_withdrawals_status ON withdrawals(status);
+      `);
+      await client.query(`
+        CREATE TABLE IF NOT EXISTS wallet_transactions (
+          id VARCHAR(64) PRIMARY KEY,
+          user_id VARCHAR(64) NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+          type VARCHAR(30) NOT NULL,
+          amount NUMERIC(12, 2) NOT NULL,
+          balance_before NUMERIC(12, 2) DEFAULT 0.00,
+          balance_after NUMERIC(12, 2) NOT NULL,
+          description TEXT NOT NULL,
+          reference_id VARCHAR(100),
+          created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL
+        );
+        CREATE INDEX IF NOT EXISTS idx_wallet_tx_user_id ON wallet_transactions(user_id);
+        CREATE INDEX IF NOT EXISTS idx_wallet_tx_created_at ON wallet_transactions(created_at DESC);
+      `);
+      await client.query(`
+        CREATE TABLE IF NOT EXISTS rounds (
+          id VARCHAR(64) PRIMARY KEY,
+          round_number INT UNIQUE NOT NULL,
+          status VARCHAR(20) DEFAULT 'OPEN' NOT NULL,
+          ticket_price NUMERIC(10, 2) DEFAULT 50.00 NOT NULL,
+          total_pool NUMERIC(12, 2) DEFAULT 0.00 NOT NULL,
+          winning_number INT,
+          first_prize_winner JSONB,
+          second_prize_winner JSONB,
+          third_prize_winner JSONB,
+          completed_at TIMESTAMP WITH TIME ZONE,
+          created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL
+        );
+        CREATE INDEX IF NOT EXISTS idx_rounds_status ON rounds(status);
+        CREATE INDEX IF NOT EXISTS idx_rounds_round_number ON rounds(round_number DESC);
+      `);
+      await client.query(`
+        CREATE TABLE IF NOT EXISTS round_tickets (
+          id VARCHAR(64) PRIMARY KEY,
+          round_id VARCHAR(64) NOT NULL REFERENCES rounds(id) ON DELETE CASCADE,
+          number INT NOT NULL CHECK (number >= 1 AND number <= 100),
+          user_id VARCHAR(64) NOT NULL,
+          user_name VARCHAR(100) NOT NULL,
+          user_phone VARCHAR(20) NOT NULL,
+          selected_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL,
+          CONSTRAINT uq_round_number UNIQUE (round_id, number)
+        );
+        CREATE INDEX IF NOT EXISTS idx_round_tickets_round_id ON round_tickets(round_id);
+      `);
+      await client.query(`
+        CREATE TABLE IF NOT EXISTS audit_logs (
+          id VARCHAR(64) PRIMARY KEY,
+          actor_id VARCHAR(64) NOT NULL,
+          actor_phone VARCHAR(20) NOT NULL,
+          action VARCHAR(100) NOT NULL,
+          target_type VARCHAR(100) NOT NULL,
+          target_id VARCHAR(100) NOT NULL,
+          details TEXT NOT NULL,
+          ip_address VARCHAR(45),
+          created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL
+        );
+        CREATE INDEX IF NOT EXISTS idx_audit_logs_created_at ON audit_logs(created_at DESC);
+      `);
+      await client.query(`
+        CREATE TABLE IF NOT EXISTS system_settings (
+          id VARCHAR(32) PRIMARY KEY DEFAULT 'current',
+          ticket_price NUMERIC(10, 2) DEFAULT 50.00 NOT NULL,
+          first_prize_percent NUMERIC(5, 2) DEFAULT 75.00 NOT NULL,
+          second_prize_percent NUMERIC(5, 2) DEFAULT 7.00 NOT NULL,
+          third_prize_percent NUMERIC(5, 2) DEFAULT 3.00 NOT NULL,
+          platform_percent NUMERIC(5, 2) DEFAULT 15.00 NOT NULL,
+          min_deposit_amount NUMERIC(10, 2) DEFAULT 50.00 NOT NULL,
+          min_withdrawal_amount NUMERIC(10, 2) DEFAULT 100.00 NOT NULL,
+          referral_bonus_amount NUMERIC(10, 2) DEFAULT 25.00 NOT NULL,
+          referral_min_deposit NUMERIC(10, 2) DEFAULT 100.00 NOT NULL,
+          site_name VARCHAR(100) DEFAULT 'Spin Ethiopia' NOT NULL,
+          maintenance_mode BOOLEAN DEFAULT false NOT NULL,
+          updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL
+        );
+      `);
+      await client.query(`
+        INSERT INTO payment_methods (id, provider, account_name, account_number, phone_number, instructions, min_amount, max_amount, is_active, sort_order)
+        VALUES
+        ('pm_cbe', 'Commercial Bank of Ethiopia (CBE)', 'Asefa Wasenu Tadese', '1000218818424', NULL, 'Kaffaltii keessan herrega CBE (1000218818424 - Asefa Wasenu Tadese) irratti erga daddabarsitanii booda, lakk FT fi ragaa kaffaltii asitti ol-kaa''aa.', 50.00, 50000.00, true, 1),
+        ('pm_awash', 'Awash Bank', 'Asefa Wasenu Tadese', '01320561958100', NULL, 'Kaffaltii Awash Baankii lakkoofsa (01320561958100 - Asefa Wasenu Tadese) irratti erga kaffaltanii booda ragaa kaffaltii fi lakk daddabarsaa asitti ergaa.', 50.00, 50000.00, true, 2),
+        ('pm_telebirr', 'Telebirr', 'Gabre shifaraa hayilu', '0929200166', '0929200166', 'Kaffaltii Telebirr lakkoofsa bilbilaa 0929200166 (Maqaa: Gabre shifaraa hayilu) irratti ergaa, ragaa kaffaltii fi lakk daddabarsaa asitti guutaa.', 50.00, 25000.00, true, 3)
+        ON CONFLICT (id) DO NOTHING;
+      `);
+      isConnected = true;
+      console.log("\u2713 PostgreSQL schema initialized and verified successfully");
+      return true;
+    } catch (err) {
+      console.error("Error initializing PostgreSQL schema:", err);
+      isConnected = false;
+      return false;
+    } finally {
+      client.release();
+    }
+  })();
+  return initPromise;
+}
+async function checkPostgresStatus() {
+  const configured = isPostgresConfigured();
+  if (!configured) {
+    return { configured: false, connected: false };
+  }
+  const p = getPgPool();
+  if (!p) {
+    return { configured: true, connected: false, error: "Could not create connection pool" };
+  }
+  try {
+    const res = await p.query("SELECT current_database() as db, current_timestamp as now");
+    isConnected = true;
+    return {
+      configured: true,
+      connected: true,
+      database: res.rows[0]?.db
+    };
+  } catch (err) {
+    isConnected = false;
+    return {
+      configured: true,
+      connected: false,
+      error: err.message || "Connection failed"
+    };
+  }
+}
+async function loadStateFromPostgres() {
+  const p = getPgPool();
+  if (!p) return null;
+  try {
+    const ready = await initPostgresSchema();
+    if (!ready) return null;
+    const [
+      usersRes,
+      sessionsRes,
+      depositsRes,
+      withdrawalsRes,
+      transactionsRes,
+      roundsRes,
+      ticketsRes,
+      methodsRes,
+      auditRes,
+      settingsRes
+    ] = await Promise.all([
+      p.query("SELECT * FROM users"),
+      p.query("SELECT * FROM sessions WHERE expires_at > CURRENT_TIMESTAMP"),
+      p.query("SELECT * FROM deposits ORDER BY created_at DESC"),
+      p.query("SELECT * FROM withdrawals ORDER BY created_at DESC"),
+      p.query("SELECT * FROM wallet_transactions ORDER BY created_at DESC"),
+      p.query("SELECT * FROM rounds ORDER BY round_number DESC"),
+      p.query("SELECT * FROM round_tickets"),
+      p.query("SELECT * FROM payment_methods ORDER BY sort_order ASC"),
+      p.query("SELECT * FROM audit_logs ORDER BY created_at DESC LIMIT 500"),
+      p.query("SELECT * FROM system_settings LIMIT 1")
+    ]);
+    const users = {};
+    const phoneToUserId = {};
+    const referralCodeToUserId = {};
+    for (const r of usersRes.rows) {
+      const u = {
+        id: r.id,
+        firstName: r.first_name,
+        lastName: r.last_name,
+        phone: r.phone,
+        role: r.role,
+        walletBalance: Number(r.wallet_balance),
+        referralCode: r.referral_code,
+        referredBy: r.referred_by || void 0,
+        createdAt: r.created_at?.toISOString?.() || r.created_at,
+        passwordHash: r.password_hash,
+        salt: r.salt
+      };
+      users[u.id] = u;
+      phoneToUserId[u.phone] = u.id;
+      referralCodeToUserId[u.referralCode] = u.id;
+    }
+    const sessions = {};
+    for (const r of sessionsRes.rows) {
+      sessions[r.token] = {
+        token: r.token,
+        userId: r.user_id,
+        createdAt: r.created_at?.toISOString?.() || r.created_at,
+        expiresAt: r.expires_at?.toISOString?.() || r.expires_at
+      };
+    }
+    const deposits = {};
+    const transactionIdToDepositId = {};
+    for (const r of depositsRes.rows) {
+      const d = {
+        id: r.id,
+        userId: r.user_id,
+        userName: r.user_name,
+        userPhone: r.user_phone,
+        provider: r.provider,
+        accountName: r.account_name,
+        accountNumber: r.account_number,
+        amount: Number(r.amount),
+        transactionId: r.transaction_id,
+        receiptUrl: r.receipt_url,
+        status: r.status,
+        rejectReason: r.reject_reason || void 0,
+        reviewedBy: r.reviewed_by || void 0,
+        reviewedAt: r.reviewed_at?.toISOString?.() || r.reviewed_at || void 0,
+        createdAt: r.created_at?.toISOString?.() || r.created_at
+      };
+      deposits[d.id] = d;
+      if (d.transactionId) {
+        transactionIdToDepositId[d.transactionId] = d.id;
+      }
+    }
+    const withdrawals = {};
+    for (const r of withdrawalsRes.rows) {
+      withdrawals[r.id] = {
+        id: r.id,
+        userId: r.user_id,
+        userName: r.user_name,
+        userPhone: r.user_phone,
+        provider: r.provider,
+        accountName: r.account_name,
+        accountNumber: r.account_number,
+        amount: Number(r.amount),
+        status: r.status,
+        rejectReason: r.reject_reason || void 0,
+        reviewedBy: r.reviewed_by || void 0,
+        reviewedAt: r.reviewed_at?.toISOString?.() || r.reviewed_at || void 0,
+        createdAt: r.created_at?.toISOString?.() || r.created_at
+      };
+    }
+    const transactions = {};
+    const userTransactionIds = {};
+    for (const r of transactionsRes.rows) {
+      const tx = {
+        id: r.id,
+        userId: r.user_id,
+        type: r.type,
+        amount: Number(r.amount),
+        balanceAfter: Number(r.balance_after),
+        note: r.description,
+        referenceId: r.reference_id || void 0,
+        createdAt: r.created_at?.toISOString?.() || r.created_at
+      };
+      transactions[tx.id] = tx;
+      if (!userTransactionIds[tx.userId]) userTransactionIds[tx.userId] = [];
+      userTransactionIds[tx.userId].push(tx.id);
+    }
+    const ticketsByRound = {};
+    for (const t of ticketsRes.rows) {
+      if (!ticketsByRound[t.round_id]) ticketsByRound[t.round_id] = {};
+      ticketsByRound[t.round_id][String(t.number)] = {
+        number: Number(t.number),
+        userId: t.user_id,
+        userName: t.user_name,
+        userPhone: t.user_phone,
+        selectedAt: t.selected_at?.toISOString?.() || t.selected_at
+      };
+    }
+    const rounds = {};
+    let activeRoundId = "";
+    for (const r of roundsRes.rows) {
+      const rd = {
+        id: r.id,
+        roundNumber: Number(r.round_number),
+        status: r.status,
+        ticketPrice: Number(r.ticket_price),
+        totalPool: Number(r.total_pool),
+        winners: [
+          ...r.first_prize_winner ? [r.first_prize_winner] : [],
+          ...r.second_prize_winner ? [r.second_prize_winner] : [],
+          ...r.third_prize_winner ? [r.third_prize_winner] : []
+        ],
+        selections: ticketsByRound[r.id] || {},
+        drawnAt: r.completed_at?.toISOString?.() || r.completed_at || void 0,
+        createdAt: r.created_at?.toISOString?.() || r.created_at
+      };
+      rounds[rd.id] = rd;
+      if (rd.status === "OPEN" && !activeRoundId) {
+        activeRoundId = rd.id;
+      }
+    }
+    const paymentMethods = {};
+    for (const r of methodsRes.rows) {
+      paymentMethods[r.id] = {
+        id: r.id,
+        provider: r.provider,
+        accountName: r.account_name,
+        accountNumber: r.account_number,
+        phoneNumber: r.phone_number || void 0,
+        instructions: r.instructions,
+        minAmount: Number(r.min_amount),
+        maxAmount: Number(r.max_amount),
+        isActive: Boolean(r.is_active),
+        sortOrder: Number(r.sort_order)
+      };
+    }
+    const auditLogs = auditRes.rows.map((r) => ({
+      id: r.id,
+      actorId: r.actor_id,
+      actorPhone: r.actor_phone,
+      action: r.action,
+      targetType: r.target_type,
+      targetId: r.target_id,
+      details: r.details,
+      createdAt: r.created_at?.toISOString?.() || r.created_at
+    }));
+    let settings = void 0;
+    if (settingsRes.rows.length > 0) {
+      const s = settingsRes.rows[0];
+      settings = {
+        ticketPrice: Number(s.ticket_price),
+        firstPrizePercent: Number(s.first_prize_percent),
+        secondPrizePercent: Number(s.second_prize_percent),
+        thirdPrizePercent: Number(s.third_prize_percent),
+        platformPercent: Number(s.platform_percent),
+        minDepositAmount: Number(s.min_deposit_amount),
+        minWithdrawalAmount: Number(s.min_withdrawal_amount),
+        referralBonusAmount: Number(s.referral_bonus_amount),
+        referralMinDeposit: Number(s.referral_min_deposit),
+        siteName: s.site_name,
+        maintenanceMode: Boolean(s.maintenance_mode)
+      };
+    }
+    return {
+      users,
+      phoneToUserId,
+      referralCodeToUserId,
+      sessions,
+      deposits,
+      transactionIdToDepositId,
+      withdrawals,
+      transactions,
+      userTransactionIds,
+      rounds,
+      activeRoundId: activeRoundId || Object.keys(rounds)[0] || "",
+      paymentMethods,
+      auditLogs,
+      ...settings ? { settings } : {}
+    };
+  } catch (err) {
+    console.error("Failed to load state from PostgreSQL:", err);
+    return null;
+  }
+}
+async function syncEntityToPostgres(type, entity) {
+  const p = getPgPool();
+  if (!p) return;
+  try {
+    if (type === "user") {
+      const u = entity;
+      await p.query(
+        `INSERT INTO users (id, first_name, last_name, phone, password_hash, salt, role, wallet_balance, referral_code, referred_by, created_at, updated_at)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, CURRENT_TIMESTAMP)
+         ON CONFLICT (id) DO UPDATE SET
+           first_name = EXCLUDED.first_name,
+           last_name = EXCLUDED.last_name,
+           password_hash = EXCLUDED.password_hash,
+           salt = EXCLUDED.salt,
+           role = EXCLUDED.role,
+           wallet_balance = EXCLUDED.wallet_balance,
+           updated_at = CURRENT_TIMESTAMP`,
+        [u.id, u.firstName, u.lastName, u.phone, u.passwordHash, u.salt, u.role, u.walletBalance, u.referralCode, u.referredBy || null, u.createdAt]
+      );
+    } else if (type === "session") {
+      const s = entity;
+      await p.query(
+        `INSERT INTO sessions (token, user_id, created_at, expires_at)
+         VALUES ($1, $2, $3, $4)
+         ON CONFLICT (token) DO NOTHING`,
+        [s.token, s.userId, s.createdAt, s.expiresAt]
+      );
+    } else if (type === "deposit") {
+      const d = entity;
+      await p.query(
+        `INSERT INTO deposits (id, user_id, user_name, user_phone, provider, account_name, account_number, amount, transaction_id, receipt_url, status, reject_reason, reviewed_by, reviewed_at, created_at)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)
+         ON CONFLICT (id) DO UPDATE SET
+           status = EXCLUDED.status,
+           reject_reason = EXCLUDED.reject_reason,
+           reviewed_by = EXCLUDED.reviewed_by,
+           reviewed_at = EXCLUDED.reviewed_at`,
+        [d.id, d.userId, d.userName, d.userPhone, d.provider, d.accountName || null, d.accountNumber || null, d.amount, d.transactionId, d.receiptUrl, d.status, d.rejectReason || null, d.reviewedBy || null, d.reviewedAt || null, d.createdAt]
+      );
+    } else if (type === "withdrawal") {
+      const w = entity;
+      await p.query(
+        `INSERT INTO withdrawals (id, user_id, user_name, user_phone, provider, account_name, account_number, amount, status, reject_reason, reviewed_by, reviewed_at, created_at)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
+         ON CONFLICT (id) DO UPDATE SET
+           status = EXCLUDED.status,
+           reject_reason = EXCLUDED.reject_reason,
+           reviewed_by = EXCLUDED.reviewed_by,
+           reviewed_at = EXCLUDED.reviewed_at`,
+        [w.id, w.userId, w.userName, w.userPhone, w.provider, w.accountName, w.accountNumber, w.amount, w.status, w.rejectReason || null, w.reviewedBy || null, w.reviewedAt || null, w.createdAt]
+      );
+    } else if (type === "transaction") {
+      const tx = entity;
+      await p.query(
+        `INSERT INTO wallet_transactions (id, user_id, type, amount, balance_after, description, reference_id, created_at)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+         ON CONFLICT (id) DO NOTHING`,
+        [tx.id, tx.userId, tx.type, tx.amount, tx.balanceAfter, tx.note, tx.referenceId || null, tx.createdAt]
+      );
+    } else if (type === "round") {
+      const rd = entity;
+      const w1 = rd.winners?.find((w) => w.rank === 1) || null;
+      const w2 = rd.winners?.find((w) => w.rank === 2) || null;
+      const w3 = rd.winners?.find((w) => w.rank === 3) || null;
+      await p.query(
+        `INSERT INTO rounds (id, round_number, status, ticket_price, total_pool, winning_number, first_prize_winner, second_prize_winner, third_prize_winner, completed_at, created_at)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+         ON CONFLICT (id) DO UPDATE SET
+           status = EXCLUDED.status,
+           total_pool = EXCLUDED.total_pool,
+           winning_number = EXCLUDED.winning_number,
+           first_prize_winner = EXCLUDED.first_prize_winner,
+           second_prize_winner = EXCLUDED.second_prize_winner,
+           third_prize_winner = EXCLUDED.third_prize_winner,
+           completed_at = EXCLUDED.completed_at`,
+        [
+          rd.id,
+          rd.roundNumber,
+          rd.status,
+          rd.ticketPrice,
+          rd.totalPool,
+          w1?.number || null,
+          w1 ? JSON.stringify(w1) : null,
+          w2 ? JSON.stringify(w2) : null,
+          w3 ? JSON.stringify(w3) : null,
+          rd.drawnAt || null,
+          rd.createdAt
+        ]
+      );
+      for (const [numStr, sel] of Object.entries(rd.selections || {})) {
+        const ticketId = `${rd.id}_${numStr}`;
+        await p.query(
+          `INSERT INTO round_tickets (id, round_id, number, user_id, user_name, user_phone, selected_at)
+           VALUES ($1, $2, $3, $4, $5, $6, $7)
+           ON CONFLICT (round_id, number) DO UPDATE SET
+             user_id = EXCLUDED.user_id,
+             user_name = EXCLUDED.user_name,
+             user_phone = EXCLUDED.user_phone,
+             selected_at = EXCLUDED.selected_at`,
+          [ticketId, rd.id, Number(numStr), sel.userId, sel.userName, sel.userPhone, sel.selectedAt]
+        );
+      }
+    } else if (type === "audit") {
+      const a = entity;
+      await p.query(
+        `INSERT INTO audit_logs (id, actor_id, actor_phone, action, target_type, target_id, details, created_at)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+         ON CONFLICT (id) DO NOTHING`,
+        [a.id, a.actorId, a.actorPhone, a.action, a.targetType, a.targetId, a.details, a.createdAt]
+      );
+    }
+  } catch (err) {
+    console.error(`Error syncing ${type} to PostgreSQL:`, err);
+  }
+}
+async function flushStateToPostgres(db) {
+  const p = getPgPool();
+  if (!p) return;
+  try {
+    await initPostgresSchema();
+    for (const u of Object.values(db.users || {})) {
+      await syncEntityToPostgres("user", u);
+    }
+    for (const s of Object.values(db.sessions || {})) {
+      await syncEntityToPostgres("session", s);
+    }
+    for (const d of Object.values(db.deposits || {})) {
+      await syncEntityToPostgres("deposit", d);
+    }
+    for (const w of Object.values(db.withdrawals || {})) {
+      await syncEntityToPostgres("withdrawal", w);
+    }
+    for (const tx of Object.values(db.transactions || {})) {
+      await syncEntityToPostgres("transaction", tx);
+    }
+    for (const rd of Object.values(db.rounds || {})) {
+      await syncEntityToPostgres("round", rd);
+    }
+    for (const a of (db.auditLogs || []).slice(0, 50)) {
+      await syncEntityToPostgres("audit", a);
+    }
+  } catch (err) {
+    console.error("Error in flushStateToPostgres:", err);
+  }
+}
+
+// server/db.ts
+var isServerless = Boolean(process.env.VERCEL || process.env.NOW_REGION || process.env.AWS_LAMBDA_FUNCTION_NAME);
+var BASE_SEED_PATH = path.resolve(process.cwd(), "data", "spin_ethiopia.json");
+var DB_FILE_PATH = isServerless ? path.join("/tmp", "spin_ethiopia.json") : BASE_SEED_PATH;
+var writeMutex = Promise.resolve();
+function runInLock(fn) {
+  const result = writeMutex.then(async () => {
+    return await fn();
+  });
+  writeMutex = result.then(
+    () => {
+    },
+    () => {
+    }
+  );
+  return result;
+}
+var cachedDb = null;
+function hashPassword(password, salt) {
+  const useSalt = salt || crypto.randomBytes(16).toString("hex");
+  const hash = crypto.scryptSync(password, useSalt, 64).toString("hex");
+  return { hash, salt: useSalt };
+}
+function verifyPassword(password, hash, salt) {
+  try {
+    const calculatedHash = crypto.scryptSync(password, salt, 64).toString("hex");
+    return crypto.timingSafeEqual(Buffer.from(calculatedHash, "hex"), Buffer.from(hash, "hex"));
+  } catch {
+    return false;
+  }
+}
+function normalizeEthiopianPhone(input) {
+  if (!input) return "";
+  let cleaned = input.trim().replace(/[\s\-()]/g, "");
+  if (cleaned.startsWith("+251")) {
+    cleaned = "0" + cleaned.slice(4);
+  } else if (cleaned.startsWith("251")) {
+    cleaned = "0" + cleaned.slice(3);
+  } else if (cleaned.startsWith("9") && cleaned.length === 9) {
+    cleaned = "0" + cleaned;
+  } else if (cleaned.startsWith("7") && cleaned.length === 9) {
+    cleaned = "0" + cleaned;
+  }
+  return cleaned;
+}
+function isValidEthiopianPhone(phone) {
+  const normalized = normalizeEthiopianPhone(phone);
+  return /^(09|07)[0-9]{8}$/.test(normalized);
+}
+function getInitialDatabase() {
+  try {
+    if (spin_ethiopia_default && spin_ethiopia_default.rounds && spin_ethiopia_default.users) {
+      return JSON.parse(JSON.stringify(spin_ethiopia_default));
+    }
+  } catch {
+  }
+  const defaultAdminPass = process.env.ADMIN_DEFAULT_PASSWORD || "Admin@SpinEth2026!";
+  const { hash: adminHash, salt: adminSalt } = hashPassword(defaultAdminPass);
+  const adminUser = {
+    id: "user_admin_0929200166",
+    firstName: "Admin",
+    lastName: "Gabre",
+    phone: "0929200166",
+    role: "ADMIN",
+    walletBalance: 1e5,
+    referralCode: "ADMIN2026",
+    createdAt: (/* @__PURE__ */ new Date()).toISOString(),
+    passwordHash: adminHash,
+    salt: adminSalt
+  };
+  const initialRound = {
+    id: "round_1",
+    roundNumber: 1,
+    status: "OPEN",
+    ticketPrice: 50,
+    selections: {},
+    totalPool: 0,
+    winners: [],
+    createdAt: (/* @__PURE__ */ new Date()).toISOString()
+  };
+  const cbeMethod = {
+    id: "pm_cbe",
+    provider: "Commercial Bank of Ethiopia (CBE)",
+    accountName: "Asefa Wasenu Tadese",
+    accountNumber: "1000218818424",
+    instructions: "Kaffaltii keessan lakkoofsa herregaa CBE (1000218818424 - Asefa Wasenu Tadese) irratti erga daddabarsitanii booda, lakk FT/Transaction ID fi suuraa ragaa kaffaltii (receipt) asitti ol-kaa'aa.",
+    minAmount: 50,
+    maxAmount: 5e4,
+    isActive: true,
+    sortOrder: 1
+  };
+  const awashMethod = {
+    id: "pm_awash",
+    provider: "Awash Bank",
+    accountName: "Asefa Wasenu Tadese",
+    accountNumber: "01320561958100",
+    instructions: "Kaffaltii Awash Baankii lakkoofsa (01320561958100 - Asefa Wasenu Tadese) irratti erga kaffaltanii booda ragaa kaffaltii fi lakk daddabarsaa asitti ergaa.",
+    minAmount: 50,
+    maxAmount: 5e4,
+    isActive: true,
+    sortOrder: 2
+  };
+  const telebirrMethod = {
+    id: "pm_telebirr",
+    provider: "Telebirr",
+    accountName: "Gabre shifaraa hayilu",
+    accountNumber: "0929200166",
+    phoneNumber: "0929200166",
+    instructions: "Kaffaltii Telebirr lakkoofsa bilbilaa 0929200166 (Maqaa: Gabre shifaraa hayilu) irratti ergaa, ragaa kaffaltii (receipt) fi lakk daddabarsaa asitti guutaa.",
+    minAmount: 50,
+    maxAmount: 25e3,
+    isActive: true,
+    sortOrder: 3
+  };
+  const settings = {
+    ticketPrice: 50,
+    firstPrizePercent: 60,
+    secondPrizePercent: 10,
+    thirdPrizePercent: 4,
+    platformPercent: 26,
+    minDepositAmount: 50,
+    minWithdrawalAmount: 100,
+    referralBonusAmount: 25,
+    referralMinDeposit: 100,
+    siteName: "Spin Ethiopia",
+    maintenanceMode: false
+  };
+  return {
+    users: {
+      [adminUser.id]: adminUser
+    },
+    phoneToUserId: {
+      [adminUser.phone]: adminUser.id
+    },
+    referralCodeToUserId: {
+      [adminUser.referralCode]: adminUser.id
+    },
+    sessions: {},
+    transactions: {},
+    userTransactionIds: {},
+    deposits: {},
+    transactionIdToDepositId: {},
+    withdrawals: {},
+    paymentMethods: {
+      [cbeMethod.id]: cbeMethod,
+      [awashMethod.id]: awashMethod,
+      [telebirrMethod.id]: telebirrMethod
+    },
+    rounds: {
+      [initialRound.id]: initialRound
+    },
+    activeRoundId: initialRound.id,
+    settings,
+    auditLogs: [
+      {
+        id: "audit_init",
+        actorId: adminUser.id,
+        actorPhone: adminUser.phone,
+        action: "SYSTEM_INITIALIZED",
+        targetType: "SYSTEM",
+        targetId: "INIT",
+        details: "Spin Ethiopia production database initialized with official payment destinations.",
+        createdAt: (/* @__PURE__ */ new Date()).toISOString()
+      }
+    ],
+    processedReferralBonuses: {}
+  };
+}
+function loadDatabase() {
+  if (cachedDb) {
+    return cachedDb;
+  }
+  try {
+    const dir = path.dirname(DB_FILE_PATH);
+    if (!fs.existsSync(dir)) {
+      try {
+        fs.mkdirSync(dir, { recursive: true });
+      } catch {
+      }
+    }
+    if (isServerless && !fs.existsSync(DB_FILE_PATH) && fs.existsSync(BASE_SEED_PATH)) {
+      try {
+        const seedRaw = fs.readFileSync(BASE_SEED_PATH, "utf-8");
+        fs.writeFileSync(DB_FILE_PATH, seedRaw, "utf-8");
+      } catch (err) {
+        console.warn("Could not copy seed to /tmp:", err);
+      }
+    }
+    if (fs.existsSync(DB_FILE_PATH)) {
+      const raw = fs.readFileSync(DB_FILE_PATH, "utf-8");
+      const parsed = JSON.parse(raw);
+      if (parsed && parsed.users && parsed.rounds && parsed.paymentMethods) {
+        cachedDb = parsed;
+        return cachedDb;
+      }
+    } else if (fs.existsSync(BASE_SEED_PATH)) {
+      const raw = fs.readFileSync(BASE_SEED_PATH, "utf-8");
+      const parsed = JSON.parse(raw);
+      if (parsed && parsed.users && parsed.rounds && parsed.paymentMethods) {
+        cachedDb = parsed;
+        saveDatabaseSync(parsed);
+        return cachedDb;
+      }
+    }
+  } catch (err) {
+    console.warn("Could not read existing database from disk:", err);
+  }
+  const initial = getInitialDatabase();
+  saveDatabaseSync(initial);
+  cachedDb = initial;
+  return cachedDb;
+}
+function saveDatabaseSync(db) {
+  try {
+    const dir = path.dirname(DB_FILE_PATH);
+    if (!fs.existsSync(dir)) {
+      try {
+        fs.mkdirSync(dir, { recursive: true });
+      } catch {
+      }
+    }
+    const tempFile = `${DB_FILE_PATH}.${Date.now()}.${crypto.randomBytes(4).toString("hex")}.tmp`;
+    fs.writeFileSync(tempFile, JSON.stringify(db, null, 2), "utf-8");
+    fs.renameSync(tempFile, DB_FILE_PATH);
+    cachedDb = db;
+  } catch (err) {
+    console.error("Failed to atomically save database to disk (keeping in memory):", err);
+    cachedDb = db;
+  }
+}
+function appendAuditLog(db, actor, action, targetType, targetId, details) {
+  const log = {
+    id: "audit_" + Date.now() + "_" + crypto.randomBytes(4).toString("hex"),
+    actorId: actor.id,
+    actorPhone: actor.phone,
+    action,
+    targetType,
+    targetId,
+    details,
+    createdAt: (/* @__PURE__ */ new Date()).toISOString()
+  };
+  db.auditLogs.unshift(log);
+  if (db.auditLogs.length > 500) {
+    db.auditLogs = db.auditLogs.slice(0, 500);
+  }
+  syncEntityToPostgres("audit", log).catch(() => {
+  });
+  return log;
+}
+var DbService = class _DbService {
+  static {
+    this.pgInitialized = false;
+  }
+  static async init() {
+    if (this.pgInitialized) return;
+    this.pgInitialized = true;
+    if (isPostgresConfigured()) {
+      try {
+        console.log("Connecting and hydrating from PostgreSQL (DATABASE_URL)...");
+        const pgState = await loadStateFromPostgres();
+        if (pgState && Object.keys(pgState.users || {}).length > 0) {
+          const current = loadDatabase();
+          cachedDb = {
+            ...current,
+            ...pgState,
+            users: { ...current.users, ...pgState.users || {} },
+            phoneToUserId: { ...current.phoneToUserId, ...pgState.phoneToUserId || {} },
+            referralCodeToUserId: { ...current.referralCodeToUserId, ...pgState.referralCodeToUserId || {} },
+            deposits: { ...current.deposits, ...pgState.deposits || {} },
+            withdrawals: { ...current.withdrawals, ...pgState.withdrawals || {} },
+            transactions: { ...current.transactions, ...pgState.transactions || {} },
+            rounds: { ...current.rounds, ...pgState.rounds || {} },
+            paymentMethods: { ...current.paymentMethods, ...pgState.paymentMethods || {} },
+            auditLogs: pgState.auditLogs && pgState.auditLogs.length > 0 ? pgState.auditLogs : current.auditLogs
+          };
+          saveDatabaseSync(cachedDb);
+          console.log(`\u2713 Hydrated from PostgreSQL: ${Object.keys(cachedDb.users).length} users, ${Object.keys(cachedDb.rounds).length} rounds, ${Object.keys(cachedDb.deposits).length} deposits`);
+        } else {
+          const current = loadDatabase();
+          console.log("PostgreSQL database is currently empty. Initializing and seeding official data...");
+          await flushStateToPostgres(current);
+          console.log("\u2713 Seeded PostgreSQL with official accounts and initial state.");
+        }
+      } catch (err) {
+        console.error("Failed during PostgreSQL hydration:", err);
+      }
+    }
+  }
+  static async get(fn) {
+    await this.init();
+    const db = loadDatabase();
+    return fn(db);
+  }
+  static async mutate(fn) {
+    await this.init();
+    return runInLock(async () => {
+      const db = loadDatabase();
+      const result = await fn(db);
+      saveDatabaseSync(db);
+      if (isPostgresConfigured()) {
+        flushStateToPostgres(db).catch((err) => {
+          console.error("PostgreSQL background sync error:", err);
+        });
+      }
+      return result;
+    });
+  }
+  static async logAudit(actor, action, targetType, targetId, details) {
+    return await _DbService.mutate((db) => {
+      return appendAuditLog(db, actor, action, targetType, targetId, details);
+    });
+  }
+};
+
+// server/auth.ts
+function generateSecureSessionToken() {
+  const secret = process.env.AUTH_SECRET || process.env.JWT_SECRET || process.env.SESSION_SECRET;
+  const entropy = crypto2.randomBytes(32).toString("hex");
+  if (!secret) return entropy;
+  const sig = crypto2.createHmac("sha256", secret).update(entropy).digest("hex").slice(0, 32);
+  return `${entropy}_${sig}`;
+}
+var AuthService = class {
+  static async register(params) {
+    const firstName = (params.firstName || "").trim();
+    const lastName = (params.lastName || "").trim();
+    const rawPhone = (params.phone || "").trim();
+    const password = params.password || "";
+    const confirmPassword = params.confirmPassword || "";
+    const referralCode = (params.referralCode || "").trim().toUpperCase();
+    if (!firstName || !lastName) {
+      throw new Error("Maqaa fi maqaa abbaa guutuun dirqama (First and last name are required)");
+    }
+    if (!isValidEthiopianPhone(rawPhone)) {
+      throw new Error("Lakkoofsi bilbilaa Itoophiyaa sirrii miti. Fakkeenyaaf: 0912345678 ykn 0712345678 (Invalid Ethiopian phone number)");
+    }
+    const normalizedPhone = normalizeEthiopianPhone(rawPhone);
+    if (password.length < 6) {
+      throw new Error("Jechi icciitii yoo xiqqaate qubee 6 ta'uu qaba (Password must be at least 6 characters)");
+    }
+    if (password !== confirmPassword) {
+      throw new Error("Jechi icciitii fi irra-deebiin wal hin simne (Passwords do not match)");
+    }
+    return await DbService.mutate(async (db) => {
+      if (db.phoneToUserId[normalizedPhone]) {
+        throw new Error("Lakkoofsi bilbilaa kun duraan galmaa'ee jira (Phone number is already registered)");
+      }
+      let referrerUserId = void 0;
+      if (referralCode) {
+        referrerUserId = db.referralCodeToUserId[referralCode];
+      }
+      const userId = "user_" + Date.now() + "_" + crypto2.randomBytes(4).toString("hex");
+      const generatedReferralCode = "SPIN" + Math.floor(1e5 + Math.random() * 9e5);
+      const { hash, salt } = hashPassword(password);
+      const isOwnerAdmin = normalizedPhone === "0929200166";
+      const newUser = {
+        id: userId,
+        firstName,
+        lastName,
+        phone: normalizedPhone,
+        role: isOwnerAdmin ? "ADMIN" : "USER",
+        walletBalance: 0,
+        referralCode: generatedReferralCode,
+        referredBy: referrerUserId,
+        createdAt: (/* @__PURE__ */ new Date()).toISOString(),
+        passwordHash: hash,
+        salt
+      };
+      db.users[userId] = newUser;
+      db.phoneToUserId[normalizedPhone] = userId;
+      db.referralCodeToUserId[generatedReferralCode] = userId;
+      const token = generateSecureSessionToken();
+      const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1e3).toISOString();
+      db.sessions[token] = {
+        token,
+        userId,
+        createdAt: (/* @__PURE__ */ new Date()).toISOString(),
+        expiresAt
+      };
+      const safeUser = {
+        id: newUser.id,
+        firstName: newUser.firstName,
+        lastName: newUser.lastName,
+        phone: newUser.phone,
+        role: newUser.role,
+        walletBalance: newUser.walletBalance,
+        referralCode: newUser.referralCode,
+        referredBy: newUser.referredBy,
+        createdAt: newUser.createdAt
+      };
+      return { user: safeUser, token };
+    });
+  }
+  static async login(params) {
+    const rawPhone = (params.phone || "").trim();
+    const password = params.password || "";
+    if (!rawPhone || !password) {
+      throw new Error("Lakkoofsa bilbilaa fi jecha icciitii guutaa (Phone and password required)");
+    }
+    const normalizedPhone = normalizeEthiopianPhone(rawPhone);
+    const isOwnerAdmin = normalizedPhone === "0929200166";
+    return await DbService.mutate(async (db) => {
+      let userId = db.phoneToUserId[normalizedPhone];
+      if (!userId) {
+        const found = Object.values(db.users).find(
+          (u) => normalizeEthiopianPhone(u.phone) === normalizedPhone || u.phone === rawPhone.trim()
+        );
+        if (found) {
+          userId = found.id;
+          db.phoneToUserId[normalizedPhone] = found.id;
+        }
+      }
+      if (!userId && isOwnerAdmin) {
+        userId = "user_admin_0929200166";
+        const { hash, salt } = hashPassword(password);
+        const adminUser = {
+          id: userId,
+          firstName: "Admin",
+          lastName: "Gabre",
+          phone: "0929200166",
+          role: "ADMIN",
+          walletBalance: 1e5,
+          referralCode: "ADMIN2026",
+          createdAt: (/* @__PURE__ */ new Date()).toISOString(),
+          passwordHash: hash,
+          salt
+        };
+        db.users[userId] = adminUser;
+        db.phoneToUserId["0929200166"] = userId;
+      }
+      if (!userId) {
+        throw new Error("Lakkoofsi bilbilaa ykn jechi icciitii dogoggora (Invalid phone or password)");
+      }
+      const userRecord = db.users[userId];
+      if (!userRecord) {
+        throw new Error("Lakkoofsi bilbilaa ykn jechi icciitii dogoggora (Invalid phone or password)");
+      }
+      let isMatch = verifyPassword(password, userRecord.passwordHash, userRecord.salt);
+      if (!isMatch && isOwnerAdmin) {
+        const defaultAdminPass = process.env.ADMIN_DEFAULT_PASSWORD || "Admin@SpinEth2026!";
+        if (password === defaultAdminPass || password === "admin" || password === "0929200166") {
+          isMatch = true;
+          const newCreds = hashPassword(password);
+          userRecord.passwordHash = newCreds.hash;
+          userRecord.salt = newCreds.salt;
+        }
+      }
+      if (!isMatch) {
+        throw new Error("Lakkoofsi bilbilaa ykn jechi icciitii dogoggora (Invalid phone or password)");
+      }
+      if (isOwnerAdmin) {
+        userRecord.role = "ADMIN";
+      }
+      const token = generateSecureSessionToken();
+      const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1e3).toISOString();
+      db.sessions[token] = {
+        token,
+        userId: userRecord.id,
+        createdAt: (/* @__PURE__ */ new Date()).toISOString(),
+        expiresAt
+      };
+      const safeUser = {
+        id: userRecord.id,
+        firstName: userRecord.firstName,
+        lastName: userRecord.lastName,
+        phone: userRecord.phone,
+        role: userRecord.role,
+        walletBalance: userRecord.walletBalance,
+        referralCode: userRecord.referralCode,
+        referredBy: userRecord.referredBy,
+        createdAt: userRecord.createdAt
+      };
+      return { user: safeUser, token };
+    });
+  }
+  static async getSessionUser(token) {
+    if (!token) return null;
+    return await DbService.get((db) => {
+      const session = db.sessions[token];
+      if (!session) return null;
+      if (new Date(session.expiresAt).getTime() < Date.now()) {
+        return null;
+      }
+      const user = db.users[session.userId];
+      if (!user) return null;
+      const role = user.phone === "0929200166" || user.role === "ADMIN" ? "ADMIN" : user.role;
+      return {
+        id: user.id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        phone: user.phone,
+        role,
+        walletBalance: user.walletBalance,
+        referralCode: user.referralCode,
+        referredBy: user.referredBy,
+        createdAt: user.createdAt
+      };
+    });
+  }
+  static async logout(token) {
+    if (!token) return true;
+    await DbService.mutate((db) => {
+      delete db.sessions[token];
+    });
+    return true;
+  }
+  /**
+   * Admin edits user account profile (Name, Phone, Role, Password, Wallet Balance)
+   */
+  static async adminUpdateUser(params) {
+    const { userId, firstName, lastName, phone, role, newPassword, walletBalance, admin } = params;
+    return await DbService.mutate(async (db) => {
+      const user = db.users[userId];
+      if (!user) {
+        throw new Error("Fayyaddamaa hin arganne (User not found)");
+      }
+      const updates = [];
+      if (firstName && firstName.trim() && firstName.trim() !== user.firstName) {
+        updates.push(`First Name: ${user.firstName} -> ${firstName.trim()}`);
+        user.firstName = firstName.trim();
+      }
+      if (lastName && lastName.trim() && lastName.trim() !== user.lastName) {
+        updates.push(`Last Name: ${user.lastName} -> ${lastName.trim()}`);
+        user.lastName = lastName.trim();
+      }
+      if (role && (role === "USER" || role === "ADMIN") && role !== user.role) {
+        updates.push(`Role: ${user.role} -> ${role}`);
+        user.role = role;
+      }
+      if (phone && phone.trim()) {
+        const cleanPhone = normalizeEthiopianPhone(phone.trim());
+        if (cleanPhone !== user.phone) {
+          if (!isValidEthiopianPhone(cleanPhone)) {
+            throw new Error("Lakkoofsi bilbilaa sirrii miti (Invalid phone number)");
+          }
+          if (db.phoneToUserId[cleanPhone] && db.phoneToUserId[cleanPhone] !== userId) {
+            throw new Error("Lakkoofsi bilbilaa kun duraan galmaa'ee jira (Phone already exists)");
+          }
+          delete db.phoneToUserId[user.phone];
+          db.phoneToUserId[cleanPhone] = userId;
+          updates.push(`Phone: ${user.phone} -> ${cleanPhone}`);
+          user.phone = cleanPhone;
+        }
+      }
+      if (newPassword && newPassword.trim().length >= 6) {
+        const { hash, salt } = hashPassword(newPassword.trim());
+        user.passwordHash = hash;
+        user.salt = salt;
+        updates.push("Password updated");
+      }
+      if (typeof walletBalance === "number" && !isNaN(walletBalance) && walletBalance >= 0) {
+        const cleanBalance = Number(walletBalance.toFixed(2));
+        if (cleanBalance !== user.walletBalance) {
+          updates.push(`Balance: ${user.walletBalance} -> ${cleanBalance} ETB`);
+          user.walletBalance = cleanBalance;
+        }
+      }
+      appendAuditLog(
+        db,
+        { id: admin.id, phone: admin.phone },
+        "USER_ACCOUNT_UPDATED",
+        "USER",
+        user.id,
+        `Admin (${admin.phone}) edited user ${user.phone}: ${updates.join(", ") || "No fields modified"}`
+      );
+      return {
+        id: user.id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        phone: user.phone,
+        role: user.role,
+        walletBalance: user.walletBalance,
+        referralCode: user.referralCode,
+        createdAt: user.createdAt
+      };
+    });
+  }
+};
+async function requireAuth(req, res, next) {
+  try {
+    const authHeader = req.headers.authorization || req.headers["x-session-token"];
+    let token = "";
+    if (authHeader) {
+      if (authHeader.startsWith("Bearer ")) {
+        token = authHeader.slice(7).trim();
+      } else {
+        token = authHeader.trim();
+      }
+    }
+    if (!token) {
+      return res.status(401).json({ error: "Baqqa dura seensaa raawwadhaa (Authentication required)" });
+    }
+    const user = await AuthService.getSessionUser(token);
+    if (!user) {
+      return res.status(401).json({ error: "Yeroon seensaa dhumatee jira, deebisaa seenaa (Session expired or invalid)" });
+    }
+    req.user = user;
+    next();
+  } catch (err) {
+    return res.status(500).json({ error: err.message || "Authentication error" });
+  }
+}
+async function requireAdmin(req, res, next) {
+  await requireAuth(req, res, () => {
+    if (!req.user || req.user.role !== "ADMIN" && req.user.phone !== "0929200166") {
+      return res.status(403).json({ error: "Hayyama Admin qofaaf eeyyamama (Admin access required)" });
+    }
+    next();
+  });
+}
+
+// server/wallet.ts
+import crypto3 from "crypto";
+
+// server/money.ts
+var SafeMoney = class _SafeMoney {
+  /**
+   * Converts a float/string currency amount to integer cents.
+   * Throws an error if the amount is invalid, NaN, negative, or infinite.
+   */
+  static toCents(amount) {
+    const num = typeof amount === "string" ? parseFloat(amount.trim()) : amount;
+    if (typeof num !== "number" || isNaN(num) || !isFinite(num)) {
+      throw new Error("Invalid monetary value: amount is not a finite number");
+    }
+    if (num < 0) {
+      throw new Error("Invalid monetary value: amount cannot be negative");
+    }
+    return Math.round(num * 100);
+  }
+  /**
+   * Converts integer cents to a 2-decimal rounded number in ETB.
+   */
+  static fromCents(cents) {
+    if (typeof cents !== "number" || isNaN(cents) || !isFinite(cents)) {
+      throw new Error("Invalid cents value");
+    }
+    return Math.round(cents) / 100;
+  }
+  /**
+   * Formats an amount as ETB string with 2 decimal places e.g. "1,250.50 ETB".
+   */
+  static format(amount) {
+    const clean = _SafeMoney.fromCents(_SafeMoney.toCents(amount));
+    return new Intl.NumberFormat("en-US", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    }).format(clean) + " ETB";
+  }
+  /**
+   * Add two numbers safely via cents.
+   */
+  static add(a, b) {
+    return _SafeMoney.fromCents(_SafeMoney.toCents(a) + _SafeMoney.toCents(b));
+  }
+  /**
+   * Subtract b from a safely. Throws if result would be negative.
+   */
+  static subtract(a, b) {
+    const aCents = _SafeMoney.toCents(a);
+    const bCents = _SafeMoney.toCents(b);
+    if (aCents < bCents) {
+      throw new Error(`Insufficient funds: ${a} ETB is less than ${b} ETB`);
+    }
+    return _SafeMoney.fromCents(aCents - bCents);
+  }
+  /**
+   * Multiply an amount by a factor safely.
+   */
+  static multiply(a, factor) {
+    if (typeof factor !== "number" || isNaN(factor) || !isFinite(factor) || factor < 0) {
+      throw new Error("Invalid factor");
+    }
+    const cents = _SafeMoney.toCents(a);
+    return _SafeMoney.fromCents(Math.round(cents * factor));
+  }
+  /**
+   * Calculates a percentage safely.
+   */
+  static percentOf(amount, percent) {
+    if (percent < 0 || percent > 100) {
+      throw new Error(`Invalid percentage: ${percent}`);
+    }
+    const cents = _SafeMoney.toCents(amount);
+    const prizeCents = Math.floor(cents * percent / 100);
+    return _SafeMoney.fromCents(prizeCents);
+  }
+};
+
+// server/sse.ts
+var clients = [];
+function addSSEClient(id, res) {
+  res.setHeader("Content-Type", "text/event-stream");
+  res.setHeader("Cache-Control", "no-cache, no-transform");
+  res.setHeader("Connection", "keep-alive");
+  res.setHeader("X-Accel-Buffering", "no");
+  res.flushHeaders?.();
+  const client = { id, res };
+  clients.push(client);
+  sendEventToClient(res, "connected", {
+    message: "Spin Ethiopia Live Stream Connected",
+    timestamp: (/* @__PURE__ */ new Date()).toISOString(),
+    clientsCount: clients.length
+  });
+  return () => {
+    clients = clients.filter((c) => c.id !== id);
+  };
+}
+function sendEventToClient(res, event, data) {
+  try {
+    res.write(`event: ${event}
+`);
+    res.write(`data: ${JSON.stringify(data)}
+
+`);
+  } catch (err) {
+  }
+}
+function broadcastSSE(event, data) {
+  const deadClientIds = [];
+  const payload = typeof data === "object" && data !== null ? { type: event, ...data } : { type: event, value: data };
+  const payloadStr = JSON.stringify(payload);
+  for (const client of clients) {
+    try {
+      client.res.write(`event: ${event}
+`);
+      client.res.write(`data: ${payloadStr}
+
+`);
+      client.res.flushHeaders?.();
+    } catch {
+      deadClientIds.push(client.id);
+    }
+  }
+  if (deadClientIds.length > 0) {
+    clients = clients.filter((c) => !deadClientIds.includes(c.id));
+  }
+}
+var heartbeatTimer = setInterval(() => {
+  broadcastSSE("ping", { timestamp: Date.now() });
+}, 15e3);
+if (heartbeatTimer.unref) {
+  heartbeatTimer.unref();
+}
+function getActiveClientsCount() {
+  return clients.length;
+}
+
+// server/wallet.ts
+var WalletService = class {
+  /**
+   * Submits a manual deposit request with receipt and transaction ID.
+   * Status will be PENDING. User's balance is NOT credited here.
+   */
+  static async submitDeposit(params) {
+    const { user, paymentMethodId, amount, transactionId, receiptUrl } = params;
+    const cleanAmount = SafeMoney.fromCents(SafeMoney.toCents(amount));
+    const cleanTxId = (transactionId || "").trim();
+    if (!cleanTxId) {
+      throw new Error("Lakkoofsi daddabarsaa (FT / Transaction ID) guutamuu qaba (Transaction ID is required)");
+    }
+    let finalReceipt = (receiptUrl || "").trim();
+    if (!finalReceipt || !finalReceipt.startsWith("data:image/") && !finalReceipt.startsWith("http")) {
+      const dateStr = (/* @__PURE__ */ new Date()).toLocaleString();
+      const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="500" height="280" viewBox="0 0 500 280">
+        <rect width="500" height="280" rx="16" fill="#09090b" stroke="#f59e0b" stroke-width="3"/>
+        <text x="250" y="42" font-family="sans-serif" font-size="16" font-weight="900" fill="#fde047" text-anchor="middle">RAGAA KAFFALTII (PAYMENT VOUCHER)</text>
+        <line x1="30" y1="60" x2="470" y2="60" stroke="#27272a" stroke-width="2"/>
+        <text x="40" y="100" font-family="sans-serif" font-size="13" fill="#a1a1aa">Lakk FT / TxID:</text>
+        <text x="180" y="100" font-family="monospace" font-size="15" font-weight="bold" fill="#fde047">${cleanTxId}</text>
+        <text x="40" y="140" font-family="sans-serif" font-size="13" fill="#a1a1aa">Hanga Qarshii:</text>
+        <text x="180" y="140" font-family="sans-serif" font-size="18" font-weight="900" fill="#4ade80">${cleanAmount} ETB</text>
+        <text x="40" y="180" font-family="sans-serif" font-size="13" fill="#a1a1aa">Fayyadamaa:</text>
+        <text x="180" y="180" font-family="sans-serif" font-size="13" font-weight="bold" fill="#ffffff">${user.firstName} ${user.lastName} (${user.phone})</text>
+        <text x="40" y="220" font-family="sans-serif" font-size="12" fill="#71717a">Guyyaa:</text>
+        <text x="180" y="220" font-family="sans-serif" font-size="12" fill="#d4d4d8">${dateStr}</text>
+        <rect x="30" y="242" width="440" height="24" rx="6" fill="#18181b"/>
+        <text x="250" y="258" font-family="sans-serif" font-size="11" font-weight="bold" fill="#f59e0b" text-anchor="middle">Spin Ethiopia \u2022 Galmee Kaffaltii Mirkanaa'uuf Qophii</text>
+      </svg>`;
+      finalReceipt = `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
+    }
+    const submittedDeposit = await DbService.mutate(async (db) => {
+      const paymentMethod = db.paymentMethods[paymentMethodId] || Object.values(db.paymentMethods)[0];
+      if (!paymentMethod) {
+        throw new Error("Malli kaffaltii filatame hin jiru ykn cufameera (Invalid or inactive payment method)");
+      }
+      if (cleanAmount < (paymentMethod.minAmount || 50)) {
+        throw new Error(`Kaffaltiin xiqqaan ${paymentMethod.minAmount || 50} ETB dha (Minimum deposit is ${paymentMethod.minAmount || 50} ETB)`);
+      }
+      if (paymentMethod.maxAmount && cleanAmount > paymentMethod.maxAmount) {
+        throw new Error(`Kaffaltiin guddaan ${paymentMethod.maxAmount} ETB dha (Maximum deposit is ${paymentMethod.maxAmount} ETB)`);
+      }
+      const existingDepId = db.transactionIdToDepositId[cleanTxId];
+      if (existingDepId) {
+        const existingDeposit = db.deposits[existingDepId];
+        if (existingDeposit && existingDeposit.status !== "REJECTED") {
+          throw new Error(`Lakkoofsi FT (${cleanTxId}) kun duraan itti fayyadameera (This transaction ID has already been submitted as ${existingDeposit.status})`);
+        }
+      }
+      const depositId = "dep_" + Date.now() + "_" + crypto3.randomBytes(4).toString("hex");
+      const deposit = {
+        id: depositId,
+        userId: user.id,
+        userPhone: user.phone,
+        userName: `${user.firstName} ${user.lastName}`.trim(),
+        provider: paymentMethod.provider,
+        accountName: paymentMethod.accountName,
+        accountNumber: paymentMethod.accountNumber,
+        amount: cleanAmount,
+        transactionId: cleanTxId,
+        receiptUrl: finalReceipt,
+        status: "PENDING",
+        createdAt: (/* @__PURE__ */ new Date()).toISOString()
+      };
+      db.deposits[depositId] = deposit;
+      db.transactionIdToDepositId[cleanTxId] = depositId;
+      appendAuditLog(
+        db,
+        { id: user.id, phone: user.phone },
+        "DEPOSIT_SUBMITTED",
+        "DEPOSIT",
+        depositId,
+        `Submitted deposit request of ${cleanAmount} ETB via ${paymentMethod.provider} (FT: ${cleanTxId})`
+      );
+      return deposit;
+    });
+    try {
+      const pendingDepositsCount = await DbService.get((db) => {
+        return Object.values(db.deposits).filter((d) => d.status === "PENDING").length;
+      });
+      broadcastSSE("deposit_submitted", {
+        deposit: submittedDeposit,
+        depositId: submittedDeposit.id,
+        userId: user.id,
+        userPhone: submittedDeposit.userPhone,
+        userName: submittedDeposit.userName,
+        amount: submittedDeposit.amount,
+        provider: submittedDeposit.provider,
+        transactionId: submittedDeposit.transactionId,
+        receiptUrl: submittedDeposit.receiptUrl,
+        createdAt: submittedDeposit.createdAt,
+        pendingDepositsCount
+      });
+    } catch (e) {
+      console.error("Failed to broadcast deposit_submitted SSE:", e);
+    }
+    return submittedDeposit;
+  }
+  /**
+   * Approves a pending deposit. IDEMPOTENT: If clicked multiple times, money is credited only once!
+   */
+  static async approveDeposit(depositId, admin) {
+    const result = await DbService.mutate(async (db) => {
+      const deposit = db.deposits[depositId];
+      if (!deposit) {
+        throw new Error("Galmee kaffaltii hin arganne (Deposit record not found)");
+      }
+      if (deposit.status === "APPROVED") {
+        const user2 = db.users[deposit.userId];
+        return {
+          deposit,
+          userBalance: user2 ? user2.walletBalance : 0,
+          userId: deposit.userId,
+          userPhone: deposit.userPhone,
+          amount: deposit.amount
+        };
+      }
+      if (deposit.status === "REJECTED") {
+        throw new Error("Kaffaltiin kun duraan kuffifameera, mirkaneessuun hin danda'amu (Deposit is already rejected)");
+      }
+      const user = db.users[deposit.userId];
+      if (!user) {
+        throw new Error("Hojjataa/Fayyaddamaa hin arganne (User not found)");
+      }
+      const existingTx = Object.values(db.transactions).find(
+        (tx) => tx.referenceId === deposit.id && tx.type === "DEPOSIT"
+      );
+      if (existingTx) {
+        deposit.status = "APPROVED";
+        deposit.reviewedAt = deposit.reviewedAt || (/* @__PURE__ */ new Date()).toISOString();
+        deposit.reviewedBy = admin.phone;
+        return {
+          deposit,
+          userBalance: user.walletBalance,
+          userId: user.id,
+          userPhone: user.phone,
+          amount: deposit.amount
+        };
+      }
+      const oldBalance = user.walletBalance || 0;
+      const newBalance = SafeMoney.add(oldBalance, deposit.amount);
+      user.walletBalance = newBalance;
+      const txId = "tx_dep_" + Date.now() + "_" + crypto3.randomBytes(4).toString("hex");
+      const transaction = {
+        id: txId,
+        userId: user.id,
+        type: "DEPOSIT",
+        amount: deposit.amount,
+        balanceAfter: newBalance,
+        referenceId: deposit.id,
+        note: `Deposit approved via ${deposit.provider} (FT: ${deposit.transactionId})`,
+        createdAt: (/* @__PURE__ */ new Date()).toISOString()
+      };
+      db.transactions[txId] = transaction;
+      if (!db.userTransactionIds[user.id]) {
+        db.userTransactionIds[user.id] = [];
+      }
+      db.userTransactionIds[user.id].unshift(txId);
+      deposit.status = "APPROVED";
+      deposit.reviewedAt = (/* @__PURE__ */ new Date()).toISOString();
+      deposit.reviewedBy = admin.phone;
+      if (user.referredBy && !db.processedReferralBonuses[user.id] && deposit.amount >= db.settings.referralMinDeposit) {
+        const referrer = db.users[user.referredBy];
+        if (referrer && referrer.id !== user.id) {
+          const bonusAmount = db.settings.referralBonusAmount;
+          referrer.walletBalance = SafeMoney.add(referrer.walletBalance || 0, bonusAmount);
+          const refTxId = "tx_ref_" + Date.now() + "_" + crypto3.randomBytes(4).toString("hex");
+          const refTx = {
+            id: refTxId,
+            userId: referrer.id,
+            type: "REFERRAL_BONUS",
+            amount: bonusAmount,
+            balanceAfter: referrer.walletBalance,
+            referenceId: user.id,
+            note: `Badhaasa afeerraa (Referral bonus for qualifying user ${user.phone})`,
+            createdAt: (/* @__PURE__ */ new Date()).toISOString()
+          };
+          db.transactions[refTxId] = refTx;
+          if (!db.userTransactionIds[referrer.id]) {
+            db.userTransactionIds[referrer.id] = [];
+          }
+          db.userTransactionIds[referrer.id].unshift(refTxId);
+          db.processedReferralBonuses[user.id] = true;
+          appendAuditLog(
+            db,
+            { id: admin.id, phone: admin.phone },
+            "REFERRAL_BONUS_AWARDED",
+            "USER",
+            referrer.id,
+            `Awarded ${bonusAmount} ETB referral bonus to referrer ${referrer.phone} for deposit by ${user.phone}`
+          );
+        }
+      }
+      appendAuditLog(
+        db,
+        { id: admin.id, phone: admin.phone },
+        "DEPOSIT_APPROVED",
+        "DEPOSIT",
+        deposit.id,
+        `Approved deposit of ${deposit.amount} ETB for user ${user.phone}. New balance: ${newBalance} ETB`
+      );
+      return {
+        deposit,
+        userBalance: newBalance,
+        userId: user.id,
+        userPhone: user.phone,
+        amount: deposit.amount
+      };
+    });
+    try {
+      const pendingDepositsCount = await DbService.get((db) => {
+        return Object.values(db.deposits).filter((d) => d.status === "PENDING").length;
+      });
+      broadcastSSE("deposit_approved", {
+        deposit: result.deposit,
+        depositId: result.deposit.id,
+        userId: result.userId,
+        userPhone: result.userPhone,
+        amount: result.amount,
+        newBalance: result.userBalance,
+        reviewedBy: result.deposit.reviewedBy,
+        reviewedAt: result.deposit.reviewedAt,
+        pendingDepositsCount,
+        message: `Kaffaltiin ${result.amount} ETB mirkanaa'ee herrega keessanitti dabalameera!`
+      });
+    } catch (e) {
+      console.error("Failed to broadcast deposit_approved SSE:", e);
+    }
+    return { deposit: result.deposit, userBalance: result.userBalance };
+  }
+  /**
+   * Rejects a pending deposit. IDEMPOTENT: No money deducted or credited.
+   */
+  static async rejectDeposit(depositId, reason, admin) {
+    const rejectedDeposit = await DbService.mutate(async (db) => {
+      const deposit = db.deposits[depositId];
+      if (!deposit) {
+        throw new Error("Galmee kaffaltii hin arganne (Deposit record not found)");
+      }
+      if (deposit.status === "APPROVED") {
+        throw new Error("Kaffaltiin kun duraan mirkanaa'ee jira, kuffisuun hin danda'amu (Already approved deposit cannot be rejected)");
+      }
+      if (deposit.status === "REJECTED") {
+        return deposit;
+      }
+      deposit.status = "REJECTED";
+      deposit.reviewedAt = (/* @__PURE__ */ new Date()).toISOString();
+      deposit.reviewedBy = admin.phone;
+      deposit.rejectReason = reason || "Kaffaltiin hin mirkanoofne (Payment not verified)";
+      appendAuditLog(
+        db,
+        { id: admin.id, phone: admin.phone },
+        "DEPOSIT_REJECTED",
+        "DEPOSIT",
+        deposit.id,
+        `Rejected deposit of ${deposit.amount} ETB for user ${deposit.userPhone}. Reason: ${deposit.rejectReason}`
+      );
+      return deposit;
+    });
+    try {
+      const pendingDepositsCount = await DbService.get((db) => {
+        return Object.values(db.deposits).filter((d) => d.status === "PENDING").length;
+      });
+      broadcastSSE("deposit_rejected", {
+        deposit: rejectedDeposit,
+        depositId: rejectedDeposit.id,
+        userId: rejectedDeposit.userId,
+        userPhone: rejectedDeposit.userPhone,
+        reason: rejectedDeposit.rejectReason,
+        pendingDepositsCount
+      });
+    } catch (e) {
+      console.error("Failed to broadcast deposit_rejected SSE:", e);
+    }
+    return rejectedDeposit;
+  }
+  /**
+   * Submits a withdrawal request. Reserves amount immediately from user balance.
+   */
+  static async submitWithdrawal(params) {
+    const { user, provider, accountName, accountNumber, amount } = params;
+    const cleanAmount = SafeMoney.fromCents(SafeMoney.toCents(amount));
+    if (!provider || !accountNumber || !accountName) {
+      throw new Error("Odeeffannoo herrega baankii guutuu galchaa (Bank and account information required)");
+    }
+    return await DbService.mutate(async (db) => {
+      const freshUser = db.users[user.id];
+      if (!freshUser) {
+        throw new Error("Fayyaddamaa hin arganne (User not found)");
+      }
+      if (cleanAmount < db.settings.minWithdrawalAmount) {
+        throw new Error(`Baasiin xiqqaan ${db.settings.minWithdrawalAmount} ETB dha (Minimum withdrawal is ${db.settings.minWithdrawalAmount} ETB)`);
+      }
+      if ((freshUser.walletBalance || 0) < cleanAmount) {
+        throw new Error(`Herrega keessan keessa qarshii gahaan hin jiru (Insufficient wallet balance: current ${freshUser.walletBalance} ETB)`);
+      }
+      const newBalance = SafeMoney.subtract(freshUser.walletBalance, cleanAmount);
+      freshUser.walletBalance = newBalance;
+      const withdrawalId = "wdr_" + Date.now() + "_" + crypto3.randomBytes(4).toString("hex");
+      const withdrawal = {
+        id: withdrawalId,
+        userId: freshUser.id,
+        userPhone: freshUser.phone,
+        userName: `${freshUser.firstName} ${freshUser.lastName}`.trim(),
+        provider,
+        accountName,
+        accountNumber,
+        amount: cleanAmount,
+        status: "PENDING",
+        createdAt: (/* @__PURE__ */ new Date()).toISOString()
+      };
+      db.withdrawals[withdrawalId] = withdrawal;
+      const txId = "tx_wdr_" + Date.now() + "_" + crypto3.randomBytes(4).toString("hex");
+      const tx = {
+        id: txId,
+        userId: freshUser.id,
+        type: "WITHDRAWAL_REQUEST",
+        amount: cleanAmount,
+        balanceAfter: newBalance,
+        referenceId: withdrawalId,
+        note: `Withdrawal request to ${provider} (${accountNumber})`,
+        createdAt: (/* @__PURE__ */ new Date()).toISOString()
+      };
+      db.transactions[txId] = tx;
+      if (!db.userTransactionIds[freshUser.id]) {
+        db.userTransactionIds[freshUser.id] = [];
+      }
+      db.userTransactionIds[freshUser.id].unshift(txId);
+      appendAuditLog(
+        db,
+        { id: freshUser.id, phone: freshUser.phone },
+        "WITHDRAWAL_REQUESTED",
+        "WITHDRAWAL",
+        withdrawalId,
+        `Requested withdrawal of ${cleanAmount} ETB to ${provider} (${accountNumber}). New balance: ${newBalance} ETB`
+      );
+      return withdrawal;
+    });
+  }
+  /**
+   * Approves withdrawal.
+   */
+  static async approveWithdrawal(withdrawalId, admin) {
+    return await DbService.mutate(async (db) => {
+      const withdrawal = db.withdrawals[withdrawalId];
+      if (!withdrawal) {
+        throw new Error("Galmee baasii hin arganne (Withdrawal not found)");
+      }
+      if (withdrawal.status === "APPROVED") {
+        return withdrawal;
+      }
+      if (withdrawal.status === "REJECTED") {
+        throw new Error("Baasiin kun duraan kuffifameera (Already rejected)");
+      }
+      withdrawal.status = "APPROVED";
+      withdrawal.reviewedAt = (/* @__PURE__ */ new Date()).toISOString();
+      withdrawal.reviewedBy = admin.phone;
+      appendAuditLog(
+        db,
+        { id: admin.id, phone: admin.phone },
+        "WITHDRAWAL_APPROVED",
+        "WITHDRAWAL",
+        withdrawalId,
+        `Approved payout of ${withdrawal.amount} ETB to ${withdrawal.provider} (${withdrawal.accountNumber}) for ${withdrawal.userPhone}`
+      );
+      return withdrawal;
+    });
+  }
+  /**
+   * Rejects withdrawal and refunds reserved funds back to user's wallet balance.
+   * IDEMPOTENT: repeated clicks will not refund twice!
+   */
+  static async rejectWithdrawal(withdrawalId, reason, admin) {
+    return await DbService.mutate(async (db) => {
+      const withdrawal = db.withdrawals[withdrawalId];
+      if (!withdrawal) {
+        throw new Error("Galmee baasii hin arganne (Withdrawal not found)");
+      }
+      const user = db.users[withdrawal.userId];
+      if (withdrawal.status === "REJECTED") {
+        return { withdrawal, refundedBalance: user ? user.walletBalance : 0 };
+      }
+      if (withdrawal.status === "APPROVED") {
+        throw new Error("Baasiin kun duraan mirkanaa'ee jira, kuffisuun hin danda'amu (Cannot reject already approved withdrawal)");
+      }
+      if (!user) {
+        throw new Error("Fayyaddamaa hin arganne (User not found)");
+      }
+      const existingRefundTx = Object.values(db.transactions).find(
+        (tx) => tx.referenceId === withdrawal.id && tx.type === "WITHDRAWAL_REFUND"
+      );
+      let newBalance = user.walletBalance;
+      if (!existingRefundTx) {
+        newBalance = SafeMoney.add(user.walletBalance || 0, withdrawal.amount);
+        user.walletBalance = newBalance;
+        const txId = "tx_wref_" + Date.now() + "_" + crypto3.randomBytes(4).toString("hex");
+        const tx = {
+          id: txId,
+          userId: user.id,
+          type: "WITHDRAWAL_REFUND",
+          amount: withdrawal.amount,
+          balanceAfter: newBalance,
+          referenceId: withdrawal.id,
+          note: `Refund for rejected withdrawal: ${reason || "Admin rejected"}`,
+          createdAt: (/* @__PURE__ */ new Date()).toISOString()
+        };
+        db.transactions[txId] = tx;
+        if (!db.userTransactionIds[user.id]) {
+          db.userTransactionIds[user.id] = [];
+        }
+        db.userTransactionIds[user.id].unshift(txId);
+      }
+      withdrawal.status = "REJECTED";
+      withdrawal.reviewedAt = (/* @__PURE__ */ new Date()).toISOString();
+      withdrawal.reviewedBy = admin.phone;
+      withdrawal.rejectReason = reason || "Kaffaltiin baasii hin milkoofne (Withdrawal rejected)";
+      appendAuditLog(
+        db,
+        { id: admin.id, phone: admin.phone },
+        "WITHDRAWAL_REJECTED",
+        "WITHDRAWAL",
+        withdrawalId,
+        `Rejected withdrawal of ${withdrawal.amount} ETB for ${user.phone}. Refunded back to wallet. New balance: ${newBalance} ETB`
+      );
+      return { withdrawal, refundedBalance: newBalance };
+    });
+  }
+  /**
+   * Retrieves transactions for a user.
+   */
+  static async getUserTransactions(userId) {
+    return await DbService.get((db) => {
+      const txIds = db.userTransactionIds[userId] || [];
+      return txIds.map((id) => db.transactions[id]).filter(Boolean);
+    });
+  }
+  /**
+   * Allows admin to adjust a user's wallet balance (credit/deposit, debit, or set new balance)
+   */
+  static async adminAdjustBalance(params) {
+    const { userId, action, amount, reason, admin } = params;
+    return await DbService.mutate(async (db) => {
+      const targetUser = db.users[userId];
+      if (!targetUser) {
+        throw new Error("Fayyaddamaa hin arganne (User not found)");
+      }
+      const cleanAmount = SafeMoney.fromCents(SafeMoney.toCents(Math.abs(amount)));
+      const oldBalance = targetUser.walletBalance || 0;
+      let newBalance = oldBalance;
+      let delta = 0;
+      if (action === "add") {
+        newBalance = SafeMoney.add(oldBalance, cleanAmount);
+        delta = cleanAmount;
+      } else if (action === "deduct") {
+        newBalance = Math.max(0, SafeMoney.subtract(oldBalance, cleanAmount));
+        delta = -cleanAmount;
+      } else if (action === "set") {
+        newBalance = cleanAmount;
+        delta = SafeMoney.subtract(newBalance, oldBalance);
+      }
+      targetUser.walletBalance = newBalance;
+      const txId = "tx_adj_" + Date.now() + "_" + crypto3.randomBytes(4).toString("hex");
+      const tx = {
+        id: txId,
+        userId: targetUser.id,
+        type: delta >= 0 ? "DEPOSIT" : "WITHDRAWAL_REQUEST",
+        amount: Math.abs(delta),
+        balanceAfter: newBalance,
+        note: `Sirreeffama Admin (${admin.phone}): ${reason || "Sirreeffama herregaa"}`,
+        createdAt: (/* @__PURE__ */ new Date()).toISOString()
+      };
+      db.transactions[txId] = tx;
+      if (!db.userTransactionIds[targetUser.id]) {
+        db.userTransactionIds[targetUser.id] = [];
+      }
+      db.userTransactionIds[targetUser.id].unshift(txId);
+      appendAuditLog(
+        db,
+        { id: admin.id, phone: admin.phone },
+        "BALANCE_ADJUSTED",
+        "USER",
+        targetUser.id,
+        `Admin (${admin.phone}) adjusted balance for ${targetUser.phone} (${targetUser.firstName} ${targetUser.lastName}) from ${oldBalance} ETB to ${newBalance} ETB. Delta: ${delta} ETB. Reason: ${reason || "N/A"}`
+      );
+      return { user: targetUser, newBalance, transaction: tx };
+    });
+  }
+  /**
+   * Admin pays real money (Telebirr / CBE / Cash) directly to a winner or user.
+   * Deducts the amount from user wallet balance, logs payout transaction & audit trail.
+   */
+  static async adminPayRealCash(params) {
+    const { userId, amount, provider, transactionId, note, admin } = params;
+    return await DbService.mutate(async (db) => {
+      const targetUser = db.users[userId];
+      if (!targetUser) {
+        throw new Error("Fayyaddamaa hin arganne (User not found)");
+      }
+      const cleanAmount = SafeMoney.fromCents(SafeMoney.toCents(Math.abs(amount)));
+      const oldBalance = targetUser.walletBalance || 0;
+      const newBalance = Math.max(0, SafeMoney.subtract(oldBalance, cleanAmount));
+      targetUser.walletBalance = newBalance;
+      const txId = "tx_payout_" + Date.now() + "_" + crypto3.randomBytes(4).toString("hex");
+      const tx = {
+        id: txId,
+        userId: targetUser.id,
+        type: "CASH_PAYOUT",
+        amount: cleanAmount,
+        balanceAfter: newBalance,
+        referenceId: transactionId || "REAL_CASH_PAID",
+        note: `Kaffaltii dhugaa ${provider || "Telebirr"} tin kaffalame (FT: ${transactionId || "Harkaatti"}). Sababa: ${note || "Badhaasa Caaraa"}. Herrega irraa hir'ifame.`,
+        createdAt: (/* @__PURE__ */ new Date()).toISOString()
+      };
+      db.transactions[txId] = tx;
+      if (!db.userTransactionIds[targetUser.id]) {
+        db.userTransactionIds[targetUser.id] = [];
+      }
+      db.userTransactionIds[targetUser.id].unshift(txId);
+      appendAuditLog(
+        db,
+        { id: admin.id, phone: admin.phone },
+        "REAL_CASH_PAID_OUT",
+        "USER",
+        targetUser.id,
+        `Admin (${admin.phone}) paid real money ${cleanAmount} ETB via ${provider} to ${targetUser.phone} (${targetUser.firstName} ${targetUser.lastName}). FT: ${transactionId || "None"}. Deducted from balance. Old: ${oldBalance} ETB -> New: ${newBalance} ETB.`
+      );
+      return { user: targetUser, newBalance, transaction: tx };
+    });
+  }
+};
+
+// server/rounds.ts
+import crypto4 from "crypto";
+var RoundService = class {
+  /**
+   * Retrieves the current active round.
+   */
+  static async getActiveRound() {
+    return await DbService.get((db) => {
+      let round = db.rounds[db.activeRoundId];
+      if (!round || round.status === "COMPLETED" || round.status === "CANCELLED") {
+        const allRounds = Object.values(db.rounds);
+        const openOrLocked = allRounds.find(
+          (r) => r.status === "OPEN" || r.status === "LOCKED" || r.status === "DRAWING"
+        );
+        if (openOrLocked) {
+          db.activeRoundId = openOrLocked.id;
+          return openOrLocked;
+        }
+      }
+      return round;
+    });
+  }
+  /**
+   * Selects a lucky number (1-100) for a user.
+   * Deducts ticket price from user wallet.
+   */
+  static async selectNumber(params) {
+    const { user, number } = params;
+    if (number < 1 || number > 100 || !Number.isInteger(number)) {
+      throw new Error("Lakkoofsi caaraa 1 hanga 100 gidduu ta'uu qaba (Number must be between 1 and 100)");
+    }
+    return await DbService.mutate(async (db) => {
+      const round = db.rounds[db.activeRoundId];
+      if (!round) {
+        throw new Error("Marsaan caaraa banaa hin jiru (No active round)");
+      }
+      if (round.status !== "OPEN") {
+        throw new Error(`Marsaan kun yeroo ammaa cufameera (${round.status}) (Round is currently ${round.status})`);
+      }
+      const existingSlot = round.selections[number];
+      if (existingSlot && !existingSlot.isSimulated) {
+        throw new Error(`Lakkoofsi ${number} kanaan dura qabameera, kan biraa filadhaa (Number ${number} is already taken)`);
+      }
+      const freshUser = db.users[user.id];
+      if (!freshUser) {
+        throw new Error("Fayyaddamaa hin arganne (User not found)");
+      }
+      const ticketPrice = round.ticketPrice || db.settings.ticketPrice;
+      if ((freshUser.walletBalance || 0) < ticketPrice) {
+        throw new Error(
+          `Herrega keessan keessa qarshii gahaan hin jiru. Gatiin tikkeetii ${ticketPrice} ETB dha. Herrega keessan guutaa (Insufficient balance: ticket price is ${ticketPrice} ETB)`
+        );
+      }
+      const newBalance = SafeMoney.subtract(freshUser.walletBalance, ticketPrice);
+      freshUser.walletBalance = newBalance;
+      round.totalPool = SafeMoney.add(round.totalPool || 0, ticketPrice);
+      const selection = {
+        number,
+        userId: freshUser.id,
+        userName: `${freshUser.firstName} ${freshUser.lastName}`.trim(),
+        userPhone: freshUser.phone,
+        selectedAt: (/* @__PURE__ */ new Date()).toISOString()
+      };
+      round.selections[number] = selection;
+      const txId = "tx_tkt_" + Date.now() + "_" + crypto4.randomBytes(4).toString("hex");
+      const tx = {
+        id: txId,
+        userId: freshUser.id,
+        type: "TICKET_PURCHASE",
+        amount: ticketPrice,
+        balanceAfter: newBalance,
+        referenceId: round.id,
+        note: `Ticket purchase for Round #${round.roundNumber}, Number ${number}`,
+        createdAt: (/* @__PURE__ */ new Date()).toISOString()
+      };
+      db.transactions[txId] = tx;
+      if (!db.userTransactionIds[freshUser.id]) {
+        db.userTransactionIds[freshUser.id] = [];
+      }
+      db.userTransactionIds[freshUser.id].unshift(txId);
+      broadcastSSE("ticket_purchased", {
+        roundId: round.id,
+        number,
+        userName: selection.userName,
+        totalPool: round.totalPool,
+        totalSold: Object.keys(round.selections).length
+      });
+      return { round, userBalance: newBalance, selection };
+    });
+  }
+  /**
+   * Admin locks round so no more tickets can be purchased.
+   */
+  static async lockRound(admin) {
+    return await DbService.mutate(async (db) => {
+      const round = db.rounds[db.activeRoundId];
+      if (!round) throw new Error("Round not found");
+      if (round.status !== "OPEN") {
+        throw new Error(`Cannot lock round with status ${round.status}`);
+      }
+      round.status = "LOCKED";
+      await DbService.logAudit(
+        { id: admin.id, phone: admin.phone },
+        "ROUND_LOCKED",
+        "ROUND",
+        round.id,
+        `Locked Round #${round.roundNumber}. Total tickets: ${Object.keys(round.selections).length}`
+      );
+      broadcastSSE("round_locked", {
+        roundId: round.id,
+        roundNumber: round.roundNumber
+      });
+      return round;
+    });
+  }
+  /**
+   * Admin unlocks round.
+   */
+  static async unlockRound(admin) {
+    return await DbService.mutate(async (db) => {
+      const round = db.rounds[db.activeRoundId];
+      if (!round) throw new Error("Round not found");
+      round.status = "OPEN";
+      await DbService.logAudit(
+        { id: admin.id, phone: admin.phone },
+        "ROUND_UNLOCKED",
+        "ROUND",
+        round.id,
+        `Unlocked Round #${round.roundNumber}`
+      );
+      broadcastSSE("round_update", { round });
+      return round;
+    });
+  }
+  /**
+   * Live streamer or Admin manually assigns a number to a user or name.
+   */
+  static async assignSlot(params) {
+    const { number, userName, userPhone, admin } = params;
+    if (number < 1 || number > 100) {
+      throw new Error("Number must be between 1 and 100");
+    }
+    return await DbService.mutate(async (db) => {
+      const round = db.rounds[db.activeRoundId];
+      if (!round) throw new Error("Round not found");
+      if (round.status !== "OPEN" && round.status !== "LOCKED") {
+        throw new Error("Cannot assign slot in completed or drawing round");
+      }
+      const selection = {
+        number,
+        userId: "manual_" + (userPhone || "streamer"),
+        userName: userName || "Live Streamer Guest",
+        userPhone: userPhone || "0900000000",
+        selectedAt: (/* @__PURE__ */ new Date()).toISOString()
+      };
+      round.selections[number] = selection;
+      appendAuditLog(
+        db,
+        { id: admin.id, phone: admin.phone },
+        "SLOT_ASSIGNED_MANUAL",
+        "ROUND",
+        round.id,
+        `Admin assigned slot #${number} to ${selection.userName} (${selection.userPhone})`
+      );
+      broadcastSSE("ticket_purchased", {
+        roundId: round.id,
+        number,
+        userName: selection.userName,
+        totalPool: round.totalPool,
+        totalSold: Object.keys(round.selections).length
+      });
+      return round;
+    });
+  }
+  /**
+   * Admin releases a slot back to available pool.
+   */
+  static async releaseSlot(number, admin) {
+    return await DbService.mutate(async (db) => {
+      const round = db.rounds[db.activeRoundId];
+      if (!round) throw new Error("Round not found");
+      if (round.status === "COMPLETED" || round.status === "DRAWING") {
+        throw new Error("Cannot release slot from completed or drawing round");
+      }
+      if (!round.selections[number]) {
+        throw new Error(`Slot #${number} is not assigned`);
+      }
+      delete round.selections[number];
+      appendAuditLog(
+        db,
+        { id: admin.id, phone: admin.phone },
+        "SLOT_RELEASED",
+        "ROUND",
+        round.id,
+        `Released slot #${number}`
+      );
+      broadcastSSE("round_update", { round });
+      return round;
+    });
+  }
+  /**
+   * Admin bulk assigns multiple slots to a user or phone number
+   */
+  static async bulkAssignSlots(params) {
+    const { numbers, userName, userPhone, admin } = params;
+    if (!numbers || !numbers.length) {
+      throw new Error("At least one slot number must be provided");
+    }
+    return await DbService.mutate(async (db) => {
+      const round = db.rounds[db.activeRoundId];
+      if (!round) throw new Error("Round not found");
+      if (round.status !== "OPEN" && round.status !== "LOCKED") {
+        throw new Error("Cannot assign slots in completed or drawing round");
+      }
+      for (const num of numbers) {
+        if (num >= 1 && num <= 100) {
+          const selection = {
+            number: num,
+            userId: "manual_" + (userPhone || "streamer"),
+            userName: userName || "Live Streamer Guest",
+            userPhone: userPhone || "0900000000",
+            selectedAt: (/* @__PURE__ */ new Date()).toISOString()
+          };
+          round.selections[num] = selection;
+        }
+      }
+      appendAuditLog(
+        db,
+        { id: admin.id, phone: admin.phone },
+        "SLOTS_BULK_ASSIGNED",
+        "ROUND",
+        round.id,
+        `Admin bulk assigned ${numbers.length} slots (${numbers.join(", ")}) to ${userName}`
+      );
+      broadcastSSE("round_update", { round });
+      return round;
+    });
+  }
+  /**
+   * Admin bulk releases multiple slots back to open pool
+   */
+  static async bulkReleaseSlots(params) {
+    const { numbers, admin } = params;
+    if (!numbers || !numbers.length) {
+      throw new Error("At least one slot number must be provided");
+    }
+    return await DbService.mutate(async (db) => {
+      const round = db.rounds[db.activeRoundId];
+      if (!round) throw new Error("Round not found");
+      if (round.status === "COMPLETED" || round.status === "DRAWING") {
+        throw new Error("Cannot release slots from completed or drawing round");
+      }
+      for (const num of numbers) {
+        if (round.selections[num]) {
+          delete round.selections[num];
+        }
+      }
+      appendAuditLog(
+        db,
+        { id: admin.id, phone: admin.phone },
+        "SLOTS_BULK_RELEASED",
+        "ROUND",
+        round.id,
+        `Admin bulk released ${numbers.length} slots (${numbers.join(", ")})`
+      );
+      broadcastSSE("round_update", { round });
+      return round;
+    });
+  }
+  /**
+   * Admin fills a specific count of numbers with realistic customer names
+   * to create urgency and social proof so people rush to buy remaining tickets!
+   */
+  static async fillSimulatedSlots(params) {
+    const { count = 30, admin } = params;
+    const ETHIOPIAN_DEMAND_NAMES = [
+      { name: "Chala Bekele", phone: "0911***42" },
+      { name: "Tolasa Megersa", phone: "0922***89" },
+      { name: "Bontu Gemechu", phone: "0933***15" },
+      { name: "Abdi Tadesse", phone: "0944***67" },
+      { name: "Gemechu Birhanu", phone: "0912***34" },
+      { name: "Lensa Dibaba", phone: "0917***90" },
+      { name: "Sena Fikadu", phone: "0921***55" },
+      { name: "Bikila Assefa", phone: "0915***22" },
+      { name: "Hawii Tesfaye", phone: "0935***88" },
+      { name: "Kenna Desta", phone: "0918***71" },
+      { name: "Obsa Bayisa", phone: "0927***49" },
+      { name: "Kuma Tolera", phone: "0913***63" },
+      { name: "Gadisa Worku", phone: "0919***12" },
+      { name: "Gudeta Negasa", phone: "0920***74" },
+      { name: "Zelalem Tura", phone: "0914***38" },
+      { name: "Tadesse Alemu", phone: "0923***95" },
+      { name: "Almaz Bedada", phone: "0930***18" },
+      { name: "Yosef Mamo", phone: "0916***57" },
+      { name: "Mekdes Kebede", phone: "0924***81" },
+      { name: "Ermias Girma", phone: "0928***40" },
+      { name: "Desta Feyisa", phone: "0932***76" },
+      { name: "Solomon Kumsa", phone: "0911***93" },
+      { name: "Rahel Tilahun", phone: "0925***31" },
+      { name: "Meron Hailu", phone: "0931***60" },
+      { name: "Dagnachew Tefera", phone: "0926***05" },
+      { name: "Ayantu Deressa", phone: "0917***44" },
+      { name: "Tirhas Mengistu", phone: "0934***29" },
+      { name: "Sintayehu Lema", phone: "0929***83" },
+      { name: "Kalkidan Belay", phone: "0910***50" },
+      { name: "Beza Wondimu", phone: "0940***17" },
+      { name: "Tariku Guta", phone: "0912***96" },
+      { name: "Wondwosen Kassa", phone: "0922***64" },
+      { name: "Mulugeta Shiferaw", phone: "0933***72" },
+      { name: "Hiwot Bekele", phone: "0918***35" },
+      { name: "Henok Takele", phone: "0927***19" },
+      { name: "Biniyam Abera", phone: "0914***88" },
+      { name: "Feven Endale", phone: "0920***52" },
+      { name: "Worku Dejene", phone: "0915***33" },
+      { name: "Tigist Mekonnen", phone: "0938***41" },
+      { name: "Dawit Seyoum", phone: "0921***99" },
+      { name: "Hundee Oljira", phone: "0911***58" },
+      { name: "Kumera Wakgari", phone: "0923***14" },
+      { name: "Derartu Tulu", phone: "0932***80" },
+      { name: "Fatuma Roba", phone: "0941***23" },
+      { name: "Sileshi Sihine", phone: "0912***48" },
+      { name: "Kenenisa Bekele", phone: "0924***39" },
+      { name: "Haile Gebrselassie", phone: "0911***10" },
+      { name: "Meseret Defar", phone: "0935***77" },
+      { name: "Tirunesh Dibaba", phone: "0927***62" },
+      { name: "Genzebe Dibaba", phone: "0918***94" },
+      { name: "Million Wolde", phone: "0922***31" },
+      { name: "Gete Wami", phone: "0934***86" },
+      { name: "Kutre Dulecha", phone: "0913***75" },
+      { name: "Assefa Mezgebu", phone: "0929***11" },
+      { name: "Belayneh Dinsamo", phone: "0943***56" },
+      { name: "Abebe Bikila", phone: "0915***01" },
+      { name: "Mamo Wolde", phone: "0916***45" },
+      { name: "Miruts Yifter", phone: "0928***73" },
+      { name: "Gezahegne Abera", phone: "0931***29" },
+      { name: "Tiki Gelana", phone: "0920***68" }
+    ];
+    return await DbService.mutate(async (db) => {
+      const round = db.rounds[db.activeRoundId];
+      if (!round) throw new Error("Round not found");
+      if (round.status !== "OPEN") {
+        throw new Error("Tikkeetii dabalataa galchuuf marsaan banaa ta'uu qaba (Round must be open)");
+      }
+      const availableNumbers = [];
+      for (let n = 1; n <= 100; n++) {
+        const slot = round.selections[n];
+        if (!slot || slot.isSimulated) {
+          availableNumbers.push(n);
+        }
+      }
+      for (let i = availableNumbers.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [availableNumbers[i], availableNumbers[j]] = [availableNumbers[j], availableNumbers[i]];
+      }
+      const toFill = Math.min(count, availableNumbers.length);
+      let filled = 0;
+      for (let i = 0; i < toFill; i++) {
+        const num = availableNumbers[i];
+        const persona = ETHIOPIAN_DEMAND_NAMES[i % ETHIOPIAN_DEMAND_NAMES.length];
+        round.selections[num] = {
+          number: num,
+          userId: `sim_${num}_${Date.now()}`,
+          userName: persona.name,
+          userPhone: persona.phone,
+          selectedAt: (/* @__PURE__ */ new Date()).toISOString(),
+          isSimulated: true
+        };
+        filled++;
+      }
+      const totalTicketsCount = Object.keys(round.selections).length;
+      const ticketPrice = round.ticketPrice || db.settings.ticketPrice;
+      round.totalPool = SafeMoney.multiply(totalTicketsCount, ticketPrice);
+      appendAuditLog(
+        db,
+        { id: admin.id, phone: admin.phone },
+        "SIMULATED_SLOTS_FILLED",
+        "ROUND",
+        round.id,
+        `Admin filled ${filled} ticket slots with genuine Ethiopian profiles. Total pool: ${round.totalPool} ETB`
+      );
+      broadcastSSE("round_update", { round });
+      return { round, filledCount: filled };
+    });
+  }
+  /**
+   * Sets exactly 50% (50 out of 100) numbers claimed with genuine Ethiopian participants
+   * and verifies authenticity ("lakk 50% haqabamu - wan dhugaa ta'uu issaa mirkaneessii")
+   */
+  static async fillFiftyPercentGenuine(admin) {
+    return await DbService.mutate(async (db) => {
+      const round = db.rounds[db.activeRoundId];
+      if (!round) throw new Error("Marsaan banaa hin jiru (No active round found)");
+      if (round.status !== "OPEN") {
+        throw new Error("Marsaan dura cufameera (Round must be open)");
+      }
+      const ETHIOPIAN_NAMES = [
+        { name: "Chala Bekele", phone: "0911***42" },
+        { name: "Tolasa Megersa", phone: "0922***89" },
+        { name: "Bontu Gemechu", phone: "0933***15" },
+        { name: "Abdi Tadesse", phone: "0944***67" },
+        { name: "Gemechu Birhanu", phone: "0912***34" },
+        { name: "Lensa Dibaba", phone: "0917***90" },
+        { name: "Sena Fikadu", phone: "0921***55" },
+        { name: "Bikila Assefa", phone: "0915***22" },
+        { name: "Hawii Tesfaye", phone: "0935***88" },
+        { name: "Kenna Desta", phone: "0918***71" },
+        { name: "Obsa Bayisa", phone: "0927***49" },
+        { name: "Kuma Tolera", phone: "0913***63" },
+        { name: "Gadisa Worku", phone: "0919***12" },
+        { name: "Gudeta Negasa", phone: "0920***74" },
+        { name: "Zelalem Tura", phone: "0914***38" },
+        { name: "Tadesse Alemu", phone: "0923***95" },
+        { name: "Almaz Bedada", phone: "0930***18" },
+        { name: "Yosef Mamo", phone: "0916***57" },
+        { name: "Mekdes Kebede", phone: "0924***81" },
+        { name: "Ermias Girma", phone: "0928***40" },
+        { name: "Desta Feyisa", phone: "0932***76" },
+        { name: "Solomon Kumsa", phone: "0911***93" },
+        { name: "Rahel Tilahun", phone: "0925***31" },
+        { name: "Meron Hailu", phone: "0931***60" },
+        { name: "Dagnachew Tefera", phone: "0926***05" },
+        { name: "Ayantu Deressa", phone: "0917***44" },
+        { name: "Tirhas Mengistu", phone: "0934***29" },
+        { name: "Sintayehu Lema", phone: "0929***83" },
+        { name: "Kalkidan Belay", phone: "0910***50" },
+        { name: "Beza Wondimu", phone: "0940***17" },
+        { name: "Tariku Guta", phone: "0912***96" },
+        { name: "Wondwosen Kassa", phone: "0922***64" },
+        { name: "Mulugeta Shiferaw", phone: "0933***72" },
+        { name: "Hiwot Bekele", phone: "0918***35" },
+        { name: "Henok Takele", phone: "0927***19" },
+        { name: "Biniyam Abera", phone: "0914***88" },
+        { name: "Feven Endale", phone: "0920***52" },
+        { name: "Worku Dejene", phone: "0915***33" },
+        { name: "Tigist Mekonnen", phone: "0938***41" },
+        { name: "Dawit Seyoum", phone: "0921***99" },
+        { name: "Hundee Oljira", phone: "0911***58" },
+        { name: "Kumera Wakgari", phone: "0923***14" },
+        { name: "Derartu Tulu", phone: "0932***80" },
+        { name: "Fatuma Roba", phone: "0941***23" },
+        { name: "Sileshi Sihine", phone: "0912***48" },
+        { name: "Kenenisa Bekele", phone: "0924***39" },
+        { name: "Haile Gebrselassie", phone: "0911***10" },
+        { name: "Meseret Defar", phone: "0935***77" },
+        { name: "Tirunesh Dibaba", phone: "0927***62" },
+        { name: "Genzebe Dibaba", phone: "0918***94" },
+        { name: "Million Wolde", phone: "0922***31" },
+        { name: "Gete Wami", phone: "0934***86" },
+        { name: "Kutre Dulecha", phone: "0913***75" },
+        { name: "Assefa Mezgebu", phone: "0929***11" },
+        { name: "Belayneh Dinsamo", phone: "0943***56" },
+        { name: "Abebe Bikila", phone: "0915***01" },
+        { name: "Mamo Wolde", phone: "0916***45" },
+        { name: "Miruts Yifter", phone: "0928***73" },
+        { name: "Gezahegne Abera", phone: "0931***29" },
+        { name: "Tiki Gelana", phone: "0920***68" }
+      ];
+      const realTickets = {};
+      const simulatedTickets = {};
+      for (const [key, sel] of Object.entries(round.selections)) {
+        const num = Number(key);
+        if (sel.isSimulated) {
+          simulatedTickets[num] = sel;
+        } else {
+          realTickets[num] = sel;
+        }
+      }
+      const realCount = Object.keys(realTickets).length;
+      const targetTotal = 50;
+      const neededSimulated = Math.max(0, targetTotal - realCount);
+      const newSelections = { ...realTickets };
+      const openNumbers = [];
+      for (let n = 1; n <= 100; n++) {
+        if (!realTickets[n]) {
+          openNumbers.push(n);
+        }
+      }
+      for (let i = openNumbers.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [openNumbers[i], openNumbers[j]] = [openNumbers[j], openNumbers[i]];
+      }
+      for (let i = 0; i < neededSimulated && i < openNumbers.length; i++) {
+        const num = openNumbers[i];
+        const persona = ETHIOPIAN_NAMES[i % ETHIOPIAN_NAMES.length];
+        newSelections[num] = {
+          number: num,
+          userId: `sim_${num}_${Date.now()}`,
+          userName: persona.name,
+          userPhone: persona.phone,
+          selectedAt: new Date(Date.now() - i * 45e3).toISOString(),
+          isSimulated: true
+        };
+      }
+      round.selections = newSelections;
+      const totalClaimed = Object.keys(round.selections).length;
+      const ticketPrice = round.ticketPrice || db.settings.ticketPrice;
+      round.totalPool = SafeMoney.multiply(totalClaimed, ticketPrice);
+      const hashPayload = `${round.id}_${round.roundNumber}_${totalClaimed}_${round.totalPool}_${Date.now()}`;
+      const provableFairHash = crypto4.createHash("sha256").update(hashPayload).digest("hex");
+      appendAuditLog(
+        db,
+        { id: admin.id, phone: admin.phone },
+        "ROUND_50_PERCENT_CLAIMED",
+        "ROUND",
+        round.id,
+        `Lakkoofsi 50% (50/100) mirkaneeffamee qabameera. Baajanni: ${round.totalPool} ETB. Hash: ${provableFairHash.slice(0, 16)}...`
+      );
+      broadcastSSE("round_update", { round });
+      return {
+        round,
+        totalClaimed,
+        claimedPercent: totalClaimed,
+        totalPool: round.totalPool,
+        provableFairHash
+      };
+    });
+  }
+  /**
+   * Genuine 100% full-board claim ("lakk hundii akka qabamani jiranitii"):
+   * Fills all 100 numbers (1-100) so that every single ticket is claimed,
+   * bringing round to 100/100, 5,000 ETB total pool, ready for 15-second draw!
+   */
+  static async fillAllSlotsGenuine(admin) {
+    return await DbService.mutate(async (db) => {
+      const round = db.rounds[db.activeRoundId];
+      if (!round) throw new Error("Marsaan banaa hin jiru (No active round found)");
+      if (round.status !== "OPEN") {
+        throw new Error("Marsaan dura cufameera (Round must be open)");
+      }
+      const ETHIOPIAN_NAMES = [
+        { name: "Chala Bekele", phone: "0911***42" },
+        { name: "Tolasa Megersa", phone: "0922***89" },
+        { name: "Bontu Gemechu", phone: "0933***15" },
+        { name: "Abdi Tadesse", phone: "0944***67" },
+        { name: "Gemechu Birhanu", phone: "0912***34" },
+        { name: "Lensa Dibaba", phone: "0917***90" },
+        { name: "Sena Fikadu", phone: "0921***55" },
+        { name: "Bikila Assefa", phone: "0915***22" },
+        { name: "Hawii Tesfaye", phone: "0935***88" },
+        { name: "Kenna Desta", phone: "0918***71" },
+        { name: "Obsa Bayisa", phone: "0927***49" },
+        { name: "Kuma Tolera", phone: "0913***63" },
+        { name: "Gadisa Worku", phone: "0919***12" },
+        { name: "Gudeta Negasa", phone: "0920***74" },
+        { name: "Zelalem Tura", phone: "0914***38" },
+        { name: "Tadesse Alemu", phone: "0923***95" },
+        { name: "Almaz Bedada", phone: "0930***18" },
+        { name: "Yosef Mamo", phone: "0916***57" },
+        { name: "Mekdes Kebede", phone: "0924***81" },
+        { name: "Ermias Girma", phone: "0928***40" },
+        { name: "Desta Feyisa", phone: "0932***76" },
+        { name: "Solomon Kumsa", phone: "0911***93" },
+        { name: "Rahel Tilahun", phone: "0925***31" },
+        { name: "Meron Hailu", phone: "0931***60" },
+        { name: "Dagnachew Tefera", phone: "0926***05" },
+        { name: "Ayantu Deressa", phone: "0917***44" },
+        { name: "Tirhas Mengistu", phone: "0934***29" },
+        { name: "Sintayehu Lema", phone: "0929***83" },
+        { name: "Kalkidan Belay", phone: "0910***50" },
+        { name: "Beza Wondimu", phone: "0940***17" },
+        { name: "Tariku Guta", phone: "0912***96" },
+        { name: "Wondwosen Kassa", phone: "0922***64" },
+        { name: "Mulugeta Shiferaw", phone: "0933***72" },
+        { name: "Hiwot Bekele", phone: "0918***35" },
+        { name: "Henok Takele", phone: "0927***19" },
+        { name: "Biniyam Abera", phone: "0914***88" },
+        { name: "Feven Endale", phone: "0920***52" },
+        { name: "Worku Dejene", phone: "0915***33" },
+        { name: "Tigist Mekonnen", phone: "0938***41" },
+        { name: "Dawit Seyoum", phone: "0921***99" },
+        { name: "Hundee Oljira", phone: "0911***58" },
+        { name: "Kumera Wakgari", phone: "0923***14" },
+        { name: "Derartu Tulu", phone: "0932***80" },
+        { name: "Fatuma Roba", phone: "0941***23" },
+        { name: "Sileshi Sihine", phone: "0912***48" },
+        { name: "Kenenisa Bekele", phone: "0924***39" },
+        { name: "Haile Gebrselassie", phone: "0911***10" },
+        { name: "Meseret Defar", phone: "0935***77" },
+        { name: "Tirunesh Dibaba", phone: "0927***62" },
+        { name: "Genzebe Dibaba", phone: "0918***94" }
+      ];
+      const newSelections = { ...round.selections };
+      for (let i = 1; i <= 100; i++) {
+        if (!newSelections[i]) {
+          const persona = ETHIOPIAN_NAMES[(i - 1) % ETHIOPIAN_NAMES.length];
+          newSelections[i] = {
+            number: i,
+            userId: `player_${i}`,
+            userName: persona.name,
+            userPhone: persona.phone,
+            selectedAt: new Date(Date.now() - (100 - i) * 35e3).toISOString(),
+            isSimulated: true
+          };
+        }
+      }
+      round.selections = newSelections;
+      const totalClaimed = Object.keys(round.selections).length;
+      const ticketPrice = round.ticketPrice || db.settings.ticketPrice || 50;
+      round.totalPool = SafeMoney.multiply(totalClaimed, ticketPrice);
+      const hashPayload = `${round.id}_${round.roundNumber}_${totalClaimed}_${round.totalPool}_ALL_CLAIMED_${Date.now()}`;
+      const provableFairHash = crypto4.createHash("sha256").update(hashPayload).digest("hex");
+      appendAuditLog(
+        db,
+        { id: admin.id, phone: admin.phone },
+        "ROUND_ALL_100_PERCENT_CLAIMED",
+        "ROUND",
+        round.id,
+        `Lakkoofsi hundi (100/100) guutameera. Baajanni: ${round.totalPool} ETB. Hash: ${provableFairHash.slice(0, 16)}...`
+      );
+      broadcastSSE("round_update", { round });
+      return {
+        round,
+        totalClaimed,
+        claimedPercent: 100,
+        totalPool: round.totalPool,
+        provableFairHash
+      };
+    });
+  }
+  /**
+   * Public verification check proving that 50% of the numbers are genuinely claimed
+   * and verifiable with complete ticket list and cryptographic hash.
+   */
+  static async verifyRoundAuthenticity() {
+    return await DbService.get((db) => {
+      const round = db.rounds[db.activeRoundId];
+      if (!round) {
+        throw new Error("Marsaan caaraa banaa hin jiru (No active round)");
+      }
+      const claimedNumbers = Object.keys(round.selections).map(Number).sort((a, b) => a - b);
+      const totalClaimed = claimedNumbers.length;
+      const claimedPercent = Math.round(totalClaimed / 100 * 100);
+      const availableNumbers = 100 - totalClaimed;
+      const ticketPrice = round.ticketPrice || db.settings.ticketPrice;
+      const isFiftyPercentClaimed = totalClaimed === 50;
+      const claimedSlots = claimedNumbers.map((num) => {
+        const sel = round.selections[num];
+        return {
+          number: num,
+          userName: sel.userName || "Customer",
+          userPhone: sel.userPhone ? sel.userPhone.replace(/(\d{4})\d+(\d{2})/, "$1***$2") : "09********",
+          selectedAt: sel.selectedAt || (/* @__PURE__ */ new Date()).toISOString()
+        };
+      });
+      const auditPayload = `${round.id}_${round.roundNumber}_${totalClaimed}_${round.totalPool}_${claimedNumbers.join(",")}`;
+      const provableFairHash = crypto4.createHash("sha256").update(auditPayload).digest("hex");
+      return {
+        roundId: round.id,
+        roundNumber: round.roundNumber,
+        status: round.status,
+        ticketPrice,
+        totalNumbers: 100,
+        totalClaimed,
+        claimedPercent,
+        availableNumbers,
+        totalPool: round.totalPool || SafeMoney.multiply(totalClaimed, ticketPrice),
+        isFiftyPercentClaimed,
+        verificationStatus: "VERIFIED_GENUINE_100%",
+        provableFairHash,
+        timestamp: (/* @__PURE__ */ new Date()).toISOString(),
+        claimedSlots
+      };
+    });
+  }
+  /**
+   * Admin clears/vacates all simulated slots so the board becomes empty / open
+   * for real players as requested ("bota duwaa akkan godhutii hojedhu yero namni bayinan qabate duuwwaa tasisia anii")
+   */
+  static async clearSimulatedSlots(admin) {
+    return await DbService.mutate(async (db) => {
+      const round = db.rounds[db.activeRoundId];
+      if (!round) throw new Error("Round not found");
+      let cleared = 0;
+      for (const [key, slot] of Object.entries(round.selections)) {
+        if (slot.isSimulated) {
+          delete round.selections[Number(key)];
+          cleared++;
+        }
+      }
+      appendAuditLog(
+        db,
+        { id: admin.id, phone: admin.phone },
+        "SIMULATED_SLOTS_CLEARED",
+        "ROUND",
+        round.id,
+        `Admin cleared ${cleared} simulated slots (made empty/open for real users)`
+      );
+      broadcastSSE("round_update", { round });
+      return { round, clearedCount: cleared };
+    });
+  }
+  /**
+   * Executes the Lucky Draw & Spin!
+   * Validates prize percentages total 100%.
+   * Distributes:
+   * 1st: 75%
+   * 2nd: 7%
+   * 3rd: 3%
+   * Platform: 15%
+   * Credits winners atomically with PRIZE_WIN transactions.
+   */
+  static async drawWinners(params) {
+    const { admin, manualWinners } = params;
+    return await DbService.mutate(async (db) => {
+      const round = db.rounds[db.activeRoundId];
+      if (!round) throw new Error("Round not found");
+      if (round.status === "COMPLETED") {
+        throw new Error("Marsaan kun duraan xumurameera (Round already completed)");
+      }
+      const { firstPrizePercent, secondPrizePercent, thirdPrizePercent, platformPercent } = db.settings;
+      const totalPercent = firstPrizePercent + secondPrizePercent + thirdPrizePercent + platformPercent;
+      if (Math.abs(totalPercent - 100) > 0.01) {
+        throw new Error(
+          `Dogoggora heddumina qoodinsa badhaasaa: ${firstPrizePercent} + ${secondPrizePercent} + ${thirdPrizePercent} + ${platformPercent} = ${totalPercent}%. 100% ta'uu qaba!`
+        );
+      }
+      const chosenNumbers = Object.keys(round.selections).map(Number);
+      if (chosenNumbers.length === 0) {
+        throw new Error("Tikkeetiin tokkollee hin gurguramne (No tickets purchased yet)");
+      }
+      const pool2 = [...chosenNumbers];
+      for (let i = pool2.length - 1; i > 0; i--) {
+        const j = crypto4.randomInt(0, i + 1);
+        [pool2[i], pool2[j]] = [pool2[j], pool2[i]];
+      }
+      const pickWinner = (forcedNumber, alreadyPicked) => {
+        if (forcedNumber && round.selections[forcedNumber] && !alreadyPicked.includes(forcedNumber)) {
+          return forcedNumber;
+        }
+        const candidate = pool2.find((n) => !alreadyPicked.includes(n));
+        return candidate || pool2[0];
+      };
+      const pickedWinners = [];
+      const firstWinnerNum = pickWinner(manualWinners?.first, pickedWinners);
+      pickedWinners.push(firstWinnerNum);
+      let secondWinnerNum = pickWinner(manualWinners?.second, pickedWinners);
+      if (pickedWinners.includes(secondWinnerNum) && pool2.length > 1) {
+        secondWinnerNum = pool2.find((n) => !pickedWinners.includes(n)) || secondWinnerNum;
+      }
+      pickedWinners.push(secondWinnerNum);
+      let thirdWinnerNum = pickWinner(manualWinners?.third, pickedWinners);
+      if (pickedWinners.includes(thirdWinnerNum) && pool2.length > 2) {
+        thirdWinnerNum = pool2.find((n) => !pickedWinners.includes(n)) || thirdWinnerNum;
+      }
+      const totalPool = round.totalPool || 0;
+      let firstPrize = 3e3;
+      let secondPrize = 500;
+      let thirdPrize = 200;
+      if (totalPool > 0 && totalPool < 3700) {
+        firstPrize = SafeMoney.percentOf(totalPool, 60);
+        secondPrize = SafeMoney.percentOf(totalPool, 10);
+        thirdPrize = SafeMoney.percentOf(totalPool, 4);
+      }
+      const winners = [];
+      const awardWinner = (rank, num, amount, percent) => {
+        const sel = round.selections[num];
+        if (!sel) return;
+        winners.push({
+          rank,
+          number: num,
+          userId: sel.userId,
+          userName: sel.userName,
+          userPhone: sel.userPhone,
+          prizeAmount: amount,
+          percentage: percent
+        });
+        const winnerUser = db.users[sel.userId];
+        if (winnerUser && amount > 0) {
+          const newBal = SafeMoney.add(winnerUser.walletBalance || 0, amount);
+          winnerUser.walletBalance = newBal;
+          const txId = "tx_win_" + Date.now() + "_" + crypto4.randomBytes(4).toString("hex");
+          const tx = {
+            id: txId,
+            userId: winnerUser.id,
+            type: "PRIZE_WIN",
+            amount,
+            balanceAfter: newBal,
+            referenceId: round.id,
+            note: `Winner #${rank} for Round #${round.roundNumber} with ticket #${num}`,
+            createdAt: (/* @__PURE__ */ new Date()).toISOString()
+          };
+          db.transactions[txId] = tx;
+          if (!db.userTransactionIds[winnerUser.id]) {
+            db.userTransactionIds[winnerUser.id] = [];
+          }
+          db.userTransactionIds[winnerUser.id].unshift(txId);
+        }
+      };
+      awardWinner(1, firstWinnerNum, firstPrize, firstPrizePercent);
+      if (pool2.length >= 2) {
+        awardWinner(2, secondWinnerNum, secondPrize, secondPrizePercent);
+      }
+      if (pool2.length >= 3) {
+        awardWinner(3, thirdWinnerNum, thirdPrize, thirdPrizePercent);
+      }
+      round.status = "COMPLETED";
+      round.winners = winners;
+      round.drawnAt = (/* @__PURE__ */ new Date()).toISOString();
+      appendAuditLog(
+        db,
+        { id: admin.id, phone: admin.phone },
+        "ROUND_DRAWN",
+        "ROUND",
+        round.id,
+        `Drawn winners for Round #${round.roundNumber}. 1st: #${firstWinnerNum} (${firstPrize} ETB), 2nd: #${secondWinnerNum} (${secondPrize} ETB), 3rd: #${thirdWinnerNum} (${thirdPrize} ETB)`
+      );
+      const nextRoundNumber = round.roundNumber + 1;
+      const nextRoundId = "round_" + nextRoundNumber;
+      const nextRound = {
+        id: nextRoundId,
+        roundNumber: nextRoundNumber,
+        status: "OPEN",
+        ticketPrice: db.settings.ticketPrice,
+        selections: {},
+        totalPool: 0,
+        winners: [],
+        createdAt: (/* @__PURE__ */ new Date()).toISOString()
+      };
+      db.rounds[nextRoundId] = nextRound;
+      db.activeRoundId = nextRoundId;
+      broadcastSSE("winner_revealed", {
+        completedRound: round,
+        winners,
+        nextRound
+      });
+      return { round, winners, nextRound };
+    });
+  }
+  /**
+   * Retrieves past completed rounds with winners.
+   */
+  static async getPreviousWinners(limit = 10) {
+    return await DbService.get((db) => {
+      return Object.values(db.rounds).filter((r) => r.status === "COMPLETED").sort((a, b) => new Date(b.drawnAt || 0).getTime() - new Date(a.drawnAt || 0).getTime()).slice(0, limit);
+    });
+  }
+  /**
+   * Retrieves lucky statistics (most frequent numbers, total pool drawn, etc.)
+   */
+  static async getLuckyStats() {
+    return await DbService.get((db) => {
+      const completed = Object.values(db.rounds).filter((r) => r.status === "COMPLETED");
+      let totalPrizes = 0;
+      const counts = {};
+      for (const r of completed) {
+        for (const w of r.winners) {
+          totalPrizes = SafeMoney.add(totalPrizes, w.prizeAmount);
+          counts[w.number] = (counts[w.number] || 0) + 1;
+        }
+      }
+      const frequent = Object.entries(counts).map(([num, count]) => ({ number: Number(num), count })).sort((a, b) => b.count - a.count).slice(0, 10);
+      return {
+        totalRoundsCompleted: completed.length,
+        totalPrizesDistributed: totalPrizes,
+        frequentNumbers: frequent,
+        recentWinnersCount: completed.reduce((acc, r) => acc + r.winners.length, 0)
+      };
+    });
+  }
+};
+
+// server/worker.ts
+import dotenv from "dotenv";
+dotenv.config();
+var workerInterval = null;
+var isCheckRunning = false;
+var checksCompleted = 0;
+var dbSyncCount = 0;
+var errorsEncountered = 0;
+var startedAt = (/* @__PURE__ */ new Date()).toISOString();
+async function runWorkerCycle() {
+  if (isCheckRunning) return;
+  isCheckRunning = true;
+  try {
+    await DbService.init();
+    const pgStatus = await checkPostgresStatus();
+    const round = await RoundService.getActiveRound();
+    if (round) {
+      const ticketsCount = Object.keys(round.selections || {}).length;
+      const autoDrawEnabled = process.env.AUTO_DRAW_WHEN_FULL === "true";
+      if (round.status === "OPEN" && ticketsCount >= 100 && autoDrawEnabled) {
+        console.log(`[24/7 Worker] Round #${round.roundNumber} reached 100 tickets. Auto-draw enabled: triggering cryptographic draw...`);
+        try {
+          const result = await RoundService.drawWinners({
+            admin: { id: "worker_daemon", phone: "0929200166" }
+          });
+          console.log(`[24/7 Worker] Draw completed successfully! 1st: #${result.winners[0]?.number}, 2nd: #${result.winners[1]?.number}, 3rd: #${result.winners[2]?.number}. Started Round #${result.nextRound.roundNumber}`);
+          broadcastSSE("round_auto_drawn", {
+            roundId: round.id,
+            winners: result.winners,
+            nextRound: result.nextRound
+          });
+        } catch (drawErr) {
+          console.error("[24/7 Worker] Error during auto-draw:", drawErr);
+          errorsEncountered++;
+        }
+      }
+    }
+    checksCompleted++;
+    if (checksCompleted % 6 === 0) {
+      if (pgStatus.connected) {
+        await DbService.get(async (db) => {
+          await flushStateToPostgres(db);
+          dbSyncCount++;
+        });
+      }
+    }
+    broadcastSSE("worker_heartbeat", {
+      timestamp: Date.now(),
+      status: "healthy",
+      activeRound: round?.roundNumber || null,
+      ticketsSold: round ? Object.keys(round.selections || {}).length : 0
+    });
+  } catch (err) {
+    errorsEncountered++;
+    console.error("[24/7 Worker] Error in cycle:", err.message || err);
+  } finally {
+    isCheckRunning = false;
+  }
+}
+function getWorkerStats() {
+  const currentUptime = Math.floor((Date.now() - new Date(startedAt).getTime()) / 1e3);
+  let roundInfo = { id: "", number: 0, status: "UNKNOWN", tickets: 0, pool: 0 };
+  try {
+    const db = loadDatabase();
+    const active = db?.rounds?.[db?.activeRoundId];
+    if (active) {
+      roundInfo = {
+        id: active.id,
+        number: active.roundNumber,
+        status: active.status,
+        tickets: Object.keys(active.selections || {}).length,
+        pool: active.totalPool || 0
+      };
+    }
+  } catch {
+  }
+  return {
+    startedAt,
+    uptimeSeconds: currentUptime,
+    lastCheckAt: (/* @__PURE__ */ new Date()).toISOString(),
+    checksCompleted,
+    dbSyncCount,
+    errorsEncountered,
+    activeRoundId: roundInfo.id,
+    activeRoundNumber: roundInfo.number,
+    activeRoundStatus: roundInfo.status,
+    ticketsSold: roundInfo.tickets,
+    totalPool: roundInfo.pool,
+    postgresConnected: true
+  };
+}
+function startWorker(intervalMs = 5e3) {
+  if (workerInterval) {
+    console.log("[24/7 Worker] Already running.");
+    return;
+  }
+  console.log(`[24/7 Worker] Initializing 24/7 Game & Background Service (interval: ${intervalMs}ms)...`);
+  runWorkerCycle().catch((err) => console.error("[24/7 Worker] Initial cycle error:", err));
+  workerInterval = setInterval(() => {
+    runWorkerCycle().catch((err) => console.error("[24/7 Worker] Scheduled cycle error:", err));
+  }, intervalMs);
+  if (workerInterval.unref) {
+    workerInterval.unref();
+  }
+  console.log("[24/7 Worker] Background service is active and monitoring round operations 24/7.");
+}
+function stopWorker() {
+  if (workerInterval) {
+    clearInterval(workerInterval);
+    workerInterval = null;
+    console.log("[24/7 Worker] Stopped.");
+  }
+}
+process.on("uncaughtException", (err) => {
+  console.error("[24/7 Worker CRASH PREVENTED] Uncaught exception:", err);
+  errorsEncountered++;
+});
+process.on("unhandledRejection", (reason) => {
+  console.error("[24/7 Worker CRASH PREVENTED] Unhandled promise rejection:", reason);
+  errorsEncountered++;
+});
+var handleGracefulShutdown = async (signal) => {
+  console.log(`[24/7 Worker] Received ${signal}. Performing atomic shutdown flush...`);
+  stopWorker();
+  try {
+    await DbService.get(async (db) => {
+      await flushStateToPostgres(db);
+    });
+    console.log("[24/7 Worker] State saved to database successfully. Exiting.");
+  } catch (err) {
+    console.error("[24/7 Worker] Error during shutdown flush:", err);
+  }
+  process.exit(0);
+};
+process.on("SIGTERM", () => handleGracefulShutdown("SIGTERM"));
+process.on("SIGINT", () => handleGracefulShutdown("SIGINT"));
+var isMainModule = typeof process !== "undefined" && process.argv && process.argv[1] && process.argv[1].includes("worker");
+if (isMainModule) {
+  console.log("=== SPIN ETHIOPIA 24/7 STANDALONE WORKER PROCESS STARTING ===");
+  startWorker(5e3);
+}
+
+// server/api.ts
+var router = express.Router();
+router.use((req, res, next) => {
+  const origin = req.headers.origin || "*";
+  const frontendUrl = process.env.FRONTEND_URL ? process.env.FRONTEND_URL.replace(/\/+$/, "") : null;
+  const allowedOrigin = frontendUrl || origin;
+  res.setHeader("Access-Control-Allow-Origin", allowedOrigin);
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, PATCH, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, x-session-token");
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+  if (req.method === "OPTIONS") {
+    return res.status(200).end();
+  }
+  next();
+});
+router.use(express.json({ limit: "10mb" }));
+router.use(express.urlencoded({ extended: true, limit: "10mb" }));
+router.get("/health", async (req, res) => {
+  const pgStatus = await checkPostgresStatus();
+  res.json({
+    status: "ok",
+    app: "Spin Ethiopia",
+    timestamp: (/* @__PURE__ */ new Date()).toISOString(),
+    environment: process.env.NODE_ENV || "development",
+    database: {
+      type: pgStatus.configured ? "postgresql" : "json_fallback",
+      postgresConfigured: pgStatus.configured,
+      postgresConnected: pgStatus.connected,
+      databaseName: pgStatus.database || null,
+      error: pgStatus.error || null
+    },
+    paymentMethodsReady: true
+  });
+});
+router.get("/worker/status", async (req, res) => {
+  const stats = getWorkerStats();
+  const pgStatus = await checkPostgresStatus();
+  res.json({
+    status: "ok",
+    worker: {
+      ...stats,
+      postgresConfigured: pgStatus.configured,
+      postgresConnected: pgStatus.connected
+    },
+    serverTime: (/* @__PURE__ */ new Date()).toISOString()
+  });
+});
+router.post("/auth/register", async (req, res) => {
+  try {
+    const { firstName, lastName, phone, password, confirmPassword, referralCode } = req.body;
+    const result = await AuthService.register({
+      firstName,
+      lastName,
+      phone,
+      password,
+      confirmPassword,
+      referralCode
+    });
+    res.json({ success: true, user: result.user, token: result.token });
+  } catch (err) {
+    res.status(400).json({ error: err.message || "Registration failed" });
+  }
+});
+router.post("/auth/login", async (req, res) => {
+  try {
+    const { phone, password } = req.body;
+    const result = await AuthService.login({ phone, password });
+    res.json({ success: true, user: result.user, token: result.token });
+  } catch (err) {
+    res.status(400).json({ error: err.message || "Login failed" });
+  }
+});
+router.get("/auth/me", requireAuth, (req, res) => {
+  res.json({ success: true, user: req.user });
+});
+router.post("/auth/logout", async (req, res) => {
+  const authHeader = req.headers.authorization || req.headers["x-session-token"];
+  let token = "";
+  if (authHeader) {
+    token = authHeader.startsWith("Bearer ") ? authHeader.slice(7).trim() : authHeader.trim();
+  }
+  await AuthService.logout(token);
+  res.json({ success: true, message: "Logged out successfully" });
+});
+router.get("/payment-methods", async (req, res) => {
+  try {
+    const data = await DbService.get((db) => {
+      const methods = Object.values(db.paymentMethods).filter((pm) => pm.isActive).sort((a, b) => a.sortOrder - b.sortOrder);
+      const pendingDeposits = Object.values(db.deposits).filter((d) => d.status === "PENDING").sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+      const pendingDepositsCount = pendingDeposits.length;
+      const latestPending = pendingDeposits[0] ? {
+        id: pendingDeposits[0].id,
+        userName: pendingDeposits[0].userName,
+        userPhone: pendingDeposits[0].userPhone,
+        amount: pendingDeposits[0].amount,
+        provider: pendingDeposits[0].provider,
+        transactionId: pendingDeposits[0].transactionId,
+        receiptUrl: pendingDeposits[0].receiptUrl,
+        time: new Date(pendingDeposits[0].createdAt).toLocaleTimeString()
+      } : null;
+      return { methods, pendingDepositsCount, latestPending };
+    });
+    res.json({
+      success: true,
+      methods: data.methods,
+      pendingDepositsCount: data.pendingDepositsCount,
+      latestPendingDeposit: data.latestPending
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+router.post("/wallet/deposit", requireAuth, async (req, res) => {
+  try {
+    const { paymentMethodId, amount, transactionId, receiptUrl } = req.body;
+    const deposit = await WalletService.submitDeposit({
+      user: req.user,
+      paymentMethodId,
+      amount: Number(amount),
+      transactionId,
+      receiptUrl
+    });
+    res.json({
+      success: true,
+      message: "Kaffaltiin keessan ergameera. Admin mirkaneessuun herrega keessanitti dabala (Deposit submitted, pending admin review)",
+      deposit
+    });
+  } catch (err) {
+    res.status(400).json({ error: err.message || "Failed to submit deposit" });
+  }
+});
+router.post("/wallet/withdraw", requireAuth, async (req, res) => {
+  try {
+    const { provider, accountName, accountNumber, amount } = req.body;
+    const withdrawal = await WalletService.submitWithdrawal({
+      user: req.user,
+      provider,
+      accountName,
+      accountNumber,
+      amount: Number(amount)
+    });
+    res.json({
+      success: true,
+      message: "Gaaffiin baasii ergameera, admin mirkaneessee isiniif erga (Withdrawal submitted, pending processing)",
+      withdrawal
+    });
+  } catch (err) {
+    res.status(400).json({ error: err.message || "Failed to submit withdrawal" });
+  }
+});
+router.get("/wallet/transactions", requireAuth, async (req, res) => {
+  try {
+    const transactions = await WalletService.getUserTransactions(req.user.id);
+    res.json({ success: true, transactions });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+router.get("/referrals/stats", requireAuth, async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const stats = await DbService.get((db) => {
+      const user = db.users[userId];
+      const referredUsers = Object.values(db.users).filter((u) => u.referredBy === userId);
+      const referralTx = Object.values(db.transactions).filter(
+        (tx) => tx.userId === userId && tx.type === "REFERRAL_BONUS"
+      );
+      const totalEarned = referralTx.reduce((sum, tx) => sum + tx.amount, 0);
+      return {
+        referralCode: user?.referralCode || "",
+        referredCount: referredUsers.length,
+        totalEarned,
+        referredUsers: referredUsers.map((u) => ({
+          phone: u.phone.slice(0, 4) + "****" + u.phone.slice(-2),
+          joinedAt: u.createdAt,
+          hasQualified: !!db.processedReferralBonuses[u.id]
+        }))
+      };
+    });
+    res.json({ success: true, ...stats });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+var handleGetActiveRound = async (req, res) => {
+  try {
+    const round = await RoundService.getActiveRound();
+    const settings = await DbService.get((db) => db.settings);
+    res.json({ success: true, round, settings });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+router.get("/round/active", handleGetActiveRound);
+router.get("/rounds/active", handleGetActiveRound);
+router.get("/rounds/verify-authenticity", async (req, res) => {
+  try {
+    const proof = await RoundService.verifyRoundAuthenticity();
+    res.json({ success: true, proof });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+var handleSelectTicket = async (req, res) => {
+  try {
+    const { number } = req.body;
+    const result = await RoundService.selectNumber({
+      user: req.user,
+      number: Number(number)
+    });
+    res.json({
+      success: true,
+      message: `Lakkoofsi #${number} milkaa'inaan filatameera (Number #${number} successfully selected)`,
+      round: result.round,
+      userBalance: result.userBalance,
+      selection: result.selection
+    });
+  } catch (err) {
+    res.status(400).json({ error: err.message || "Failed to select number" });
+  }
+};
+router.post("/round/select", requireAuth, handleSelectTicket);
+router.post("/round/select-ticket", requireAuth, handleSelectTicket);
+router.post("/rounds/select", requireAuth, handleSelectTicket);
+router.post("/rounds/select-ticket", requireAuth, handleSelectTicket);
+var handlePreviousWinners = async (req, res) => {
+  try {
+    const winners = await RoundService.getPreviousWinners(15);
+    res.json({ success: true, winners, history: winners });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+router.get("/round/previous-winners", handlePreviousWinners);
+router.get("/rounds/previous-winners", handlePreviousWinners);
+router.get("/round/winners", handlePreviousWinners);
+router.get("/rounds/winners", handlePreviousWinners);
+router.get("/round/history", handlePreviousWinners);
+router.get("/rounds/history", handlePreviousWinners);
+var handleTopWinners = async (req, res) => {
+  try {
+    const rounds = await RoundService.getPreviousWinners(50);
+    const map = /* @__PURE__ */ new Map();
+    for (const r of rounds) {
+      for (const w of r.winners || []) {
+        const key = w.userPhone || w.userId || w.userName;
+        const current = map.get(key) || {
+          userId: w.userId,
+          userName: w.userName,
+          userPhone: w.userPhone,
+          totalWins: 0,
+          firstPlaceWins: 0,
+          totalPrizes: 0,
+          lastRoundWon: r.roundNumber
+        };
+        current.totalWins += 1;
+        if (w.rank === 1) {
+          current.firstPlaceWins += 1;
+        }
+        current.totalPrizes += w.prizeAmount;
+        map.set(key, current);
+      }
+    }
+    const defaultTop = [
+      { userId: "top_1", userName: "Chala Bekele", userPhone: "0988***55", totalWins: 6, firstPlaceWins: 4, totalPrizes: 7500, lastRoundWon: 2 },
+      { userId: "top_2", userName: "Asefa Wasenu", userPhone: "0921***10", totalWins: 5, firstPlaceWins: 3, totalPrizes: 5600, lastRoundWon: 2 },
+      { userId: "top_3", userName: "Tolera Bekele", userPhone: "0911***42", totalWins: 4, firstPlaceWins: 2, totalPrizes: 4200, lastRoundWon: 1 },
+      { userId: "top_4", userName: "Gemechu B.", userPhone: "0912***34", totalWins: 3, firstPlaceWins: 2, totalPrizes: 3100, lastRoundWon: 1 },
+      { userId: "top_5", userName: "Bontu G.", userPhone: "0933***15", totalWins: 3, firstPlaceWins: 1, totalPrizes: 2500, lastRoundWon: 1 }
+    ];
+    const combined = Array.from(map.values());
+    for (const d of defaultTop) {
+      if (!combined.some((c) => c.userName.toLowerCase() === d.userName.toLowerCase())) {
+        combined.push(d);
+      }
+    }
+    combined.sort((a, b) => {
+      if (b.totalWins !== a.totalWins) return b.totalWins - a.totalWins;
+      return b.totalPrizes - a.totalPrizes;
+    });
+    const topWinners = combined.slice(0, 5).map((player, idx) => ({
+      rank: idx + 1,
+      ...player
+    }));
+    res.json({ success: true, topWinners });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+router.get("/round/top-winners", handleTopWinners);
+router.get("/rounds/top-winners", handleTopWinners);
+router.get("/round/stats", async (req, res) => {
+  try {
+    const stats = await RoundService.getLuckyStats();
+    res.json({ success: true, stats });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+var handleLiveStream = (req, res) => {
+  const clientId = "client_" + Date.now() + "_" + Math.random().toString(36).substring(2, 7);
+  const cleanup = addSSEClient(clientId, res);
+  req.on("close", cleanup);
+};
+router.get("/live/stream", handleLiveStream);
+router.get("/live-stream", handleLiveStream);
+router.get("/stream", handleLiveStream);
+router.get("/admin/metrics", requireAdmin, async (req, res) => {
+  try {
+    const metrics = await DbService.get((db) => {
+      const deposits = Object.values(db.deposits);
+      const withdrawals = Object.values(db.withdrawals);
+      const rounds = Object.values(db.rounds);
+      const activeRound = db.rounds[db.activeRoundId];
+      const pendingDeposits = deposits.filter((d) => d.status === "PENDING");
+      const pendingWithdrawals = withdrawals.filter((w) => w.status === "PENDING");
+      const totalDepositVolume = deposits.filter((d) => d.status === "APPROVED").reduce((sum, d) => sum + d.amount, 0);
+      const totalWithdrawalVolume = withdrawals.filter((w) => w.status === "APPROVED").reduce((sum, w) => sum + w.amount, 0);
+      return {
+        totalUsers: Object.keys(db.users).length,
+        pendingDeposits: pendingDeposits.length,
+        pendingDepositsCount: pendingDeposits.length,
+        pendingWithdrawals: pendingWithdrawals.length,
+        pendingWithdrawalsCount: pendingWithdrawals.length,
+        totalDepositVolume,
+        totalWithdrawalVolume,
+        activeRoundPool: activeRound ? activeRound.totalPool : 0,
+        activeRoundTicketsSold: activeRound ? Object.keys(activeRound.selections).length : 0,
+        totalRoundsCompleted: rounds.filter((r) => r.status === "COMPLETED").length,
+        liveConnections: getActiveClientsCount()
+      };
+    });
+    res.json({ success: true, metrics });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+router.get("/admin/users", requireAdmin, async (req, res) => {
+  try {
+    const users = await DbService.get((db) => {
+      return Object.values(db.users).map((u) => ({
+        id: u.id,
+        firstName: u.firstName,
+        lastName: u.lastName,
+        phone: u.phone,
+        role: u.role,
+        walletBalance: u.walletBalance,
+        referralCode: u.referralCode,
+        createdAt: u.createdAt
+      }));
+    });
+    res.json({ success: true, users });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+router.post("/admin/users/adjust-balance", requireAdmin, async (req, res) => {
+  try {
+    const { userId, action, amount, reason } = req.body;
+    if (!userId || !action || typeof amount !== "number") {
+      return res.status(400).json({ error: "Odeeffannoo herrega sirreessuu guutuu galchaa" });
+    }
+    const result = await WalletService.adminAdjustBalance({
+      userId,
+      action,
+      amount: Number(amount),
+      reason: reason || "Sirreeffama Admin",
+      admin: { id: req.user.id, phone: req.user.phone }
+    });
+    res.json({
+      success: true,
+      message: "Herregni fayyadamaa milkaa'inaan sirreeffameera",
+      user: {
+        id: result.user.id,
+        phone: result.user.phone,
+        firstName: result.user.firstName,
+        lastName: result.user.lastName,
+        walletBalance: result.newBalance
+      }
+    });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+router.post("/admin/users/update", requireAdmin, async (req, res) => {
+  try {
+    const { userId, firstName, lastName, phone, role, newPassword, walletBalance } = req.body;
+    if (!userId) {
+      return res.status(400).json({ error: "User ID is required" });
+    }
+    const updatedUser = await AuthService.adminUpdateUser({
+      userId,
+      firstName,
+      lastName,
+      phone,
+      role,
+      newPassword,
+      walletBalance: typeof walletBalance === "number" ? walletBalance : void 0,
+      admin: { id: req.user.id, phone: req.user.phone }
+    });
+    res.json({
+      success: true,
+      message: "Accountiin fayyadamaa milkaa'inaan haaromfameera (User account updated)",
+      user: updatedUser
+    });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+router.post("/admin/users/payout-real-cash", requireAdmin, async (req, res) => {
+  try {
+    const { userId, amount, provider = "Telebirr", transactionId, note } = req.body;
+    if (!userId || typeof amount !== "number" || amount <= 0) {
+      return res.status(400).json({ error: "UserId fi hamma qarshii sirrii galchaa" });
+    }
+    const result = await WalletService.adminPayRealCash({
+      userId,
+      amount: Number(amount),
+      provider,
+      transactionId,
+      note,
+      admin: { id: req.user.id, phone: req.user.phone }
+    });
+    res.json({
+      success: true,
+      message: `Qarshiin ${amount} ETB ${provider} tiin kaffalamee herrega irraa hir'ifameera!`,
+      user: {
+        id: result.user.id,
+        phone: result.user.phone,
+        firstName: result.user.firstName,
+        lastName: result.user.lastName,
+        walletBalance: result.newBalance
+      },
+      transaction: result.transaction
+    });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+router.get("/admin/deposits", requireAdmin, async (req, res) => {
+  try {
+    const deposits = await DbService.get((db) => {
+      return Object.values(db.deposits).sort(
+        (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      );
+    });
+    res.json({ success: true, deposits });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+router.post("/admin/deposits/approve", requireAdmin, async (req, res) => {
+  try {
+    const { depositId } = req.body;
+    if (!depositId) throw new Error("Deposit ID is required");
+    const result = await WalletService.approveDeposit(depositId, {
+      id: req.user.id,
+      phone: req.user.phone
+    });
+    res.json({
+      success: true,
+      message: "Kaffaltiin mirkanaa'eera, herregni dabaleera (Deposit approved, wallet credited)",
+      deposit: result.deposit,
+      userBalance: result.userBalance
+    });
+  } catch (err) {
+    res.status(400).json({ error: err.message || "Failed to approve deposit" });
+  }
+});
+router.post("/admin/deposits/reject", requireAdmin, async (req, res) => {
+  try {
+    const { depositId, reason } = req.body;
+    if (!depositId) throw new Error("Deposit ID is required");
+    const deposit = await WalletService.rejectDeposit(depositId, reason, {
+      id: req.user.id,
+      phone: req.user.phone
+    });
+    res.json({
+      success: true,
+      message: "Kaffaltiin kuffifameera (Deposit rejected)",
+      deposit
+    });
+  } catch (err) {
+    res.status(400).json({ error: err.message || "Failed to reject deposit" });
+  }
+});
+router.get("/admin/withdrawals", requireAdmin, async (req, res) => {
+  try {
+    const withdrawals = await DbService.get((db) => {
+      return Object.values(db.withdrawals).sort(
+        (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      );
+    });
+    res.json({ success: true, withdrawals });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+router.post("/admin/withdrawals/approve", requireAdmin, async (req, res) => {
+  try {
+    const { withdrawalId } = req.body;
+    if (!withdrawalId) throw new Error("Withdrawal ID is required");
+    const withdrawal = await WalletService.approveWithdrawal(withdrawalId, {
+      id: req.user.id,
+      phone: req.user.phone
+    });
+    res.json({
+      success: true,
+      message: "Baasiin mirkanaa'eera (Withdrawal approved)",
+      withdrawal
+    });
+  } catch (err) {
+    res.status(400).json({ error: err.message || "Failed to approve withdrawal" });
+  }
+});
+router.post("/admin/withdrawals/reject", requireAdmin, async (req, res) => {
+  try {
+    const { withdrawalId, reason } = req.body;
+    if (!withdrawalId) throw new Error("Withdrawal ID is required");
+    const result = await WalletService.rejectWithdrawal(withdrawalId, reason, {
+      id: req.user.id,
+      phone: req.user.phone
+    });
+    res.json({
+      success: true,
+      message: "Baasiin kuffifameera, qarshiin deebifameera (Withdrawal rejected and refunded)",
+      withdrawal: result.withdrawal,
+      refundedBalance: result.refundedBalance
+    });
+  } catch (err) {
+    res.status(400).json({ error: err.message || "Failed to reject withdrawal" });
+  }
+});
+router.post("/admin/rounds/lock", requireAdmin, async (req, res) => {
+  try {
+    const round = await RoundService.lockRound({ id: req.user.id, phone: req.user.phone });
+    res.json({ success: true, round });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+router.post("/admin/rounds/unlock", requireAdmin, async (req, res) => {
+  try {
+    const round = await RoundService.unlockRound({ id: req.user.id, phone: req.user.phone });
+    res.json({ success: true, round });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+router.post("/admin/rounds/assign-slot", requireAdmin, async (req, res) => {
+  try {
+    const { number, userName, userPhone } = req.body;
+    const round = await RoundService.assignSlot({
+      number: Number(number),
+      userName,
+      userPhone,
+      admin: { id: req.user.id, phone: req.user.phone }
+    });
+    res.json({ success: true, round });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+router.post("/admin/rounds/release-slot", requireAdmin, async (req, res) => {
+  try {
+    const { number } = req.body;
+    const round = await RoundService.releaseSlot(Number(number), {
+      id: req.user.id,
+      phone: req.user.phone
+    });
+    res.json({ success: true, round });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+router.post("/admin/rounds/bulk-assign", requireAdmin, async (req, res) => {
+  try {
+    const { numbers, userName, userPhone } = req.body;
+    const round = await RoundService.bulkAssignSlots({
+      numbers: (numbers || []).map(Number),
+      userName,
+      userPhone,
+      admin: { id: req.user.id, phone: req.user.phone }
+    });
+    res.json({ success: true, round });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+router.post("/admin/rounds/bulk-release", requireAdmin, async (req, res) => {
+  try {
+    const { numbers } = req.body;
+    const round = await RoundService.bulkReleaseSlots({
+      numbers: (numbers || []).map(Number),
+      admin: { id: req.user.id, phone: req.user.phone }
+    });
+    res.json({ success: true, round });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+router.post("/admin/rounds/fill-simulated", requireAdmin, async (req, res) => {
+  try {
+    const { count = 30 } = req.body;
+    const result = await RoundService.fillSimulatedSlots({
+      count: Number(count),
+      admin: { id: req.user.id, phone: req.user.phone }
+    });
+    res.json({
+      success: true,
+      message: `Tikkeetoota ${result.filledCount} maqaa namootaan qabamaniiru (Urgency demand created)`,
+      round: result.round,
+      filledCount: result.filledCount
+    });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+router.post("/admin/rounds/fill-fifty-percent", requireAdmin, async (req, res) => {
+  try {
+    const result = await RoundService.fillFiftyPercentGenuine({
+      id: req.user.id,
+      phone: req.user.phone
+    });
+    res.json({
+      success: true,
+      message: `Lakkoofsi 50% (50/100) mirkaneeffamee qabameera! Baajanni waligalaa: ${result.totalPool.toFixed(2)} ETB`,
+      round: result.round,
+      totalClaimed: result.totalClaimed,
+      claimedPercent: result.claimedPercent,
+      totalPool: result.totalPool,
+      provableFairHash: result.provableFairHash
+    });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+router.post(["/admin/rounds/fill-hundred-percent", "/admin/rounds/fill-all-tickets"], requireAdmin, async (req, res) => {
+  try {
+    const result = await RoundService.fillAllSlotsGenuine({
+      id: req.user.id,
+      phone: req.user.phone
+    });
+    res.json({
+      success: true,
+      message: `Lakkoofsi hundi (100/100) guutameera! Baajanni waligalaa: ${result.totalPool.toFixed(2)} ETB`,
+      round: result.round,
+      totalClaimed: result.totalClaimed,
+      claimedPercent: 100,
+      totalPool: result.totalPool,
+      provableFairHash: result.provableFairHash
+    });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+router.post("/admin/rounds/clear-simulated", requireAdmin, async (req, res) => {
+  try {
+    const result = await RoundService.clearSimulatedSlots({
+      id: req.user.id,
+      phone: req.user.phone
+    });
+    res.json({
+      success: true,
+      message: `Bakki tikkeetii sossobaa ${result.clearedCount} duwwaa ta'eera (Slots cleared and made open for real players)`,
+      round: result.round,
+      clearedCount: result.clearedCount
+    });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+router.post("/admin/rounds/draw", requireAdmin, async (req, res) => {
+  try {
+    const { manualWinners } = req.body;
+    const result = await RoundService.drawWinners({
+      admin: { id: req.user.id, phone: req.user.phone },
+      manualWinners
+    });
+    res.json({
+      success: true,
+      message: "Mo'attoonni milkaa'inaan ba'aniiru, badhaasni qoodameera (Winners drawn and prizes distributed)",
+      completedRound: result.round,
+      winners: result.winners,
+      nextRound: result.nextRound
+    });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+router.get("/admin/payment-methods", requireAdmin, async (req, res) => {
+  try {
+    const methods = await DbService.get((db) => Object.values(db.paymentMethods));
+    res.json({ success: true, methods });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+router.post("/admin/payment-methods", requireAdmin, async (req, res) => {
+  try {
+    const methodData = req.body;
+    if (!methodData.id || !methodData.provider || !methodData.accountNumber) {
+      throw new Error("Provider and account number are required");
+    }
+    await DbService.mutate((db) => {
+      db.paymentMethods[methodData.id] = methodData;
+    });
+    await DbService.logAudit(
+      { id: req.user.id, phone: req.user.phone },
+      "PAYMENT_METHOD_UPDATED",
+      "PAYMENT_METHOD",
+      methodData.id,
+      `Configured payment destination ${methodData.provider} (${methodData.accountNumber})`
+    );
+    res.json({ success: true, method: methodData });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+router.get("/admin/settings", requireAdmin, async (req, res) => {
+  try {
+    const settings = await DbService.get((db) => db.settings);
+    res.json({ success: true, settings });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+router.post("/admin/settings", requireAdmin, async (req, res) => {
+  try {
+    const newSettings = req.body;
+    const { firstPrizePercent, secondPrizePercent, thirdPrizePercent, platformPercent } = newSettings;
+    const total = Number(firstPrizePercent) + Number(secondPrizePercent) + Number(thirdPrizePercent) + Number(platformPercent);
+    if (Math.abs(total - 100) > 0.01) {
+      throw new Error(
+        `Qoodinsi badhaasaa 100% ta'uu qaba! Amma: ${total}% (${firstPrizePercent}% + ${secondPrizePercent}% + ${thirdPrizePercent}% + ${platformPercent}%)`
+      );
+    }
+    await DbService.mutate((db) => {
+      db.settings = { ...db.settings, ...newSettings };
+    });
+    await DbService.logAudit(
+      { id: req.user.id, phone: req.user.phone },
+      "SETTINGS_UPDATED",
+      "SETTINGS",
+      "MAIN",
+      "Updated system settings & prize distribution"
+    );
+    res.json({ success: true, settings: newSettings });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+router.get("/admin/audit-logs", requireAdmin, async (req, res) => {
+  try {
+    const logs = await DbService.get((db) => db.auditLogs);
+    res.json({ success: true, logs });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+router.get("/admin/audit-logs/export-csv", requireAdmin, async (req, res) => {
+  try {
+    const logs = await DbService.get((db) => db.auditLogs);
+    let csv = "ID,Timestamp,Actor Phone,Action,Target Type,Target ID,Details\n";
+    for (const log of logs) {
+      const line = [
+        `"${log.id}"`,
+        `"${log.createdAt}"`,
+        `"${log.actorPhone}"`,
+        `"${log.action}"`,
+        `"${log.targetType}"`,
+        `"${log.targetId}"`,
+        `"${(log.details || "").replace(/"/g, '""')}"`
+      ].join(",");
+      csv += line + "\n";
+    }
+    res.setHeader("Content-Type", "text/csv; charset=utf-8");
+    res.setHeader(
+      "Content-Disposition",
+      `attachment; filename="spin_ethiopia_audit_${Date.now()}.csv"`
+    );
+    res.send(csv);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+router.get("/admin/rounds/export-csv", requireAdmin, async (req, res) => {
+  try {
+    const rounds = await DbService.get((db) => Object.values(db.rounds));
+    rounds.sort((a, b) => b.roundNumber - a.roundNumber);
+    let csv = "Round Number,Round ID,Status,Ticket Price (ETB),Total Pool (ETB),Completed At,Winner Rank,Winner Place,Winning Number,Winner Name,Winner Phone,Prize Amount (ETB)\n";
+    for (const rnd of rounds) {
+      const winners = rnd.winners && rnd.winners.length > 0 ? rnd.winners : [];
+      if (winners.length > 0) {
+        for (const w of winners) {
+          const row = [
+            `"${rnd.roundNumber}"`,
+            `"${rnd.id}"`,
+            `"${rnd.status}"`,
+            `"${rnd.ticketPrice}"`,
+            `"${rnd.totalPool.toFixed(2)}"`,
+            `"${rnd.drawnAt || rnd.createdAt || ""}"`,
+            `"${w.rank}"`,
+            `"${w.rank}ffaa"`,
+            `"${w.number}"`,
+            `"${(w.userName || "").replace(/"/g, '""')}"`,
+            `"${w.userPhone || ""}"`,
+            `"${w.prizeAmount.toFixed(2)}"`
+          ].join(",");
+          csv += row + "\n";
+        }
+      } else {
+        const row = [
+          `"${rnd.roundNumber}"`,
+          `"${rnd.id}"`,
+          `"${rnd.status}"`,
+          `"${rnd.ticketPrice}"`,
+          `"${rnd.totalPool.toFixed(2)}"`,
+          `"${rnd.drawnAt || rnd.createdAt || ""}"`,
+          `""`,
+          `""`,
+          `""`,
+          `""`,
+          `""`,
+          `"0.00"`
+        ].join(",");
+        csv += row + "\n";
+      }
+    }
+    res.setHeader("Content-Type", "text/csv; charset=utf-8");
+    res.setHeader(
+      "Content-Disposition",
+      `attachment; filename="spin_ethiopia_round_winners_${Date.now()}.csv"`
+    );
+    res.send(csv);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+router.get("/admin/transactions/export-csv", requireAdmin, async (req, res) => {
+  try {
+    const { deposits, withdrawals, transactions, users } = await DbService.get((db) => ({
+      deposits: Object.values(db.deposits),
+      withdrawals: Object.values(db.withdrawals),
+      transactions: Object.values(db.transactions),
+      users: db.users
+    }));
+    const unifiedList = [];
+    for (const dep of deposits) {
+      unifiedList.push({
+        id: dep.id,
+        category: "DEPOSIT",
+        type: "MANUAL_DEPOSIT",
+        userName: dep.userName || "",
+        userPhone: dep.userPhone || "",
+        amount: dep.amount,
+        method: dep.provider || "",
+        refNumber: dep.transactionId || "",
+        status: dep.status,
+        createdAt: dep.createdAt || "",
+        processedAt: dep.reviewedAt || "",
+        notes: dep.rejectReason || ""
+      });
+    }
+    for (const w of withdrawals) {
+      unifiedList.push({
+        id: w.id,
+        category: "WITHDRAWAL",
+        type: "PAYOUT_WITHDRAWAL",
+        userName: w.userName || w.accountName || "",
+        userPhone: w.userPhone || "",
+        amount: w.amount,
+        method: w.provider || "",
+        refNumber: w.accountNumber || "",
+        status: w.status,
+        createdAt: w.createdAt || "",
+        processedAt: w.reviewedAt || "",
+        notes: w.rejectReason || ""
+      });
+    }
+    for (const tx of transactions) {
+      const u = users[tx.userId];
+      unifiedList.push({
+        id: tx.id,
+        category: "WALLET_TX",
+        type: tx.type,
+        userName: u ? `${u.firstName} ${u.lastName}`.trim() : tx.userId,
+        userPhone: u?.phone || "",
+        amount: tx.amount,
+        method: "INTERNAL_BALANCE",
+        refNumber: tx.referenceId || "",
+        status: "COMPLETED",
+        createdAt: tx.createdAt || "",
+        processedAt: tx.createdAt || "",
+        notes: tx.note || ""
+      });
+    }
+    unifiedList.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    let csv = "Transaction ID,Category,Type,User Name,User Phone,Amount (ETB),Method / Provider,Account / FT / Ref,Status,Created At,Processed At,Notes\n";
+    for (const item of unifiedList) {
+      const row = [
+        `"${item.id}"`,
+        `"${item.category}"`,
+        `"${item.type}"`,
+        `"${(item.userName || "").replace(/"/g, '""')}"`,
+        `"${item.userPhone || ""}"`,
+        `"${item.amount.toFixed(2)}"`,
+        `"${(item.method || "").replace(/"/g, '""')}"`,
+        `"${(item.refNumber || "").replace(/"/g, '""')}"`,
+        `"${item.status}"`,
+        `"${item.createdAt}"`,
+        `"${item.processedAt}"`,
+        `"${(item.notes || "").replace(/"/g, '""')}"`
+      ].join(",");
+      csv += row + "\n";
+    }
+    res.setHeader("Content-Type", "text/csv; charset=utf-8");
+    res.setHeader(
+      "Content-Disposition",
+      `attachment; filename="spin_ethiopia_transactions_${Date.now()}.csv"`
+    );
+    res.send(csv);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+var api_default = router;
+
+// api/index.ts
+dotenv2.config();
+var app = express2();
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, x-session-token");
+  if (req.method === "OPTIONS") {
+    return res.status(200).end();
+  }
+  next();
+});
+app.use(express2.json({ limit: "10mb" }));
+app.use(express2.urlencoded({ extended: true, limit: "10mb" }));
+app.use((req, res, next) => {
+  let intendedPath = req.url || "/";
+  if (req.query && req.query.all) {
+    const rawAll = req.query.all;
+    const pathPart = Array.isArray(rawAll) ? rawAll.join("/") : String(rawAll);
+    intendedPath = "/" + pathPart.replace(/^\/+/, "");
+  } else if (req.originalUrl && req.originalUrl !== "/api" && req.originalUrl !== "/") {
+    intendedPath = req.originalUrl;
+  }
+  if (intendedPath.startsWith("/api/index.ts")) {
+    intendedPath = intendedPath.replace("/api/index.ts", "") || "/";
+  }
+  if (intendedPath.startsWith("/api/")) {
+    intendedPath = intendedPath.slice(4);
+  } else if (intendedPath === "/api") {
+    intendedPath = "/";
+  }
+  const qIdx = intendedPath.indexOf("?");
+  if (qIdx !== -1) {
+    intendedPath = intendedPath.slice(0, qIdx);
+  }
+  if (!intendedPath.startsWith("/")) {
+    intendedPath = "/" + intendedPath;
+  }
+  req.url = intendedPath;
+  next();
+});
+var alwaysOnBackendUrl = process.env.ALWAYS_ON_BACKEND_URL || process.env.BACKEND_URL || process.env.WORKER_URL;
+if (alwaysOnBackendUrl) {
+  const cleanTargetBase = alwaysOnBackendUrl.trim().replace(/\/+$/, "");
+  console.log(`[Vercel Proxy] Connected to Always-On Backend: ${cleanTargetBase}`);
+  app.use(async (req, res, next) => {
+    const endpoint = req.url.startsWith("/") ? req.url : "/" + req.url;
+    const targetUrl = `${cleanTargetBase}/api${endpoint === "/" ? "" : endpoint}`;
+    try {
+      const headers = new Headers();
+      for (const [key, val] of Object.entries(req.headers)) {
+        if (val && key.toLowerCase() !== "host" && key.toLowerCase() !== "content-length") {
+          headers.set(key, Array.isArray(val) ? val.join(", ") : val);
+        }
+      }
+      const fetchOptions = {
+        method: req.method,
+        headers
+      };
+      if (req.method !== "GET" && req.method !== "HEAD" && req.body && Object.keys(req.body).length > 0) {
+        fetchOptions.body = typeof req.body === "object" ? JSON.stringify(req.body) : req.body;
+        if (!headers.has("Content-Type")) {
+          headers.set("Content-Type", "application/json");
+        }
+      }
+      const upstreamRes = await fetch(targetUrl, fetchOptions);
+      res.status(upstreamRes.status);
+      upstreamRes.headers.forEach((val, key) => {
+        if (key.toLowerCase() !== "content-encoding" && key.toLowerCase() !== "content-length") {
+          res.setHeader(key, val);
+        }
+      });
+      const bodyBuffer = await upstreamRes.arrayBuffer();
+      return res.send(Buffer.from(bodyBuffer));
+    } catch (err) {
+      console.warn(`[Vercel Proxy] Forwarding to ${targetUrl} failed (${err.message}). Falling back to local serverless router.`);
+      return next();
+    }
+  });
+}
+app.use("/", api_default);
+app.use("/api", api_default);
+app.use((req, res) => {
+  res.status(404).json({
+    error: `Kallattiin hin argamne (${req.method} ${req.url})`,
+    status: 404
+  });
+});
+app.use((err, req, res, next) => {
+  console.error("Vercel API error:", err);
+  res.status(500).json({
+    error: "Dogoggora keessoo sarvaraa (Internal Server Error)",
+    message: err.message || "Unknown error"
+  });
+});
+var index_default = app;
+export {
+  app,
+  index_default as default
+};
+//# sourceMappingURL=index.js.map

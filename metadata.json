@@ -1,0 +1,6 @@
+{
+  "name": "Spin Ethiopia",
+  "description": "Ibsa fi Caaraa Spin Ethiopia - 1-100 Lucky Draw, Wallets, Deposits, and Live Broadcast Platform",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

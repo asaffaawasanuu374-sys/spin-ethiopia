@@ -1,0 +1,21 @@
+[Unit]
+Description=Spin Ethiopia 24/7 Always-On Backend & Game Service
+After=network.target postgresql.service
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/var/www/spin-ethiopia
+ExecStart=/usr/bin/node dist/server.cjs
+Restart=always
+RestartSec=5s
+Environment=NODE_ENV=production
+Environment=PORT=3000
+Environment=START_WORKER=true
+EnvironmentFile=-/var/www/spin-ethiopia/.env
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=spin-ethiopia
+
+[Install]
+WantedBy=multi-user.target

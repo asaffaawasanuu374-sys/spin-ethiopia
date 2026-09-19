@@ -1,0 +1,21 @@
+@import "tailwindcss";
+
+html, body {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior-y: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Prevent accidental text highlighting during fast tapping on tickets and wheel */
+button, [role="button"], canvas {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+input, textarea, select {
+  -webkit-user-select: auto;
+  user-select: auto;
+  touch-action: auto;
+}
